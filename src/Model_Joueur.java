@@ -1,0 +1,4 @@
+class Model_Joueur
+{
+
+}
