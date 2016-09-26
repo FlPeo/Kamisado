@@ -9,9 +9,8 @@ class Model_Plateau
     /**
      * Constructeur initialisant l'état du plateau au début d'une partie.
      */
-    Model_Plateau(Model_Partie partie)
+    Model_Plateau()
     {
-        this.partie = partie;
         pionsBlancs = new Model_Pion[8];
         pionsNoirs = new Model_Pion[8];
         board = new Model_Case[LIGNE * LIGNE];
@@ -146,4 +145,8 @@ class Model_Plateau
     Model_Pion[] getPionsBlancs() { return pionsBlancs; }
     Model_Pion[] getPionsNoirs() { return pionsNoirs; }
     Model_Partie getPartie() { return partie; }
+
+    public void setPartie(Model_Partie partie) {
+        this.partie = partie;
+    }
 }

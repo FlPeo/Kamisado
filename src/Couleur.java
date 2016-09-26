@@ -1,4 +1,4 @@
-public class Couleur
+class Couleur
 {
     static final int MARRON = 0;
     static final int VERT = 1;

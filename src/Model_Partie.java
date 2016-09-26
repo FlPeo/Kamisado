@@ -17,14 +17,28 @@ class Model_Partie
     private boolean estGagnee;
 
     /**
+     * Instancie les objets qui doivent l'être avant de
+     * @param accueil (accueil du jeu)
+     * @return (une nouvelle instance de Partie)
+     */
+    static Model_Partie factPartie(Model_Accueil accueil)
+    {
+        Model_Joueur j1 = new Model_Joueur();
+        Model_Joueur j2 = new Model_Joueur();
+        Model_Plateau plateau = new Model_Plateau();
+        return new Model_Partie(accueil, plateau, j1, j2);
+    }
+
+    /**
      * Constructeur d'une partie sans spécificité
      */
-    Model_Partie(Model_Accueil accueil)
+    private Model_Partie(Model_Accueil accueil, Model_Plateau plateau, Model_Joueur j1, Model_Joueur j2)
     {
         this.accueil = accueil;
-        this.joueur1 = new Model_Joueur();
-        this.joueur2 = new Model_Joueur();
-        this.plateau = new Model_Plateau(this);
+        this.joueur1 = j1;
+        this.joueur2 = j2;
+        this.plateau = plateau;
+        this.plateau.setPartie(this);
         this.estGagnee = false;
         this.tourDuJoueurBlanc = true;
         this.isTourUn = true;

@@ -15,7 +15,7 @@ class Model_Accueil
      */
     void demarrerPartie()
     {
-        this.partie = new Model_Partie(this);
+        this.partie = Model_Partie.factPartie(this);
     }
 
     // GETTERS & SETTERS

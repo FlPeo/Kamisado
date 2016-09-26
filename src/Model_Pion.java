@@ -43,114 +43,35 @@ class Model_Pion
         int decal, ligne = Model_Plateau.LIGNE;
         boolean deplacableN = true, deplacableO = true, deplacableE = true;
 
-        if(estBlanc)
-        {
-            decal = 1;
-            while (deplacableN || deplacableO || deplacableE)
-            {
-                if (deplacableN)
-                {
-                    if( row + decal <=7
-                        && plateau[column + (row + decal) * ligne].getPion() == null)
-                        casesAtteignables.add(plateau[column + (row + decal) * ligne]);
-                    else
-                        deplacableN = false;
-                }
-                if (deplacableO)
-                {
-                    if( row + decal <=7 && column - decal >= 0
-                            && plateau[(column - decal) + (row + decal) * ligne].getPion() == null)
-                        casesAtteignables.add(plateau[(column - decal) + (row + decal) * ligne]);
-                    else
-                        deplacableO = false;
-                }
-                if (deplacableE)
-                {
-                    if( row + decal <=7 && column + decal <= 7
-                            && plateau[(column + decal) + (row + decal) * ligne].getPion() == null)
-                        casesAtteignables.add(plateau[(column + decal) + (row + decal) * ligne]);
-                    else
-                        deplacableE= false;
-                }
-                decal++;
-            }
-        }
-        else
-        {
-            decal = 1;
-            while (deplacableN || deplacableO || deplacableE)
-            {
-                if (deplacableN)
-                {
-                    if( row - decal >= 0
-                            && plateau[column + (row - decal) * ligne].getPion() == null)
-                        casesAtteignables.add(plateau[column + (row - decal) * ligne]);
-                    else
-                        deplacableN = false;
-                }
-
-                if (deplacableO)
-                {
-                    if( row - decal >=0 && column - decal >= 0
-                            && plateau[(column - decal) + (row - decal) * ligne].getPion() == null)
-                        casesAtteignables.add(plateau[(column - decal) + (row - decal) * ligne]);
-                    else
-                        deplacableO = false;
-                }
-                if (deplacableE)
-                {
-                    if( row - decal >= 0 && column + decal <= 7
-                            && plateau[(column + decal) + (row - decal) * ligne].getPion() == null)
-                        casesAtteignables.add(plateau[(column + decal) + (row - decal) * ligne]);
-                    else
-                        deplacableE= false;
-                }
-                decal++;
-            }
-            System.out.println(casesAtteignables);
-        }
-        /*int decal =1;
-
-        boolean deplacableN = true, deplacableO = true, deplacableE = true;
-
+        decal = estBlanc?1:-1;
         while (deplacableN || deplacableO || deplacableE)
         {
-            //test N
-            if (deplacableN && ((column + decal <= 7 && estBlanc) ||(column - decal >= 0 && !estBlanc))
-                    && plateau[row+(column+decal)*ligne].getPion() == null)
-                casesAtteignables.add(plateau[row+(column+decal)*ligne]);
-            else
+            if (deplacableN)
             {
-                deplacableN = false;
-                System.out.println("stopN");
+                if( row + decal <=7
+                    && plateau[column + (row + decal) * ligne].getPion() == null)
+                    casesAtteignables.add(plateau[column + (row + decal) * ligne]);
+                else
+                    deplacableN = false;
             }
-
-            //test E
-            if (deplacableE && ((column + decal <= 7 && row - decal >= 0 && estBlanc) ||
-                    (column - decal >= 0 && row + decal <= 7 && estBlanc))
-                    && plateau[(row-decal)+(column+decal)*ligne].getPion() == null)
-                casesAtteignables.add(plateau[(row-decal)+(column+decal)*ligne]);
-            else
+            if (deplacableO)
             {
-                deplacableE = false;
-                System.out.println("stopE");
+                if( row + decal <=7 && column - decal >= 0
+                        && plateau[(column - decal) + (row + decal) * ligne].getPion() == null)
+                    casesAtteignables.add(plateau[(column - decal) + (row + decal) * ligne]);
+                else
+                    deplacableO = false;
             }
-
-            //test O
-            if (deplacableO && ((column + decal <= 7 && row + decal <= 7 && estBlanc) ||
-                    ( column - decal >= 0 && row - decal >= 0 && !estBlanc))
-                    && plateau[(row+decal)+(column+decal)*ligne].getPion() == null)
-                casesAtteignables.add(plateau[(row+decal)+(column+decal)*ligne]);
-            else
+            if (deplacableE)
             {
-                deplacableO = false;
-                System.out.println("stopO");
+                if( row + decal <=7 && column + decal <= 7
+                        && plateau[(column + decal) + (row + decal) * ligne].getPion() == null)
+                    casesAtteignables.add(plateau[(column + decal) + (row + decal) * ligne]);
+                else
+                    deplacableE= false;
             }
-            decal++;
-            System.out.println(decal);
+            decal = estBlanc?decal+1:decal-1;
         }
-        System.out.println(casesAtteignables);*/
-
     }
 
     /**
@@ -159,7 +80,7 @@ class Model_Pion
      */
     public String toString()
     {
-        String joueur = estBlanc?"blanc":"noir";
+        String joueur = estBlanc? "blanc": "noir";
         return "pion " + COULEUR + " du joueur " + joueur;
     }
 
