@@ -49,7 +49,8 @@ class Model_Pion
             if (deplacableN)
             {
                 if( row + decal <=7
-                    && plateau[column + (row + decal) * ligne].getPion() == null)
+                        && row + decal >=0
+                        && plateau[column + (row + decal) * ligne].getPion() == null)
                     casesAtteignables.add(plateau[column + (row + decal) * ligne]);
                 else
                     deplacableN = false;
@@ -57,6 +58,7 @@ class Model_Pion
             if (deplacableO)
             {
                 if( row + decal <=7 && column - decal >= 0
+                        && row + decal >=0 && column - decal <=7
                         && plateau[(column - decal) + (row + decal) * ligne].getPion() == null)
                     casesAtteignables.add(plateau[(column - decal) + (row + decal) * ligne]);
                 else
@@ -65,6 +67,7 @@ class Model_Pion
             if (deplacableE)
             {
                 if( row + decal <=7 && column + decal <= 7
+                        && row + decal >=0 && column + decal >=0
                         && plateau[(column + decal) + (row + decal) * ligne].getPion() == null)
                     casesAtteignables.add(plateau[(column + decal) + (row + decal) * ligne]);
                 else
