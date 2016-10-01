@@ -47,8 +47,10 @@ class Model_Case
     /**
      * Initialisation des cases du plateau
      */
-    public static void initCasesPlateau(Model_Case board[])
+    public static Model_Case[] initCasesPlateau()
     {
+        Model_Case[] board = new Model_Case[Model_Plateau.LIGNE * Model_Plateau.LIGNE];
+
         board[0]= new Model_Case(0, 0, Couleur.MARRON);
         board[1]= new Model_Case(0, 1, Couleur.VERT);
         board[2]= new Model_Case(0, 2, Couleur.ROUGE);
@@ -120,6 +122,8 @@ class Model_Case
         board[61]= new Model_Case(7, 5, Couleur.ROUGE);
         board[62]= new Model_Case(7, 6, Couleur.VERT);
         board[63]= new Model_Case(7, 7, Couleur.MARRON);
+
+        return board;
     }
 
     // GETTERS & SETTERS

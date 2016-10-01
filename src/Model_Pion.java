@@ -13,12 +13,12 @@ class Model_Pion
      * @param estBlanc (indique à quel joueur appartient le pion)
      * @param COULEUR (indique de quelle couleur est ce pion)
      */
-    Model_Pion(Model_Case caseInitiale, boolean estBlanc, int COULEUR, ArrayList<Model_Case> casesAtteignables)
+    Model_Pion(Model_Case caseInitiale, boolean estBlanc, int COULEUR)
     {
         this.estBlanc = estBlanc;
         this.caseActuelle = caseInitiale;
         this.COULEUR = COULEUR;
-        this.casesAtteignables = casesAtteignables;
+        this.casesAtteignables = new ArrayList<Model_Case>();
     }
 
     /**
@@ -87,37 +87,45 @@ class Model_Pion
     }
 
     /**
-     * Comment please et pourquoi passer un ArrayList vide ?
+     * Creation des pions blancs, en leur passant leur case en parametre
      * @param board
-     * @param pionsBlancs
+     * @return le tableau de pions
      */
-    static void creationPionsBlancs(Model_Case[] board, Model_Pion[] pionsBlancs)
+    static Model_Pion[] creationPionsBlancs(Model_Case[] board)
     {
-        pionsBlancs[0] = new Model_Pion(board[0],true,Couleur.MARRON, new ArrayList<Model_Case>());
-        pionsBlancs[1] = new Model_Pion(board[1],true,Couleur.VERT, new ArrayList<Model_Case>());
-        pionsBlancs[2] = new Model_Pion(board[2],true,Couleur.ROUGE, new ArrayList<Model_Case>());
-        pionsBlancs[3] = new Model_Pion(board[3],true,Couleur.JAUNE, new ArrayList<Model_Case>());
-        pionsBlancs[4] = new Model_Pion(board[4],true,Couleur.ROSE, new ArrayList<Model_Case>());
-        pionsBlancs[5] = new Model_Pion(board[5],true,Couleur.VIOLET, new ArrayList<Model_Case>());
-        pionsBlancs[6] = new Model_Pion(board[6],true,Couleur.BLEU, new ArrayList<Model_Case>());
-        pionsBlancs[7] = new Model_Pion(board[7],true,Couleur.ORANGE, new ArrayList<Model_Case>());
+
+        Model_Pion[] pionsBlancs = new Model_Pion[Model_Plateau.LIGNE];
+        pionsBlancs[0] = new Model_Pion(board[0],true,Couleur.MARRON);
+        pionsBlancs[1] = new Model_Pion(board[1],true,Couleur.VERT);
+        pionsBlancs[2] = new Model_Pion(board[2],true,Couleur.ROUGE);
+        pionsBlancs[3] = new Model_Pion(board[3],true,Couleur.JAUNE);
+        pionsBlancs[4] = new Model_Pion(board[4],true,Couleur.ROSE);
+        pionsBlancs[5] = new Model_Pion(board[5],true,Couleur.VIOLET);
+        pionsBlancs[6] = new Model_Pion(board[6],true,Couleur.BLEU);
+        pionsBlancs[7] = new Model_Pion(board[7],true,Couleur.ORANGE);
+
+        return pionsBlancs;
     }
 
     /**
-     * Comment please et pourquoi passer un ArrayList vide ?
+     * Creation des pions noirs, en leur passant leur case en parametre
      * @param board
-     * @param pionsNoirs
+     * @return le tableau de pions
      */
-    static void creationPionsNoirs(Model_Case[] board, Model_Pion[] pionsNoirs)
+    static Model_Pion[] creationPionsNoirs(Model_Case[] board)
     {
-        pionsNoirs[0] = new Model_Pion(board[56],false,Couleur.ORANGE, new ArrayList<Model_Case>());
-        pionsNoirs[1] = new Model_Pion(board[57],false,Couleur.BLEU, new ArrayList<Model_Case>());
-        pionsNoirs[2] = new Model_Pion(board[58],false,Couleur.VIOLET, new ArrayList<Model_Case>());
-        pionsNoirs[3] = new Model_Pion(board[59],false,Couleur.ROSE, new ArrayList<Model_Case>());
-        pionsNoirs[4] = new Model_Pion(board[60],false,Couleur.JAUNE, new ArrayList<Model_Case>());
-        pionsNoirs[5] = new Model_Pion(board[61],false,Couleur.ROUGE, new ArrayList<Model_Case>());
-        pionsNoirs[6] = new Model_Pion(board[62],false,Couleur.VERT, new ArrayList<Model_Case>());
-        pionsNoirs[7] = new Model_Pion(board[63],false,Couleur.MARRON, new ArrayList<Model_Case>());
+        Model_Pion[] pionsNoirs = new Model_Pion[Model_Plateau.LIGNE];
+
+        pionsNoirs[0] = new Model_Pion(board[56],false,Couleur.ORANGE);
+        pionsNoirs[1] = new Model_Pion(board[57],false,Couleur.BLEU);
+        pionsNoirs[2] = new Model_Pion(board[58],false,Couleur.VIOLET);
+        pionsNoirs[3] = new Model_Pion(board[59],false,Couleur.ROSE);
+        pionsNoirs[4] = new Model_Pion(board[60],false,Couleur.JAUNE);
+        pionsNoirs[5] = new Model_Pion(board[61],false,Couleur.ROUGE);
+        pionsNoirs[6] = new Model_Pion(board[62],false,Couleur.VERT);
+        pionsNoirs[7] = new Model_Pion(board[63],false,Couleur.MARRON);
+
+        return pionsNoirs;
     }
 
     // GETTERS & SETTERS
