@@ -12,6 +12,7 @@ class Control_Group
     {
         this.accueil = new Model_Accueil();
         vue = new Vue(accueil);
+
         Control_Partie = new Control_Partie(accueil, vue);
         Control_Menu_Accueil = new Control_Menu_Accueil(accueil, vue, Control_Partie);
         vue.display();

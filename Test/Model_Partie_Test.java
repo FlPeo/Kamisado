@@ -36,8 +36,13 @@ public class Model_Partie_Test
 
 
         Model_Accueil accueil = new Model_Accueil();
-        Model_Partie partie = Model_Partie.factPartie(accueil, cases, pionsBlancs, pionsNoirs, pionsBlancs[0], true);
+        Model_Joueur joueurBlanc = new Model_Joueur("blanc", true);
+        Model_Joueur joueurNoir = new Model_Joueur("noir", false);
+        Model_Partie partie = Model_Partie.factPartie(accueil, joueurBlanc, joueurNoir, cases, pionsBlancs, pionsNoirs, pionsBlancs[0], true);
         //le true en dernier parametre indique qu'on est au premier tour
+
+        joueurBlanc.setPartie(partie);
+        joueurNoir.setPartie(partie);
 
 
         //c'est au tour du joueur blanc (car affecté dans le constructeur de partie)
@@ -72,8 +77,13 @@ public class Model_Partie_Test
 
 
         Model_Accueil accueil = new Model_Accueil();
-        Model_Partie partie = Model_Partie.factPartie(accueil, cases, pionsBlancs, pionsNoirs, pionsBlancs[0], false);
+        Model_Joueur joueurBlanc = new Model_Joueur("blanc", true);
+        Model_Joueur joueurNoir = new Model_Joueur("noir", false);
+        Model_Partie partie = Model_Partie.factPartie(accueil, joueurBlanc, joueurNoir, cases, pionsBlancs, pionsNoirs, pionsBlancs[0], false);
         //le false en dernier parametre indique qu'ON N'EST PAS au premier tour
+
+        joueurBlanc.setPartie(partie);
+        joueurNoir.setPartie(partie);
 
 
         partie.controleBlocage();
@@ -118,8 +128,13 @@ public class Model_Partie_Test
 
 
         Model_Accueil accueil = new Model_Accueil();
-        Model_Partie partie = Model_Partie.factPartie(accueil, cases, pionsBlancs, pionsNoirs, pionsBlancs[0], false);
+        Model_Joueur joueurBlanc = new Model_Joueur("blanc", true);
+        Model_Joueur joueurNoir = new Model_Joueur("noir", false);
+        Model_Partie partie = Model_Partie.factPartie(accueil, joueurBlanc, joueurNoir, cases, pionsBlancs, pionsNoirs, pionsBlancs[0], false);
         //on est pas au premier tour, car ce genre de cas ne se rencontre pas au premier tour
+
+        joueurBlanc.setPartie(partie);
+        joueurNoir.setPartie(partie);
 
 
         assertFalse(partie.estGagnee());     //pour l'instant, personne n'a gagné
@@ -165,7 +180,12 @@ public class Model_Partie_Test
 
 
         Model_Accueil accueil = new Model_Accueil();
-        Model_Partie partie = Model_Partie.factPartie(accueil, cases, pionsBlancs, pionsNoirs, pionsBlancs[0], false);
+        Model_Joueur joueurBlanc = new Model_Joueur("blanc", true);
+        Model_Joueur joueurNoir = new Model_Joueur("noir", false);
+        Model_Partie partie = Model_Partie.factPartie(accueil, joueurBlanc, joueurNoir, cases, pionsBlancs, pionsNoirs, pionsBlancs[0], false);
+
+        joueurBlanc.setPartie(partie);
+        joueurNoir.setPartie(partie);
 
 
         assertFalse(partie.estGagnee());

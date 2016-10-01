@@ -1,7 +1,5 @@
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
-
 class Control_Partie extends MouseAdapter
 {
     private Vue vue;
@@ -35,7 +33,12 @@ class Control_Partie extends MouseAdapter
                 && row >=0
                 && row <=7)
         {
-            accueil.getPartie().gestionTourJoueur(row, column);
+            if(accueil.getPartie().isTourDuJoueurBlanc()){
+                accueil.getPartie().getJoueurBlanc().gestionTourJoueur(row, column);
+            }
+            else{
+                accueil.getPartie().getJoueurNoir().gestionTourJoueur(row, column);
+            }
 
             if(!accueil.getPartie().estGagnee() && !accueil.getPartie().isTourUn())
                 accueil.getPartie().controleBlocage();

@@ -22,7 +22,12 @@ class Model_Accueil
         for(int i=0; i<Model_Plateau.LIGNE; i++) board[i].addPion(pionsBlancs[i]);
         for(int i=0; i<pionsNoirs.length; i++) board[56+i].addPion(pionsNoirs[i]);
 
-        this.partie = Model_Partie.factPartie(this, board, pionsBlancs, pionsNoirs, null, true);
+        Model_Joueur joueurBlanc = new Model_Joueur("blanc", true);
+        Model_Joueur joueurNoir = new Model_Joueur("noir", false);
+        this.partie = Model_Partie.factPartie(this, joueurBlanc, joueurNoir, board, pionsBlancs, pionsNoirs, null, true);
+
+        joueurBlanc.setPartie(partie);
+        joueurNoir.setPartie(partie);
     }
 
     // GETTERS & SETTERS
