@@ -59,9 +59,9 @@ class Control_Partie extends MouseAdapter
         vue.setPartieControl(null);
 
         if(accueil.getPartie().isJoueurBlancGagnant())
-            nomJoueur = "Joueur blanc";
+            nomJoueur = accueil.getPartie().getJoueurBlanc().getNom();
         else
-            nomJoueur = "Joueur noir";
-        vue.jOptionMessage(nomJoueur + " à gagné la partie.", "Victoire !");
+            nomJoueur = accueil.getPartie().getJoueurNoir().getNom();
+        vue.jOptionMessage(nomJoueur + " a gagné la partie.", "Victoire !");
     }
 }
