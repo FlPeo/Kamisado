@@ -2,7 +2,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 
-class Control_Partie extends MouseAdapter implements MouseMotionListener
+class Control_Partie extends MouseAdapter
 {
     private Vue vue;
     private Model_Accueil accueil;

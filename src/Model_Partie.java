@@ -14,6 +14,9 @@ class Model_Partie
     private Model_Pion pionMemoire;
     private Model_Pion dernierPionJoue;
 
+    private Model_Pion[] pionsBlancs;
+    private Model_Pion[] pionsNoirs;
+
     private boolean estGagnee;
 
     /**
@@ -21,28 +24,36 @@ class Model_Partie
      * @param accueil (accueil du jeu)
      * @return (une nouvelle instance de Partie)
      */
-    static Model_Partie factPartie(Model_Accueil accueil)
+    static Model_Partie factPartie(Model_Accueil accueil, Model_Case[] board, Model_Pion[] pionsBlancs, Model_Pion[] pionsNoirs,
+                                   Model_Pion pionMemoire, boolean isTourUn)
     {
         Model_Joueur j1 = new Model_Joueur();
         Model_Joueur j2 = new Model_Joueur();
-        Model_Plateau plateau = new Model_Plateau();
-        return new Model_Partie(accueil, plateau, j1, j2);
+
+        Model_Plateau plateau = new Model_Plateau(board);        //passer en parametre si besoin de le mocker en testant la partie
+        for(int i=0; i<board.length; i++) board[i].setPlateau(plateau);
+
+
+        return new Model_Partie(accueil, plateau, j1, j2, pionsBlancs, pionsNoirs, pionMemoire, isTourUn);
     }
 
     /**
      * Constructeur d'une partie sans spécificité
      */
-    private Model_Partie(Model_Accueil accueil, Model_Plateau plateau, Model_Joueur j1, Model_Joueur j2)
+    private Model_Partie(Model_Accueil accueil, Model_Plateau plateau, Model_Joueur j1, Model_Joueur j2,
+                         Model_Pion[] pionsBlancs, Model_Pion[] pionsNoirs, Model_Pion pionMemoire, boolean isTourUn)
     {
         this.accueil = accueil;
         this.joueur1 = j1;
         this.joueur2 = j2;
         this.plateau = plateau;
-        this.plateau.setPartie(this);
         this.estGagnee = false;
         this.tourDuJoueurBlanc = true;
-        this.isTourUn = true;
-        this.pionMemoire = null;
+        this.isTourUn = isTourUn;
+        this.pionMemoire = pionMemoire;
+
+        this.pionsBlancs = pionsBlancs;
+        this.pionsNoirs = pionsNoirs;
     }
 
     /**
@@ -50,7 +61,7 @@ class Model_Partie
      */
     void casesAtteignablesProchainTour()
     {
-        Model_Pion[] pionsDuTour = tourDuJoueurBlanc?plateau.getPionsBlancs():plateau.getPionsNoirs();
+        Model_Pion[] pionsDuTour = tourDuJoueurBlanc?pionsBlancs:pionsNoirs;
 
         // Le premier tour est géré séparément car c'est un cas particulier où le joueur à la possibilité de choisir
         // le pion qu'il va bouger.
@@ -80,7 +91,7 @@ class Model_Partie
      */
     void gestionTourJoueur(int row, int column) {
         Model_Case casesPlateau[] = this.plateau.getBoard();
-        int ligne = Model_Plateau.LIGNE;
+        int ligne = Model_Plateau.LIGNE;                      //utiliser autre chose (sqrt(casesPlateau.length) par ex) si besoin d'un mock plus reduit
 
         if (isTourUn)
         {
@@ -122,7 +133,7 @@ class Model_Partie
     }
 
     /**
-     * Control si un pion ne peut plus se déplacer et dans ce cas indique une situation gagnante
+     * Controle si un pion ne peut plus se déplacer et dans ce cas indique une situation gagnante
      */
     void controleBlocage()
     {
@@ -136,6 +147,7 @@ class Model_Partie
             dernierPionJoue = pionMemoire;
             tourDuJoueurBlanc = !tourDuJoueurBlanc;
             casesAtteignablesProchainTour();
+
 
             while(pionMemoire.getCasesAtteignables().isEmpty() && !impossibleDeJouer)
             {
@@ -165,6 +177,7 @@ class Model_Partie
     private void deplacerPion(Model_Case caseDest)
     {
         plateau.deplacer(pionMemoire.getCaseActuelle(), caseDest, pionMemoire);
+        setDernierPionJoue(pionMemoire);
         tourDuJoueurBlanc = !tourDuJoueurBlanc;
         casesAtteignablesProchainTour();
     }
@@ -175,4 +188,12 @@ class Model_Partie
     void setDernierPionJoue(Model_Pion dernierPionJoue) { this.dernierPionJoue = dernierPionJoue; }
     boolean isTourUn() { return isTourUn; }
     boolean estGagnee() { return estGagnee; }
+
+    public boolean isTourDuJoueurBlanc() {
+        return tourDuJoueurBlanc;
+    }
+
+    public void setTourDuJoueurBlanc(boolean tourDuJoueurBlanc) {
+        this.tourDuJoueurBlanc = tourDuJoueurBlanc;
+    }
 }

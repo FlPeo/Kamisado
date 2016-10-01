@@ -13,12 +13,12 @@ class Model_Pion
      * @param estBlanc (indique à quel joueur appartient le pion)
      * @param COULEUR (indique de quelle couleur est ce pion)
      */
-    Model_Pion(Model_Case caseInitiale, boolean estBlanc, int COULEUR)
+    Model_Pion(Model_Case caseInitiale, boolean estBlanc, int COULEUR, ArrayList<Model_Case> casesAtteignables)
     {
         this.estBlanc = estBlanc;
         this.caseActuelle = caseInitiale;
         this.COULEUR = COULEUR;
-        this.casesAtteignables = new ArrayList<>();
+        this.casesAtteignables = casesAtteignables;
     }
 
     /**
@@ -86,6 +86,33 @@ class Model_Pion
         String joueur = estBlanc? "blanc": "noir";
         return "pion " + COULEUR + " du joueur " + joueur;
     }
+
+
+
+
+    public static void creationPionsBlancs(Model_Case[] board, Model_Pion[] pionsBlancs){
+        pionsBlancs[0] = new Model_Pion(board[0],true,Couleur.MARRON, new ArrayList<Model_Case>());
+        pionsBlancs[1] = new Model_Pion(board[1],true,Couleur.VERT, new ArrayList<Model_Case>());
+        pionsBlancs[2] = new Model_Pion(board[2],true,Couleur.ROUGE, new ArrayList<Model_Case>());
+        pionsBlancs[3] = new Model_Pion(board[3],true,Couleur.JAUNE, new ArrayList<Model_Case>());
+        pionsBlancs[4] = new Model_Pion(board[4],true,Couleur.ROSE, new ArrayList<Model_Case>());
+        pionsBlancs[5] = new Model_Pion(board[5],true,Couleur.VIOLET, new ArrayList<Model_Case>());
+        pionsBlancs[6] = new Model_Pion(board[6],true,Couleur.BLEU, new ArrayList<Model_Case>());
+        pionsBlancs[7] = new Model_Pion(board[7],true,Couleur.ORANGE, new ArrayList<Model_Case>());
+    }
+
+    public static void creationPionsNoirs(Model_Case[] board, Model_Pion[] pionsNoirs){
+        pionsNoirs[0] = new Model_Pion(board[56],false,Couleur.ORANGE, new ArrayList<Model_Case>());
+        pionsNoirs[1] = new Model_Pion(board[57],false,Couleur.BLEU, new ArrayList<Model_Case>());
+        pionsNoirs[2] = new Model_Pion(board[58],false,Couleur.VIOLET, new ArrayList<Model_Case>());
+        pionsNoirs[3] = new Model_Pion(board[59],false,Couleur.ROSE, new ArrayList<Model_Case>());
+        pionsNoirs[4] = new Model_Pion(board[60],false,Couleur.JAUNE, new ArrayList<Model_Case>());
+        pionsNoirs[5] = new Model_Pion(board[61],false,Couleur.ROUGE, new ArrayList<Model_Case>());
+        pionsNoirs[6] = new Model_Pion(board[62],false,Couleur.VERT, new ArrayList<Model_Case>());
+        pionsNoirs[7] = new Model_Pion(board[63],false,Couleur.MARRON, new ArrayList<Model_Case>());
+    }
+
+
 
     // GETTERS & SETTERS
     int getCOULEUR() { return COULEUR; }
