@@ -6,13 +6,16 @@ import java.util.ArrayList;
 import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
 
-/**
- * Created by belfort on 01/10/2016.
- */
-public class Model_Partie_Test {
 
+public class Model_Partie_Test
+{
+
+    /**
+     * comment please
+     */
     @Test
-    public void testControleBlocageSiPresenceCasesAtteignablesTour1(){    //ne passe pas le premier if
+    public void testControleBlocageSiPresenceCasesAtteignablesTour1()
+    {    //ne passe pas le premier if
         Model_Case[] cases = new Model_Case[1];
         cases[0] = new Model_Case(0,0, Couleur.VIOLET);
 
@@ -38,8 +41,12 @@ public class Model_Partie_Test {
 
     }
 
+    /**
+     * comment please
+     */
     @Test
-    public void testControleBlocageSiPresenceCasesAtteignablesPasTour1(){    //ne passe pas le premier if
+    public void testControleBlocageSiPresenceCasesAtteignablesPasTour1()
+    {    //ne passe pas le premier if
         Model_Case[] cases = new Model_Case[1];
         cases[0] = new Model_Case(0,0, Couleur.VIOLET);
 
@@ -65,8 +72,12 @@ public class Model_Partie_Test {
 
     }
 
+    /**
+     * comment please
+     */
     @Test
-    public void testControleBlocageSiBlocageMettantFinAPartie(){
+    public void testControleBlocageSiBlocageMettantFinAPartie()
+    {
         Model_Case[] cases = new Model_Case[2];
         cases[0] = new Model_Case(0,0, Couleur.VIOLET);
         cases[1] = new Model_Case(0,1, Couleur.BLEU);
@@ -93,7 +104,6 @@ public class Model_Partie_Test {
         Model_Accueil accueil = new Model_Accueil();
         Model_Partie partie = Model_Partie.factPartie(accueil, cases, pionsBlancs, pionsNoirs, pionsBlancs[0], false);
 
-
         assertTrue(partie.isTourDuJoueurBlanc());
         assertFalse(partie.estGagnee());
 
@@ -104,8 +114,12 @@ public class Model_Partie_Test {
         assertTrue(partie.isJoueurBlancGagnant());
     }
 
+    /**
+     * comment please
+     */
     @Test
-    public void testControleBlocageAvecSeulementUnBlocage(){
+    public void testControleBlocageAvecSeulementUnBlocage()
+    {
         Model_Case[] cases = new Model_Case[2];
         cases[0] = new Model_Case(0, 0, Couleur.VIOLET);
         cases[1] = new Model_Case(0, 1, Couleur.BLEU);

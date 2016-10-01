@@ -11,9 +11,6 @@ class Model_Plateau
         this.board = board;
     }
 
-
-
-
     /**
      * Déplace un pion du point de vue du plateau
      * @param caseSource (case où était initialement le pion)

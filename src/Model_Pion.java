@@ -37,7 +37,6 @@ class Model_Pion
     {
         casesAtteignables.clear();
 
-        //valable que pour les blancs
         Model_Case[] plateau = caseActuelle.getPlateau().getBoard();
         int row = caseActuelle.getRow(), column = caseActuelle.getColumn();
         int decal, ligne = Model_Plateau.LIGNE;
@@ -87,10 +86,13 @@ class Model_Pion
         return "pion " + COULEUR + " du joueur " + joueur;
     }
 
-
-
-
-    public static void creationPionsBlancs(Model_Case[] board, Model_Pion[] pionsBlancs){
+    /**
+     * Comment please et pourquoi passer un ArrayList vide ?
+     * @param board
+     * @param pionsBlancs
+     */
+    static void creationPionsBlancs(Model_Case[] board, Model_Pion[] pionsBlancs)
+    {
         pionsBlancs[0] = new Model_Pion(board[0],true,Couleur.MARRON, new ArrayList<Model_Case>());
         pionsBlancs[1] = new Model_Pion(board[1],true,Couleur.VERT, new ArrayList<Model_Case>());
         pionsBlancs[2] = new Model_Pion(board[2],true,Couleur.ROUGE, new ArrayList<Model_Case>());
@@ -101,7 +103,13 @@ class Model_Pion
         pionsBlancs[7] = new Model_Pion(board[7],true,Couleur.ORANGE, new ArrayList<Model_Case>());
     }
 
-    public static void creationPionsNoirs(Model_Case[] board, Model_Pion[] pionsNoirs){
+    /**
+     * Comment please et pourquoi passer un ArrayList vide ?
+     * @param board
+     * @param pionsNoirs
+     */
+    static void creationPionsNoirs(Model_Case[] board, Model_Pion[] pionsNoirs)
+    {
         pionsNoirs[0] = new Model_Pion(board[56],false,Couleur.ORANGE, new ArrayList<Model_Case>());
         pionsNoirs[1] = new Model_Pion(board[57],false,Couleur.BLEU, new ArrayList<Model_Case>());
         pionsNoirs[2] = new Model_Pion(board[58],false,Couleur.VIOLET, new ArrayList<Model_Case>());
@@ -111,8 +119,6 @@ class Model_Pion
         pionsNoirs[6] = new Model_Pion(board[62],false,Couleur.VERT, new ArrayList<Model_Case>());
         pionsNoirs[7] = new Model_Pion(board[63],false,Couleur.MARRON, new ArrayList<Model_Case>());
     }
-
-
 
     // GETTERS & SETTERS
     int getCOULEUR() { return COULEUR; }

@@ -10,6 +10,9 @@ import java.util.ArrayList;
  */
 public class Model_Pion_Test
 {
+    /**
+     * comment please
+     */
     @Ignore
     @Test
     public void testSetCaseActuelle()

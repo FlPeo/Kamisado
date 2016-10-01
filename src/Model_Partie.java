@@ -189,11 +189,11 @@ class Model_Partie
     boolean isTourUn() { return isTourUn; }
     boolean estGagnee() { return estGagnee; }
 
-    public boolean isTourDuJoueurBlanc() {
+    boolean isTourDuJoueurBlanc() {
         return tourDuJoueurBlanc;
     }
 
-    public void setTourDuJoueurBlanc(boolean tourDuJoueurBlanc) {
+    void setTourDuJoueurBlanc(boolean tourDuJoueurBlanc) {
         this.tourDuJoueurBlanc = tourDuJoueurBlanc;
     }
 }
