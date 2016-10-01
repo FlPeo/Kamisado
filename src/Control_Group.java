@@ -4,6 +4,7 @@ class Control_Group
     private Vue vue;
     private Control_Menu_Accueil Control_Menu_Accueil;
     private Control_Partie Control_Partie;
+    private Control_Partie_IA control_partie_IA;
 
     /**
      * Crée l'ensmeble des éléments du model MVC
@@ -14,7 +15,8 @@ class Control_Group
         vue = new Vue(accueil);
 
         Control_Partie = new Control_Partie(accueil, vue);
-        Control_Menu_Accueil = new Control_Menu_Accueil(accueil, vue, Control_Partie);
+        control_partie_IA = new Control_Partie_IA(accueil, vue);
+        Control_Menu_Accueil = new Control_Menu_Accueil(accueil, vue, Control_Partie, control_partie_IA);
         vue.display();
     }
 }

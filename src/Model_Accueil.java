@@ -30,6 +30,14 @@ class Model_Accueil
         joueurNoir.setPartie(partie);
     }
 
+    /**
+     * initie la partie contre l'IA
+     */
+    void demarrerPartieContreLIA()
+    {
+
+    }
+
     // GETTERS & SETTERS
     Model_Partie getPartie() {
         return partie;

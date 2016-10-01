@@ -14,6 +14,7 @@ class Vue extends JFrame
     private Vue_Plateau vue_plateau;
     private int xSize, ySize;
     private Vue_Bouton lancerPartieLocale;
+    private Vue_Bouton lancerPartieContreIA;
     private JLabel titre;
     private JLabel background;
 
@@ -45,6 +46,7 @@ class Vue extends JFrame
     {
         titre = new JLabel("Kamisado");
         lancerPartieLocale = new Vue_Bouton("Lancer une partie");
+        lancerPartieContreIA = new Vue_Bouton("Défi l'IA");
 
         GraphicsEnvironment fontLabel = GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsEnvironment fontTitre = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -82,8 +84,10 @@ class Vue extends JFrame
      */
     private void creerWidgetAccueil()
     {
-        JPanel boutonsMenu = new JPanel(new GridLayout(1, 1, 0, 10));
+        JPanel boutonsMenu = new JPanel(new GridLayout(2, 1, 0, 10));
+        boutonsMenu.setOpaque(false);
         boutonsMenu.add(lancerPartieLocale);
+        boutonsMenu.add(lancerPartieContreIA);
 
         JPanel organisation = new JPanel(new BorderLayout());
         organisation.setOpaque(false);
@@ -121,9 +125,12 @@ class Vue extends JFrame
     void setButtonControl(ActionListener listener)
     {
         lancerPartieLocale.addActionListener(listener);
+        lancerPartieContreIA.addActionListener(listener);
     }
 
     // GETTERS & SETTERS
+
+    Vue_Bouton getLancerPartieContreIA() { return lancerPartieContreIA; }
     Vue_Plateau getVue_plateau() { return vue_plateau; }
     void setVue_plateau(Vue_Plateau vue_plateau) { this.vue_plateau = vue_plateau; }
     void display(){ setVisible(true); }
