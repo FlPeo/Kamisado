@@ -1,6 +1,9 @@
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 class Vue_Plateau extends JPanel
 {
@@ -17,13 +20,26 @@ class Vue_Plateau extends JPanel
      * @param vue (vue générale)
      * @param accueil (model relatif à l'accueil du jeu)
      */
-    Vue_Plateau(Vue vue, Model_Accueil accueil, BufferedImage[] pionsBlancs, BufferedImage[] pionsNoirs)
+    Vue_Plateau(Vue vue, Model_Accueil accueil)
     {
         this.vue = vue;
         this.accueil = accueil;
 
-        imagesPionsJoueurBlanc = pionsBlancs;
-        imagesPionsJoueurNoir = pionsNoirs;
+        imagesPionsJoueurBlanc = new BufferedImage[Model_Plateau.LIGNE];
+        imagesPionsJoueurNoir = new BufferedImage[Model_Plateau.LIGNE];
+        String[] listeCouleurs = Couleur.getListeStringCouleurs();
+        try
+        {
+            for(int i = 0 ; i<listeCouleurs.length; i++)
+            {
+                imagesPionsJoueurBlanc[i] = ImageIO.read(new File("Images/Jetons/Spirale noire/spirale" + listeCouleurs[i] + ".png"));
+                imagesPionsJoueurNoir[i] = ImageIO.read(new File("Images/Jetons/Vague noire/vague" + listeCouleurs[i] + ".png"));
+            }
+        }
+        catch(IOException e2)
+        {
+            //Cas d'erreur à gérer !!
+        }
     }
 
     /**

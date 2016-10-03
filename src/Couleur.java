@@ -12,7 +12,8 @@ class Couleur
 
 
 
-    public static String couleurToString(int couleur){
+    public static String couleurToString(int couleur)
+    {
         String nomCouleur = null;
 
         switch(couleur){
@@ -45,7 +46,8 @@ class Couleur
         return nomCouleur;
     }
 
-    public static String[] getListeStringCouleurs(){
+    static String[] getListeStringCouleurs()
+    {
         String[] tabStringCouleur = {"Marron", "Vert", "Rouge", "Jaune", "Rose", "Violet", "Bleu", "Orange"};
         return tabStringCouleur;
     }
