@@ -1,5 +1,9 @@
+import javax.imageio.ImageIO;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 class Control_Menu_Accueil implements ActionListener
 {
@@ -31,10 +35,26 @@ class Control_Menu_Accueil implements ActionListener
     @Override
     public void actionPerformed(ActionEvent e)
     {
+        BufferedImage[] imagesPionsJoueurBlanc = new BufferedImage[Model_Plateau.LIGNE];
+        BufferedImage[] imagesPionsJoueurNoir = new BufferedImage[Model_Plateau.LIGNE];
+        String[] listeCouleurs = Couleur.getListeStringCouleurs();
+        int i;
+        try
+        {
+            for(i=0 ; i<listeCouleurs.length; i++){
+                imagesPionsJoueurBlanc[i] = ImageIO.read(new File("Images/Jetons/Spirale noire/spirale" + listeCouleurs[i] + ".png"));
+                imagesPionsJoueurNoir[i] = ImageIO.read(new File("Images/Jetons/Vague noire/vague" + listeCouleurs[i] + ".png"));
+            }
+        }
+        catch(IOException e2)
+        {
+            //Cas d'erreur à gérer !!
+        }
+
         if(e.getSource().equals(vue.getLancerPartieLocale()))
         {
             accueil.demarrerPartie();
-            vue.setVue_plateau(new Vue_Plateau(vue, accueil));
+            vue.setVue_plateau(new Vue_Plateau(vue, accueil, imagesPionsJoueurBlanc, imagesPionsJoueurNoir));
             vue.creerWidgetPartie();
             vue.setPartieControl(Control_Partie);
             accueil.getPartie().casesAtteignablesProchainTour();
@@ -43,7 +63,7 @@ class Control_Menu_Accueil implements ActionListener
         else if (e.getSource().equals(vue.getLancerPartieContreIA()))
         {
             accueil.demarrerPartieContreLIA();
-            vue.setVue_plateau(new Vue_Plateau(vue, accueil));
+            vue.setVue_plateau(new Vue_Plateau(vue, accueil, imagesPionsJoueurBlanc, imagesPionsJoueurNoir));
             vue.creerWidgetPartie();
             vue.setPartieControl(Control_Partie_IA);
             // cases atteignables de début de partie

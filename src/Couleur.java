@@ -9,4 +9,44 @@ class Couleur
     static final int VIOLET = 5;
     static final int BLEU = 6;
     static final int ORANGE = 7;
+
+
+
+    public static String couleurToString(int couleur){
+        String nomCouleur = null;
+
+        switch(couleur){
+            case MARRON:
+                nomCouleur = "Marron";
+                break;
+            case VERT:
+                nomCouleur = "Vert";
+                break;
+            case ROUGE:
+                nomCouleur = "Rouge";
+                break;
+            case JAUNE:
+                nomCouleur = "Jaune";
+                break;
+            case ROSE:
+                nomCouleur = "Rose";
+                break;
+            case VIOLET:
+                nomCouleur = "Violet";
+                break;
+            case BLEU:
+                nomCouleur = "Bleu";
+                break;
+            case ORANGE:
+                nomCouleur = "Orange";
+                break;
+        }
+
+        return nomCouleur;
+    }
+
+    public static String[] getListeStringCouleurs(){
+        String[] tabStringCouleur = {"Marron", "Vert", "Rouge", "Jaune", "Rose", "Violet", "Bleu", "Orange"};
+        return tabStringCouleur;
+    }
 }

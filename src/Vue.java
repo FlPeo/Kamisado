@@ -95,7 +95,7 @@ class Vue extends JFrame
         organisation.add(boutonsMenu, BorderLayout.SOUTH);
 
         // Mis ene place du fond d'écran
-        background = new JLabel(new ImageIcon("img/fond1.jpg"));
+        background = new JLabel(new ImageIcon("Images/Fonds/fond1.jpg"));
         background.setSize(xSize, ySize);
         background.setLayout(new FlowLayout());
         background.add(organisation, BorderLayout.CENTER);

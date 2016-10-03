@@ -1,10 +1,15 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 class Vue_Plateau extends JPanel
 {
     private Model_Accueil accueil;
     private Vue vue;
+    private BufferedImage[] imagesPionsJoueurBlanc;
+    private BufferedImage[] imagesPionsJoueurNoir;
+
+
     private final int SIZECASE = 80;
 
     /**
@@ -12,10 +17,13 @@ class Vue_Plateau extends JPanel
      * @param vue (vue générale)
      * @param accueil (model relatif à l'accueil du jeu)
      */
-    Vue_Plateau(Vue vue, Model_Accueil accueil)
+    Vue_Plateau(Vue vue, Model_Accueil accueil, BufferedImage[] pionsBlancs, BufferedImage[] pionsNoirs)
     {
         this.vue = vue;
         this.accueil = accueil;
+
+        imagesPionsJoueurBlanc = pionsBlancs;
+        imagesPionsJoueurNoir = pionsNoirs;
     }
 
     /**
@@ -64,7 +72,6 @@ class Vue_Plateau extends JPanel
             x = i/8;
             g.fillRect(y * SIZECASE + 360, -x * SIZECASE + 580, SIZECASE, SIZECASE);
         }
-        g.setColor(Color.WHITE);      //Juste pour les tests avec les pions affiches en texte
 
         //dessine les pieces
         for(i=0; i<tailleDuPlateau; i++)
@@ -72,10 +79,12 @@ class Vue_Plateau extends JPanel
             pionSurLaCase = accueil.getPartie().getPlateau().getBoard()[i].getPion();
             if(pionSurLaCase != null)
             {
-                couleurPion = accueil.getPartie().getPlateau().getBoard()[i].getPion().getCOULEUR();
-                x = i/8;
-                y = i%8;
-                g.drawString(""+couleurPion, y * SIZECASE +380, -x * SIZECASE +620);
+                couleurPion = pionSurLaCase.getCOULEUR();
+                BufferedImage[] typePion = pionSurLaCase.isEstBlanc()?imagesPionsJoueurBlanc:imagesPionsJoueurNoir;
+
+                x = i%8;
+                y = i/8;
+                g.drawImage(typePion[couleurPion], x * SIZECASE +380 - SIZECASE/4, -y * SIZECASE +620 - SIZECASE/2, null);
             }
         }
     }
