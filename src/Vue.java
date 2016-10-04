@@ -15,6 +15,13 @@ class Vue extends JFrame
     private int xSize, ySize;
     private Vue_Bouton lancerPartieLocale;
     private Vue_Bouton lancerPartieContreIA;
+    private Vue_Bouton lancerPartieEnReseau;
+    private Vue_Bouton chargerPartie;
+    private Vue_Bouton historique;
+    private Vue_Bouton statistiquesDuJoueur;
+    private Vue_Bouton options;
+    private Vue_Bouton credits;
+    private Vue_Bouton quitter;
     private JLabel titre;
     private JLabel background;
 
@@ -45,8 +52,26 @@ class Vue extends JFrame
     private void initAttribut()
     {
         titre = new JLabel("Kamisado");
-        lancerPartieLocale = new Vue_Bouton("Lancer une partie");
+        lancerPartieLocale = new Vue_Bouton("Partie Locale");
         lancerPartieContreIA = new Vue_Bouton("Défi l'IA");
+
+        lancerPartieEnReseau = new Vue_Bouton("Partie réseau");
+        chargerPartie = new Vue_Bouton("Charger Partie");
+        historique = new Vue_Bouton("Historique");
+        statistiquesDuJoueur = new Vue_Bouton("Statistiques");
+        options=new Vue_Bouton("Options");
+        credits=new Vue_Bouton("Crédits");
+        quitter=new Vue_Bouton("Quitter");
+        /**
+         *
+         private Vue_Bouton lancerPartieEnReseau;
+         private Vue_Bouton chargerPartie;
+         private Vue_Bouton historique;
+         private Vue_Bouton statistiquesDuJoueur;
+         private Vue_Bouton options;
+         private Vue_Bouton credits;
+         private Vue_Bouton quitter;
+         */
 
         GraphicsEnvironment fontLabel = GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsEnvironment fontTitre = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -84,10 +109,17 @@ class Vue extends JFrame
      */
     private void creerWidgetAccueil()
     {
-        JPanel boutonsMenu = new JPanel(new GridLayout(2, 1, 0, 10));
+        JPanel boutonsMenu = new JPanel(new GridLayout(9, 1, 0, 10));
         boutonsMenu.setOpaque(false);
         boutonsMenu.add(lancerPartieLocale);
         boutonsMenu.add(lancerPartieContreIA);
+        boutonsMenu.add(lancerPartieEnReseau);
+        boutonsMenu.add(chargerPartie);
+        boutonsMenu.add(historique);
+        boutonsMenu.add(statistiquesDuJoueur);
+        boutonsMenu.add(options);
+        boutonsMenu.add(credits);
+        boutonsMenu.add(quitter);
 
         JPanel organisation = new JPanel(new BorderLayout());
         organisation.setOpaque(false);
@@ -126,6 +158,13 @@ class Vue extends JFrame
     {
         lancerPartieLocale.addActionListener(listener);
         lancerPartieContreIA.addActionListener(listener);
+        lancerPartieEnReseau.addActionListener(listener);
+        chargerPartie.addActionListener(listener);
+        historique.addActionListener(listener);
+        statistiquesDuJoueur.addActionListener(listener);
+        options.addActionListener(listener);
+        credits.addActionListener(listener);
+        quitter.addActionListener(listener);
     }
 
     // GETTERS & SETTERS
@@ -135,4 +174,32 @@ class Vue extends JFrame
     void setVue_plateau(Vue_Plateau vue_plateau) { this.vue_plateau = vue_plateau; }
     void display(){ setVisible(true); }
     Vue_Bouton getLancerPartieLocale() { return lancerPartieLocale; }
+
+    public Vue_Bouton getLancerPartieEnReseau() {
+        return lancerPartieEnReseau;
+    }
+
+    public Vue_Bouton getChargerPartie() {
+        return chargerPartie;
+    }
+
+    public Vue_Bouton getHistorique() {
+        return historique;
+    }
+
+    public Vue_Bouton getStatistiquesDuJoueur() {
+        return statistiquesDuJoueur;
+    }
+
+    public Vue_Bouton getOptions() {
+        return options;
+    }
+
+    public Vue_Bouton getCredits() {
+        return credits;
+    }
+
+    public Vue_Bouton getQuitter() {
+        return quitter;
+    }
 }

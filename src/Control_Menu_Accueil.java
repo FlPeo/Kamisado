@@ -55,5 +55,17 @@ class Control_Menu_Accueil implements ActionListener
             // cases atteignables de début de partie
             vue.display();
         }
+        else if(e.getSource().equals(vue.getCredits()))
+        {
+            vue.jOptionMessage("Jeu réalisé par : " +
+                    "\n Marie-Lucille Caniard " +
+                    "\n Michael Boutboul " +
+                    "\n Adonis N'Dolo " +
+                    "\n Florian Party", "Crédits");
+        }
+        else if (e.getSource().equals(vue.getQuitter()))
+        {
+            System.exit(0);
+        }
     }
 }

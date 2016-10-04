@@ -11,6 +11,7 @@ class Vue_Plateau extends JPanel
     private Vue vue;
     private BufferedImage[] imagesPionsJoueurBlanc;
     private BufferedImage[] imagesPionsJoueurNoir;
+    private BufferedImage background;
 
 
     private final int SIZECASE = 80;
@@ -28,13 +29,15 @@ class Vue_Plateau extends JPanel
         imagesPionsJoueurBlanc = new BufferedImage[Model_Plateau.LIGNE];
         imagesPionsJoueurNoir = new BufferedImage[Model_Plateau.LIGNE];
         String[] listeCouleurs = Couleur.getListeStringCouleurs();
+
         try
         {
             for(int i = 0 ; i<listeCouleurs.length; i++)
             {
-                imagesPionsJoueurBlanc[i] = ImageIO.read(new File("Images/Jetons/Spirale noire/spirale" + listeCouleurs[i] + ".png"));
-                imagesPionsJoueurNoir[i] = ImageIO.read(new File("Images/Jetons/Vague noire/vague" + listeCouleurs[i] + ".png"));
+                imagesPionsJoueurBlanc[i] = ImageIO.read(new File("Images/Jetons/SpiraleNoire/spirale" + listeCouleurs[i] + ".png"));
+                imagesPionsJoueurNoir[i] = ImageIO.read(new File("Images/Jetons/VagueNoire/vague" + listeCouleurs[i] + ".png"));
             }
+            background = ImageIO.read(new File("Images/Fonds/fond2.jpg"));
         }
         catch(IOException e2)
         {
@@ -57,7 +60,7 @@ class Vue_Plateau extends JPanel
     public void paintComponent(Graphics g)
     {
         super.paintComponent(g);
-
+        g.drawImage(background, 0, 0, 1380, 768, null);
         int i, x, y, tailleDuPlateau = accueil.getPartie().getPlateau().getBoard().length;
         int couleurCase, couleurPion;
         Model_Pion pionSurLaCase;
@@ -68,21 +71,21 @@ class Vue_Plateau extends JPanel
             switch (couleurCase)
             {
                 case Couleur.MARRON:
-                    g.setColor(Color.getHSBColor(31, 0.36f, 0.26f)); break;
+                    g.setColor(new Color(87,37,0,175)); break;
                 case Couleur.ROSE:
-                    g.setColor(Color.PINK); break;
+                    g.setColor(new Color(239,128,179,175)); break;
                 case Couleur.ORANGE:
-                    g.setColor(Color.ORANGE); break;
+                    g.setColor(new Color(245,132,40,175)); break;
                 case Couleur.ROUGE:
-                    g.setColor(Color.RED); break;
+                    g.setColor(new Color(238,58,67,175)); break;
                 case Couleur.VERT:
-                    g.setColor(Color.GREEN); break;
+                    g.setColor(new Color(0,162,95,175)); break;
                 case Couleur.JAUNE:
-                    g.setColor(Color.YELLOW); break;
+                    g.setColor(new Color(255,222,0,175)); break;
                 case Couleur.BLEU:
-                    g.setColor(Color.BLUE); break;
+                    g.setColor(new Color(0,121,194,175)); break;
                 case Couleur.VIOLET:
-                    g.setColor(Color.getHSBColor(300, 0.76f, 0.72f)); break;
+                    g.setColor(new Color(124,66,153,175)); break;
             }
             y = i%8;
             x = i/8;
