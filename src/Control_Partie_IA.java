@@ -24,6 +24,6 @@ class Control_Partie_IA extends MouseAdapter
     @Override
     public void mouseClicked(MouseEvent e)
     {
-
+        System.out.println("WELCOME");
     }
 }

@@ -1,7 +1,7 @@
 class Model_Joueur
 {
     private String nom;
-    private Model_Partie model_partie;
+    private Model_Partie model_partie2V2;
     private boolean estJoueurBlanc;
 
     public Model_Joueur(String nom, boolean joueurBlanc){
@@ -10,31 +10,31 @@ class Model_Joueur
     }
 
     void gestionTourJoueur(int row, int column) {
-        Model_Case casesPlateau[] = model_partie.getPlateau().getBoard();
+        Model_Case casesPlateau[] = model_partie2V2.getPlateau().getBoard();
         int ligne = Model_Plateau.LIGNE;                      //utiliser autre chose (sqrt(casesPlateau.length) par ex) si besoin d'un mock plus reduit
 
-        if (model_partie.isTourUn())
+        if (model_partie2V2.isTourUn())
         {
             if(casesPlateau[column+row*ligne].getPion() != null
                     && estJoueurBlanc == casesPlateau[column+row*ligne].getPion().isEstBlanc() )
             {
-                model_partie.setPionMemoire(casesPlateau[column+row*ligne].getPion());
+                model_partie2V2.setPionMemoire(casesPlateau[column+row*ligne].getPion());
             }
             else if(casesPlateau[column+row*ligne].getPion() == null
-                    && model_partie.getPionMemoire() != null
-                    && model_partie.getPionMemoire().getCasesAtteignables().contains(casesPlateau[column+row*ligne]))
+                    && model_partie2V2.getPionMemoire() != null
+                    && model_partie2V2.getPionMemoire().getCasesAtteignables().contains(casesPlateau[column+row*ligne]))
             {
-                model_partie.setTourUn(false);
-                model_partie.deplacerPion(casesPlateau[column+row*ligne]);
+                model_partie2V2.setTourUn(false);
+                model_partie2V2.deplacerPion(casesPlateau[column+row*ligne]);
             }
         }
         else if(casesPlateau[column+row*ligne].getPion() == null
-                && model_partie.getPionMemoire().getCasesAtteignables().contains(casesPlateau[column+row*ligne]))
+                && model_partie2V2.getPionMemoire().getCasesAtteignables().contains(casesPlateau[column+row*ligne]))
         {
                     /*System.out.println(dernierPionJoue);
                     System.out.println(pionMemoire);*/
-            model_partie.verifieVictoire(row);
-            model_partie.deplacerPion(casesPlateau[column+row*ligne]);
+            model_partie2V2.verifieVictoire(row);
+            model_partie2V2.deplacerPion(casesPlateau[column+row*ligne]);
         }
     }
 
@@ -46,7 +46,7 @@ class Model_Joueur
         return estJoueurBlanc;
     }
 
-    public void setPartie(Model_Partie model_partie) {
-        this.model_partie = model_partie;
+    public void setPartie(Model_Partie model_partie2V2) {
+        this.model_partie2V2 = model_partie2V2;
     }
 }
