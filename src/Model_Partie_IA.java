@@ -197,12 +197,229 @@ public class Model_Partie_IA {
         plateau[6] = PIONNOIRBLEU;
         plateau[7] = PIONNOIRORANGE;
     }
+    public void setCasesAtteignablesPremierTour()
+    {
+        for (int i = 0; i < casesAtteignablesTourUn.length; i++)
+        {
+            int row = i%8, column = i/8;
+            int decal = 1, curseur = 0;
+            boolean deplacableNS = true, deplacableO = true, deplacableE = true;
 
-    public byte[] getPlateau() {
-        return plateau;
+            while (deplacableNS || deplacableO || deplacableE)
+            {
+                if (deplacableNS)
+                {
+                    if( row + decal <=7
+                            && plateau[column + (row + decal) * LIGNE]>=0)
+                    {
+                        casesAtteignablesTourUn[i][curseur] = plateau[(column + (row + decal) * LIGNE)];
+                        curseur++;
+                    }
+                    else
+                        deplacableNS = false;
+                }
+                if (deplacableO)
+                {
+                    if( row + decal <=7 && column - decal >= 0
+                            && row + decal >=0 && column - decal <=7
+                            && plateau[(column - decal) + (row + decal) * LIGNE]>=0)
+                    {
+                        casesAtteignablesTourUn[i][curseur] = plateau[(column - decal) + (row + decal) * LIGNE];
+                        curseur++;
+                    }
+                    else
+                        deplacableO = false;
+                }
+                if (deplacableE)
+                {
+                    if( row + decal <=7 && column + decal <= 7
+                            && row + decal >=0 && column + decal >=0
+                            && plateau[(column + decal) + (row + decal) * LIGNE]>=0)
+                    {
+                        casesAtteignablesTourUn[i][curseur] = plateau[(column + decal) + (row + decal) * LIGNE];
+                        curseur++;
+
+                    }
+                    else
+                        deplacableE= false;
+                }
+                decal++;
+            }
+        }
     }
 
-    public char[] getPlateauCase() {
+    byte[] getPlateau() { return plateau; }
+    char[] getPlateauCase() {
         return plateauCase;
+    }
+
+    public boolean isTourUn() { return isTourUn; }
+
+    public static char getMARRON() {
+        return MARRON;
+    }
+
+    public static char getGREEN() {
+        return GREEN;
+    }
+
+    public static char getRED() {
+        return RED;
+    }
+
+    public static char getYELLOW() {
+        return YELLOW;
+    }
+
+    public static char getPINK() {
+        return PINK;
+    }
+
+    public static char getVIOLET() {
+        return VIOLET;
+    }
+
+    public static char getBLUE() {
+        return BLUE;
+    }
+
+    public static char getORANGE() {
+        return ORANGE;
+    }
+
+    public static byte getLIGNE() {
+        return LIGNE;
+    }
+
+    public static byte getPIONBLANCMARRON() {
+        return PIONBLANCMARRON;
+    }
+
+    public static byte getPIONBLANCVERT() {
+        return PIONBLANCVERT;
+    }
+
+    public static byte getPIONBLANCROUGE() {
+        return PIONBLANCROUGE;
+    }
+
+    public static byte getPIONBLANCJAUNE() {
+        return PIONBLANCJAUNE;
+    }
+
+    public static byte getPIONBLANCROSE() {
+        return PIONBLANCROSE;
+    }
+
+    public static byte getPIONBLANCVIOLET() {
+        return PIONBLANCVIOLET;
+    }
+
+    public static byte getPIONBLANCBLEU() {
+        return PIONBLANCBLEU;
+    }
+
+    public static byte getPIONBLANCORANGE() {
+        return PIONBLANCORANGE;
+    }
+
+    public static byte getPIONNOIRMARRON() {
+        return PIONNOIRMARRON;
+    }
+
+    public static byte getPIONNOIRVERT() {
+        return PIONNOIRVERT;
+    }
+
+    public static byte getPIONNOIRROUGE() {
+        return PIONNOIRROUGE;
+    }
+
+    public static byte getPIONNOIRJAUNE() {
+        return PIONNOIRJAUNE;
+    }
+
+    public static byte getPIONNOIRROSE() {
+        return PIONNOIRROSE;
+    }
+
+    public static byte getPIONNOIRVIOLET() {
+        return PIONNOIRVIOLET;
+    }
+
+    public static byte getPIONNOIRBLEU() {
+        return PIONNOIRBLEU;
+    }
+
+    public static byte getPIONNOIRORANGE() {
+        return PIONNOIRORANGE;
+    }
+
+    public void setTourUn(boolean tourUn) {
+        isTourUn = tourUn;
+    }
+
+    public boolean isTourDuJoueurBlanc() {
+        return tourDuJoueurBlanc;
+    }
+
+    public void setTourDuJoueurBlanc(boolean tourDuJoueurBlanc) {
+        this.tourDuJoueurBlanc = tourDuJoueurBlanc;
+    }
+
+    public boolean isJoueurBlancGagnant() {
+        return joueurBlancGagnant;
+    }
+
+    public void setJoueurBlancGagnant(boolean joueurBlancGagnant) {
+        this.joueurBlancGagnant = joueurBlancGagnant;
+    }
+
+    public boolean isEstGagnee() {
+        return estGagnee;
+    }
+
+    public void setEstGagnee(boolean estGagnee) {
+        this.estGagnee = estGagnee;
+    }
+
+    public void setPlateau(byte[] plateau) {
+        this.plateau = plateau;
+    }
+
+    public void setPlateauCase(char[] plateauCase) {
+        this.plateauCase = plateauCase;
+    }
+
+    public byte getPionMemoire() {
+        return pionMemoire;
+    }
+
+    public void setPionMemoire(byte pionMemoire) {
+        this.pionMemoire = pionMemoire;
+    }
+
+    public byte getDernierPionJoue() {
+        return dernierPionJoue;
+    }
+
+    public void setDernierPionJoue(byte dernierPionJoue) {
+        this.dernierPionJoue = dernierPionJoue;
+    }
+
+    public byte[] getCasesAtteignablesJoueurCourant() {
+        return casesAtteignablesJoueurCourant;
+    }
+
+    public void setCasesAtteignablesJoueurCourant(byte[] casesAtteignablesJoueurCourant) {
+        this.casesAtteignablesJoueurCourant = casesAtteignablesJoueurCourant;
+    }
+
+    public byte[][] getCasesAtteignablesTourUn() {
+        return casesAtteignablesTourUn;
+    }
+
+    public void setCasesAtteignablesTourUn(byte[][] casesAtteignablesTourUn) {
+        this.casesAtteignablesTourUn = casesAtteignablesTourUn;
     }
 }

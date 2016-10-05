@@ -24,6 +24,20 @@ class Control_Partie_IA extends MouseAdapter
     @Override
     public void mouseClicked(MouseEvent e)
     {
-        System.out.println("WELCOME");
+        int column = (e.getX()-360)/80;
+        int row = Math.abs(((e.getY()-20)/80)-7);
+
+        if (e.getSource().equals(vue.getVue_plateau())
+                && column >= 0
+                && column <=7
+                && row >=0
+                && row <=7)
+        {
+            if(accueil.getPartieIa().isTourUn())
+            {
+                // TODO A faire
+            }
+        }
+
     }
 }

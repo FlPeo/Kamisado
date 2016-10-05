@@ -52,7 +52,7 @@ class Control_Menu_Accueil implements ActionListener
             vue.setVue_plateau(new Vue_Plateau(vue, accueil));
             vue.creerWidgetPartie();
             vue.setPartieControl(control_Partie_IA);
-            // cases atteignables de début de partie
+            accueil.getPartieIa().setCasesAtteignablesPremierTour();
             vue.display();
         }
         else if(e.getSource().equals(vue.getCredits()))
