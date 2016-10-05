@@ -4,6 +4,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
 import static javax.swing.JOptionPane.showMessageDialog;
@@ -24,6 +26,11 @@ class Vue extends JFrame
     private Vue_Bouton quitter;
     private JLabel titre;
     private JLabel background;
+
+    private ResourceBundle texteInternational;
+    private Locale locale = new Locale("");  // mettre "" pour anglais, code de deux lettres du pays pour les autres
+
+
 
     /**
      * Constructeur de la vu
@@ -51,17 +58,20 @@ class Vue extends JFrame
      */
     private void initAttribut()
     {
-        titre = new JLabel("Kamisado");
-        lancerPartieLocale = new Vue_Bouton("Partie Locale");
-        lancerPartieContreIA = new Vue_Bouton("Défi l'IA");
+        Locale.setDefault(locale);
+        texteInternational = ResourceBundle.getBundle("Traductions.boutons");
 
-        lancerPartieEnReseau = new Vue_Bouton("Partie réseau");
-        chargerPartie = new Vue_Bouton("Charger Partie");
-        historique = new Vue_Bouton("Historique");
-        statistiquesDuJoueur = new Vue_Bouton("Statistiques");
-        options=new Vue_Bouton("Options");
-        credits=new Vue_Bouton("Crédits");
-        quitter=new Vue_Bouton("Quitter");
+        titre = new JLabel(texteInternational.getString("titre"));
+        lancerPartieLocale = new Vue_Bouton(texteInternational.getString("partieLocale"));
+        lancerPartieContreIA = new Vue_Bouton(texteInternational.getString("defierIA"));
+
+        lancerPartieEnReseau = new Vue_Bouton(texteInternational.getString("partieReseau"));
+        chargerPartie = new Vue_Bouton(texteInternational.getString("chargerPartie"));
+        historique = new Vue_Bouton(texteInternational.getString("historique"));
+        statistiquesDuJoueur = new Vue_Bouton(texteInternational.getString("statistiques"));
+        options=new Vue_Bouton(texteInternational.getString("options"));
+        credits=new Vue_Bouton(texteInternational.getString("credits"));
+        quitter=new Vue_Bouton(texteInternational.getString("quiter"));
         /**
          *
          private Vue_Bouton lancerPartieEnReseau;
