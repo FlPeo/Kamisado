@@ -1,6 +1,9 @@
+
 class Model_Accueil
 {
     private Model_Partie partie;
+    private Model_Partie_IA partieIa;
+    private boolean ia = false;
 
     /**
      * Constructeur du model relatif à l'accueil
@@ -8,6 +11,7 @@ class Model_Accueil
     Model_Accueil()
     {
         partie = null;
+        partieIa = null;
     }
 
     /**
@@ -35,11 +39,18 @@ class Model_Accueil
      */
     void demarrerPartieContreLIA()
     {
-
+        ia = true;
+        partieIa = new Model_Partie_IA();
     }
 
     // GETTERS & SETTERS
-    Model_Partie getPartie() {
-        return partie;
+    Model_Partie getPartie() { return partie; }
+
+    public boolean getia() {
+        return ia;
+    }
+
+    public Model_Partie_IA getPartieIa() {
+        return partieIa;
     }
 }

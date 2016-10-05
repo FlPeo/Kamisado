@@ -61,11 +61,65 @@ class Vue_Plateau extends JPanel
     {
         super.paintComponent(g);
         g.drawImage(background, 0, 0, 1380, 768, null);
-        int i, x, y, tailleDuPlateau = accueil.getPartie().getPlateau().getBoard().length;
+        int i, x, y, tailleDuPlateau = 64;
         int couleurCase, couleurPion;
+        if(accueil.getia())
+        {
+            for(i=0; i<tailleDuPlateau; i++)
+            {
+                couleurCase = accueil.getPartieIa().getPlateauCase()[i];
+                switch (couleurCase) {
+                    case Model_Partie_IA.MARRON:
+                        g.setColor(new Color(87, 37, 0, 175));
+                        break;
+                    case Model_Partie_IA.PINK:
+                        g.setColor(new Color(239, 128, 179, 175));
+                        break;
+                    case Model_Partie_IA.ORANGE:
+                        g.setColor(new Color(245, 132, 40, 175));
+                        break;
+                    case Model_Partie_IA.RED:
+                        g.setColor(new Color(238, 58, 67, 175));
+                        break;
+                    case Model_Partie_IA.GREEN:
+                        g.setColor(new Color(0, 162, 95, 175));
+                        break;
+                    case Model_Partie_IA.YELLOW:
+                        g.setColor(new Color(255, 222, 0, 175));
+                        break;
+                    case Model_Partie_IA.BLUE:
+                        g.setColor(new Color(0, 121, 194, 175));
+                        break;
+                    case Model_Partie_IA.VIOLET:
+                        g.setColor(new Color(124, 66, 153, 175));
+                        break;
+                }
+                y = i % 8;
+                x = i / 8;
+                g.fillRect(y * SIZECASE + 360, -x * SIZECASE + 580, SIZECASE, SIZECASE);
+            }
+            //dessine les pieces
+            Boolean pionSurLaCase, estBlanc = false;
+            for(i=0; i<tailleDuPlateau; i++)
+            {
+                pionSurLaCase = accueil.getPartieIa().getPlateau()[i]==-1;
+                if(pionSurLaCase)
+                    estBlanc = accueil.getPartieIa().getPlateau()[i]<8;
+                if(accueil.getPartieIa().getPlateau()[i]>=0)
+                {
+                    couleurPion = accueil.getPartieIa().getPlateau()[i]%8;
+                    BufferedImage[] typePion = estBlanc?imagesPionsJoueurBlanc:imagesPionsJoueurNoir;
+                    x = i%8;
+                    y = i/8;
+                    g.drawImage(typePion[couleurPion], x * SIZECASE +380 - SIZECASE/4, -y * SIZECASE +620 - SIZECASE/2, null);
+                }
+            }
+            return;
+        }
+
         Model_Pion pionSurLaCase;
 
-        for(i=0; i<8*8; i++)
+        for(i=0; i<tailleDuPlateau; i++)
         {
             couleurCase = accueil.getPartie().getPlateau().getBoard()[i].getCOULEUR();
             switch (couleurCase)

@@ -7,7 +7,7 @@ import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
 
 
-public class Model_Partie_Test
+public class Model_Partie__Test
 {
 
     /**

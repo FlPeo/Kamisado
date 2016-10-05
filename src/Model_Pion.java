@@ -40,19 +40,19 @@ class Model_Pion
         Model_Case[] plateau = caseActuelle.getPlateau().getBoard();
         int row = caseActuelle.getRow(), column = caseActuelle.getColumn();
         int decal, ligne = Model_Plateau.LIGNE;
-        boolean deplacableN = true, deplacableO = true, deplacableE = true;
+        boolean deplacableNS = true, deplacableO = true, deplacableE = true;
 
         decal = estBlanc?1:-1;
-        while (deplacableN || deplacableO || deplacableE)
+        while (deplacableNS || deplacableO || deplacableE)
         {
-            if (deplacableN)
+            if (deplacableNS)
             {
                 if( row + decal <=7
                         && row + decal >=0
                         && plateau[column + (row + decal) * ligne].getPion() == null)
                     casesAtteignables.add(plateau[column + (row + decal) * ligne]);
                 else
-                    deplacableN = false;
+                    deplacableNS = false;
             }
             if (deplacableO)
             {
@@ -106,6 +106,7 @@ class Model_Pion
 
         return pionsBlancs;
     }
+
 
     /**
      * Creation des pions noirs, en leur passant leur case en parametre

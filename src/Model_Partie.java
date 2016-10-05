@@ -1,7 +1,6 @@
 import java.util.ArrayList;
 
-class Model_Partie
-{
+class Model_Partie {
     private Model_Accueil accueil;
 
     private boolean isTourUn;
