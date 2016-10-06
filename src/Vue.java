@@ -71,17 +71,7 @@ class Vue extends JFrame
         statistiquesDuJoueur = new Vue_Bouton(texteInternational.getString("statistiques"));
         options=new Vue_Bouton(texteInternational.getString("options"));
         credits=new Vue_Bouton(texteInternational.getString("credits"));
-        quitter=new Vue_Bouton(texteInternational.getString("quiter"));
-        /**
-         *
-         private Vue_Bouton lancerPartieEnReseau;
-         private Vue_Bouton chargerPartie;
-         private Vue_Bouton historique;
-         private Vue_Bouton statistiquesDuJoueur;
-         private Vue_Bouton options;
-         private Vue_Bouton credits;
-         private Vue_Bouton quitter;
-         */
+        quitter=new Vue_Bouton(texteInternational.getString("quitter"));
 
         GraphicsEnvironment fontLabel = GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsEnvironment fontTitre = GraphicsEnvironment.getLocalGraphicsEnvironment();
