@@ -102,11 +102,10 @@ class Vue_Plateau extends JPanel
             Boolean pionSurLaCase, estBlanc = false;
             for(i=0; i<tailleDuPlateau; i++)
             {
-                pionSurLaCase = accueil.getPartieIa().getPlateau()[i]==-1;
+                pionSurLaCase = !(accueil.getPartieIa().getPlateau()[i]==-1);
                 if(pionSurLaCase)
-                    estBlanc = accueil.getPartieIa().getPlateau()[i]<8;
-                if(accueil.getPartieIa().getPlateau()[i]>=0)
                 {
+                    estBlanc = accueil.getPartieIa().getPlateau()[i]<8;
                     couleurPion = accueil.getPartieIa().getPlateau()[i]%8;
                     BufferedImage[] typePion = estBlanc?imagesPionsJoueurBlanc:imagesPionsJoueurNoir;
                     x = i%8;
