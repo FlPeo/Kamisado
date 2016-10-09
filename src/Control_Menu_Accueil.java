@@ -58,7 +58,7 @@ class Control_Menu_Accueil implements ActionListener
         else if(e.getSource().equals(vue.getCredits()))
         {
             vue.jOptionMessage("Jeu réalisé par : " +
-                    "\n Marie-Lucille Caniard " +
+                    "\n Marie-Lucile Caniard " +
                     "\n Michael Boutboul " +
                     "\n Adonis N'Dolo " +
                     "\n Florian Party", "Crédits");

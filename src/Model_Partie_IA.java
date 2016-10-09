@@ -23,12 +23,6 @@ import java.util.Arrays;
  *          14 = pion noir bleu
  *          15 = pion noir orange
  *          ----------------------
- *          
- *      - le plateau sera défini comme suit :
- *          String[] de trois caracteres : le premier pour la couleur le deuxieme et le troisieme pour le pion associé
- *          ex: "m11"
- *          ex: "r10"
- *          ex: "d-1" (pas de pions)
  *
  *      - les couleurs :
  *          'm' = marron
@@ -174,34 +168,34 @@ public class Model_Partie_IA {
         plateauCase[63] = MARRON;
     }
 
-    private void placePionsNoirs()
-    {
-        plateau[56] = PIONBLANCORANGE;
-        plateau[57] = PIONBLANCBLEU;
-        plateau[58] = PIONBLANCVIOLET;
-        plateau[59] = PIONBLANCROSE;
-        plateau[60] = PIONBLANCJAUNE;
-        plateau[61] = PIONBLANCROUGE;
-        plateau[62] = PIONBLANCVERT;
-        plateau[63] = PIONBLANCMARRON;
-    }
-
     private void placePionsBlancs()
     {
-        plateau[0] = PIONNOIRMARRON;
-        plateau[1] = PIONNOIRVERT;
-        plateau[2] = PIONNOIRROUGE;
-        plateau[3] = PIONNOIRJAUNE;
-        plateau[4] = PIONNOIRROSE;
-        plateau[5] = PIONNOIRVIOLET;
-        plateau[6] = PIONNOIRBLEU;
-        plateau[7] = PIONNOIRORANGE;
+        plateau[7] = PIONBLANCORANGE;
+        plateau[6] = PIONBLANCBLEU;
+        plateau[5] = PIONBLANCVIOLET;
+        plateau[4] = PIONBLANCROSE;
+        plateau[3] = PIONBLANCJAUNE;
+        plateau[2] = PIONBLANCROUGE;
+        plateau[1] = PIONBLANCVERT;
+        plateau[0] = PIONBLANCMARRON;
+    }
+
+    private void placePionsNoirs()
+    {
+        plateau[63] = PIONNOIRMARRON;
+        plateau[62] = PIONNOIRVERT;
+        plateau[61] = PIONNOIRROUGE;
+        plateau[60] = PIONNOIRJAUNE;
+        plateau[59] = PIONNOIRROSE;
+        plateau[58] = PIONNOIRVIOLET;
+        plateau[57] = PIONNOIRBLEU;
+        plateau[56] = PIONNOIRORANGE;
     }
     public void setCasesAtteignablesPremierTour()
     {
         for (int i = 0; i < casesAtteignablesTourUn.length; i++)
         {
-            int row = i%8, column = i/8;
+            int row = i / 8, column = i % 8;
             int decal = 1, curseur = 0;
             boolean deplacableNS = true, deplacableO = true, deplacableE = true;
 
@@ -209,42 +203,83 @@ public class Model_Partie_IA {
             {
                 if (deplacableNS)
                 {
-                    if( row + decal <=7
-                            && plateau[column + (row + decal) * LIGNE]>=0)
-                    {
-                        casesAtteignablesTourUn[i][curseur] = plateau[(column + (row + decal) * LIGNE)];
+                    if (row + decal <= 7
+                            && plateau[column + (row + decal) * LIGNE] < 0) {
+                        casesAtteignablesTourUn[i][curseur] = (byte)(column + (row + decal) * LIGNE);
                         curseur++;
-                    }
-                    else
+                    } else
                         deplacableNS = false;
                 }
-                if (deplacableO)
-                {
-                    if( row + decal <=7 && column - decal >= 0
-                            && row + decal >=0 && column - decal <=7
-                            && plateau[(column - decal) + (row + decal) * LIGNE]>=0)
-                    {
-                        casesAtteignablesTourUn[i][curseur] = plateau[(column - decal) + (row + decal) * LIGNE];
+                if (deplacableO) {
+                    if (row + decal <= 7 && column - decal >= 0
+                            && plateau[(column - decal) + (row + decal) * LIGNE] < 0) {
+                        casesAtteignablesTourUn[i][curseur] = (byte)((column - decal) + (row + decal) * LIGNE);
                         curseur++;
-                    }
-                    else
+                    } else
                         deplacableO = false;
                 }
-                if (deplacableE)
-                {
-                    if( row + decal <=7 && column + decal <= 7
-                            && row + decal >=0 && column + decal >=0
-                            && plateau[(column + decal) + (row + decal) * LIGNE]>=0)
-                    {
-                        casesAtteignablesTourUn[i][curseur] = plateau[(column + decal) + (row + decal) * LIGNE];
+                if (deplacableE) {
+                    if (row + decal <= 7 && column + decal <= 7
+                            && plateau[(column + decal) + (row + decal) * LIGNE] < 0) {
+                        casesAtteignablesTourUn[i][curseur] = (byte)((column + decal) + (row + decal) * LIGNE);
                         curseur++;
 
-                    }
-                    else
-                        deplacableE= false;
+                    } else
+                        deplacableE = false;
                 }
                 decal++;
             }
+        }
+    }
+
+    public void setCasesAtteignablesJoueurCourant(boolean isTourBlanc, byte casePion)
+    {
+        //On réinitialise le tableau de case atteignable
+        for(int i=0; i<casesAtteignablesJoueurCourant.length; i++)
+            casesAtteignablesJoueurCourant[i]=-1;
+        int row = casePion / 8, column = casePion % 8;
+        int decal, curseur = 0;
+        if(isTourBlanc)
+            decal=1;
+        else
+            decal=-1;
+        boolean deplacableNS = true, deplacableO = true, deplacableE = true;
+
+        while (deplacableNS || deplacableO || deplacableE)
+        {
+            if (deplacableNS)
+            {
+                if (row + decal <= 7
+                        && row + decal >= 0
+                        && plateau[column + (row + decal) * LIGNE] < 0) {
+                    casesAtteignablesJoueurCourant[curseur] = (byte)(column + (row + decal) * LIGNE);
+                    curseur++;
+                } else
+                    deplacableNS = false;
+            }
+            if (deplacableO) {
+                if (row + decal <= 7 && column - decal >= 0
+                        && row + decal >= 0 && column - decal <= 7
+                        && plateau[(column - decal) + (row + decal) * LIGNE] < 0) {
+                    casesAtteignablesJoueurCourant[curseur] = (byte)((column - decal) + (row + decal) * LIGNE);
+                    curseur++;
+                } else
+                    deplacableO = false;
+            }
+            if (deplacableE) {
+                if (row + decal <= 7 && column + decal <= 7
+                        && row + decal >=0 && column + decal >=0
+                        && plateau[(column + decal) + (row + decal) * LIGNE] < 0) {
+                    casesAtteignablesJoueurCourant[curseur] = (byte)((column + decal) + (row + decal) * LIGNE);
+                    curseur++;
+
+                } else
+                    deplacableE = false;
+            }
+            if(isTourBlanc)
+                decal++;
+            else
+                decal--;
         }
     }
 
