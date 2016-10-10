@@ -35,8 +35,7 @@ import java.util.Random;
  *          6 = bleu
  *          7 = orange
  */
-public class Model_Partie_IA
-{
+public class Model_Partie_IA {
     static final byte MARRON = 0;
     static final byte GREEN = 1;
     static final byte RED = 2;
@@ -299,9 +298,6 @@ public class Model_Partie_IA
                 nbCasesPossibles++;
         }
         int caseAlea = rand.nextInt(nbCasesPossibles);
-        // todo Alors là je suis pas sûr de moi mais il me semble que cette méthode se doit d'être récursive
-        // todo je pense que l'avis de Couturier est important savoir si les lignes qui suivent
-        // todo doivent bien être dans cette méthode.
         // On indique que le pion est maintenant sur la case cliqué
         plateau[casesAtteignablesJoueurCourant[caseAlea]] = pionMemoire;
         // On supprime le pion de son ancien emplacement

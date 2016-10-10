@@ -92,7 +92,7 @@ class Control_Partie_IA extends MouseAdapter
                                 accueil.getPartieIa().setCouleurPionAJouer(accueil.getPartieIa().getPlateauCase()[i]);
 
                         // On retrouve le pion qui doit jouer et on le met dans le pion mémoire
-                        for (i=0; i< 4; i++)
+                        for (i=0; i< 64; i++)
                             if (plateau[i]!=-1 && plateau[i]%8 == accueil.getPartieIa().getCouleurPionAJouer()%8
                                     && plateau[i]>7)
                             {
@@ -149,7 +149,8 @@ class Control_Partie_IA extends MouseAdapter
 
                         vue.repaint();
                         // On vérifie si il y a victoire ou pas
-                        if (index > 55 && index <= 63) {
+                        if (index > 55 && index <= 63)
+                        {
                             vue.jOptionMessage(texteInternational.getString("joueurBlancGagnant") + " "
                                             + texteInternational.getString("message"),
                                     texteInternational.getString("titreFenetre"));
@@ -164,7 +165,8 @@ class Control_Partie_IA extends MouseAdapter
                         // On retrouve le pion qui doit jouer et on le met dans le pion mémoire
                         for (i=0; i<64; i++) // todo idem blabla au dessus
                             if (plateau[i] != -1 && plateau[i] % 8 == accueil.getPartieIa().getCouleurPionAJouer() % 8
-                                    && plateau[i] > 7) {
+                                    && plateau[i] > 7)
+                            {
                                 accueil.getPartieIa().setPionMemoire(plateau[i]);
                                 accueil.getPartieIa().setCasePionMemoire(i);
                             }
