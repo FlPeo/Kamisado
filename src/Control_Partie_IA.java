@@ -45,10 +45,8 @@ class Control_Partie_IA extends MouseAdapter
             {
                 // Joueur blanc = humain et c'est lui qui commence
                 // On regarde si il y a un pion sur la case cliquée et si le pion appartient au joueur
-                if (plateau[index] != -1 && (index) < 8)
-                {
+                if (plateau[index] != -1 && index < 8) // parenthese autour de l'index inutile
                     accueil.getPartieIa().setPionMemoire(plateau[index]);
-                }
                 // Si il n'y a pas de pion sur la case cliquée et qu'il y a un pionMemoire
                 else if (plateau[index] == -1 && accueil.getPartieIa().getPionMemoire() != -1)
                 {
@@ -63,13 +61,16 @@ class Control_Partie_IA extends MouseAdapter
                             break;
                         }
                     }
-
                     if (isCaseAtteignable)
                     {
+                        // todo ca c'est une méthode de modele elle s'occupe de deplacerLaPiece
                         // On indique que le pion est maintenant sur la case cliqué
                         plateau[index] = accueil.getPartieIa().getPionMemoire();
                         // On supprime le pion de son ancien emplacement
-                        for (i = 0; i < 8; i++)
+                        // todo pas efficace il faudrait juste mettre en mémoire son emplacement dans un attribut du
+                        // todo model pour ne pas avoir à faire cette boucle qui peut rajouter jusqu'à 63 instructions
+                        // todo inutiles
+                        for (i=0; i<8; i++)
                             if (plateau[i] == accueil.getPartieIa().getPionMemoire())
                             {
                                 plateau[i] = -1;
@@ -85,12 +86,13 @@ class Control_Partie_IA extends MouseAdapter
 
                         // On prépare le tour d'après
                         // On regarde la couleur de la case où se trouve le dernier pion joué
-                        for(i=0; i<64; i++)
+                        for(i=0; i<64; i++) // todo pour tous les "64" et autres for de la page je pense que ca serait plus clair de
+                            // todo faire des plateau.lenght juste pour qu'on sache ce que tu parcours sans trop réfléchir
                             if(plateau[i]==accueil.getPartieIa().getDernierPionJoue())
                                 accueil.getPartieIa().setCouleurPionAJouer(accueil.getPartieIa().getPlateauCase()[i]);
 
                         // On retrouve le pion qui doit jouer et on le met dans le pion mémoire
-                        for (i = 0; i < 64; i++)
+                        for (i=0; i< 4; i++)
                             if (plateau[i]!=-1 && plateau[i]%8 == accueil.getPartieIa().getCouleurPionAJouer()%8
                                     && plateau[i]>7)
                             {
@@ -105,11 +107,11 @@ class Control_Partie_IA extends MouseAdapter
 
                         // On prépare le tour suivant
                         // On regarde la couleur de la case où se trouve le dernier pion joué
-                        for(i=0; i<64; i++)
+                        for(i=0; i<64; i++) // todo meme remarque qu'au dessus
                             if(accueil.getPartieIa().getPlateau()[i]==accueil.getPartieIa().getDernierPionJoue())
                                 accueil.getPartieIa().setCouleurPionAJouer(accueil.getPartieIa().getPlateauCase()[i]);
                         // On retrouve le pion qui doit jouer et on le met dans le pion mémoire
-                        for (i = 0; i < 64; i++)
+                        for (i=0; i<64; i++) // todo meme remarque qu'au dessus ter
                             if (accueil.getPartieIa().getPlateau()[i]!=-1
                                     && accueil.getPartieIa().getPlateau()[i] == accueil.getPartieIa().getCouleurPionAJouer())
                             {
@@ -128,7 +130,7 @@ class Control_Partie_IA extends MouseAdapter
                 {
                     // On vérifie que la case cliquée est dans les cases atteignables du pion en mémoire
                     boolean isCaseAtteignable = false;
-                    for (i = 0; i < 14; i++)
+                    for (i=0; i<14; i++)
                         if (accueil.getPartieIa().getCasesAtteignablesJoueurCourant()[i] == index)
                         {
                             isCaseAtteignable = true;
@@ -137,7 +139,6 @@ class Control_Partie_IA extends MouseAdapter
 
                     if (isCaseAtteignable)
                     {
-
                         // On indique que le pion est maintenant sur la case cliqué
                         plateau[index] = accueil.getPartieIa().getPionMemoire();
                         // On supprime le pion de son ancien emplacement
@@ -156,12 +157,12 @@ class Control_Partie_IA extends MouseAdapter
                         }
 
                         // On regarde la couleur de la case où se trouve le dernier pion joué
-                        for (i = 0; i < 64; i++)
+                        for (i=0; i<64; i++) // todo idem blabla au dessus
                             if (plateau[i] == accueil.getPartieIa().getDernierPionJoue())
                                 accueil.getPartieIa().setCouleurPionAJouer(accueil.getPartieIa().getPlateauCase()[i]);
 
                         // On retrouve le pion qui doit jouer et on le met dans le pion mémoire
-                        for (i = 0; i < 64; i++)
+                        for (i=0; i<64; i++) // todo idem blabla au dessus
                             if (plateau[i] != -1 && plateau[i] % 8 == accueil.getPartieIa().getCouleurPionAJouer() % 8
                                     && plateau[i] > 7) {
                                 accueil.getPartieIa().setPionMemoire(plateau[i]);
@@ -178,24 +179,22 @@ class Control_Partie_IA extends MouseAdapter
                 {
                     // On fait le déplacement aléatoire de l'IA
                     byte caseAlea = accueil.getPartieIa().evaluate(accueil.getPartieIa().getCasePionMemoire());
-
                     vue.repaint();
 
                     // On vérifie si il y a victoire ou pas
                     if (accueil.getPartieIa().getCasesAtteignablesJoueurCourant()[caseAlea] < 8
                             && accueil.getPartieIa().getCasesAtteignablesJoueurCourant()[caseAlea] >= 0)
-                        vue.jOptionMessage(texteInternational.getString("IAgagnant") + " "
-                                        + texteInternational.getString("message"),
+                        vue.jOptionMessage( texteInternational.getString("IAgagnant") +
+                                        " "+ texteInternational.getString("message"),
                                 texteInternational.getString("titreFenetre"));
-
 
                     // On prépare le tour suivant
                     // On regarde la couleur de la case où se trouve le dernier pion joué
-                    for(i=0; i<64; i++)
+                    for(i=0; i<64; i++) // todo idem blabla
                         if(accueil.getPartieIa().getPlateau()[i]==accueil.getPartieIa().getDernierPionJoue())
                             accueil.getPartieIa().setCouleurPionAJouer(accueil.getPartieIa().getPlateauCase()[i]);
                     // On retrouve le pion qui doit jouer et on le met dans le pion mémoire
-                    for (i = 0; i < 64; i++)
+                    for (i=0; i<64; i++) // todo idem blabla
                         if (accueil.getPartieIa().getPlateau()[i]!=-1
                                 && accueil.getPartieIa().getPlateau()[i] == accueil.getPartieIa().getCouleurPionAJouer())
                         {

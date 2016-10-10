@@ -41,12 +41,10 @@ class Control_Partie extends MouseAdapter
                 && row >=0
                 && row <=7)
         {
-            if(accueil.getPartie().isTourDuJoueurBlanc()){
+            if(accueil.getPartie().isTourDuJoueurBlanc())
                 accueil.getPartie().getJoueurBlanc().gestionTourJoueur(row, column);
-            }
-            else{
+            else
                 accueil.getPartie().getJoueurNoir().gestionTourJoueur(row, column);
-            }
 
             if(!accueil.getPartie().estGagnee() && !accueil.getPartie().isTourUn())
                 accueil.getPartie().controleBlocage();
