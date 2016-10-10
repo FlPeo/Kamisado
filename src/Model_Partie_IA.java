@@ -46,6 +46,8 @@ public class Model_Partie_IA {
     static final byte ORANGE = 7;
 
     static final byte LIGNE = 8;
+    static final byte NBCASESATTEIGNABLESPOSSIBLESPREMIERTOUR = 14;
+    static final byte NBCASESATTEIGNABLESPOSSIBLESJOUEURCOURANT = 15;
     static final byte PIONBLANCMARRON = 0;
     static final byte PIONBLANCVERT   = 1;
     static final byte PIONBLANCROUGE  = 2;
@@ -291,7 +293,7 @@ public class Model_Partie_IA {
         // On choisit aléatoirement la case ou va se déplacer le pion (pseudo IA)
         Random rand = new Random();
         int nbCasesPossibles = 0;
-        for (int i = 0; i < 14; i++) {
+        for (int i = 0; i < NBCASESATTEIGNABLESPOSSIBLESJOUEURCOURANT; i++) {
             if (casesAtteignablesJoueurCourant[i] == -1)
                 break;
             else
@@ -306,6 +308,16 @@ public class Model_Partie_IA {
         dernierPionJoue = pionMemoire;
         tourDuJoueurBlanc = true;
         return (byte)caseAlea;
+    }
+
+    void deplacerPiece(byte caseArrivee)
+    {
+        // On indique que le pion est maintenant sur la case cliqué
+        plateau[caseArrivee] = pionMemoire;
+        // On supprime le pion de son ancien emplacement
+        plateau[casePionMemoire] = -1;
+        // On enregistre le pion qui vient d'être bougé
+        dernierPionJoue = pionMemoire;
     }
 
     byte[] getPlateau() { return plateau; }
