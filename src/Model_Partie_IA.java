@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.Random;
 
 /**
  * On définira dans cette classe et dans un soucis d'économie de place :
@@ -25,24 +26,24 @@ import java.util.Arrays;
  *          ----------------------
  *
  *      - les couleurs :
- *          'm' = marron
- *          'g' = vert
- *          'r' = rouge
- *          'y' = jaune
- *          'p' = rose
- *          'v' = violet
- *          'b' = bleu
- *          'o' = orange
+ *          0 = marron
+ *          1 = vert
+ *          2 = rouge
+ *          3 = jaune
+ *          4 = rose
+ *          5 = violet
+ *          6 = bleu
+ *          7 = orange
  */
 public class Model_Partie_IA {
-    static final char MARRON = 'm';
-    static final char GREEN = 'g';
-    static final char RED = 'r';
-    static final char YELLOW = 'y';
-    static final char PINK = 'p';
-    static final char VIOLET = 'v';
-    static final char BLUE = 'b';
-    static final char ORANGE = 'o';
+    static final byte MARRON = 0;
+    static final byte GREEN = 1;
+    static final byte RED = 2;
+    static final byte YELLOW = 3;
+    static final byte PINK = 4;
+    static final byte VIOLET = 5;
+    static final byte BLUE = 6;
+    static final byte ORANGE = 7;
 
     static final byte LIGNE = 8;
     static final byte PIONBLANCMARRON = 0;
@@ -68,10 +69,12 @@ public class Model_Partie_IA {
     private boolean estGagnee = false;
 
     private byte[] plateau;
-    private char[] plateauCase;
+    private byte[] plateauCase;
 
     //pion selectionné (choix au tour 1 / pion qui doit être joué pour les autres tours)
     private byte pionMemoire = -1;
+    private byte casePionMemoire = -1;
+    private byte couleurPionAJouer = -1;
 
     //pion qui a été joué au dernier tour
     private byte dernierPionJoue = -1;
@@ -94,7 +97,7 @@ public class Model_Partie_IA {
 
     private void initPlateauCase()
     {
-        plateauCase = new char[64];
+        plateauCase = new byte[64];
         plateauCase[0] = MARRON;
         plateauCase[1] = GREEN;
         plateauCase[2] = RED;
@@ -283,42 +286,64 @@ public class Model_Partie_IA {
         }
     }
 
+    byte evaluate(byte casePionMemoire)
+    {
+        // On choisit aléatoirement la case ou va se déplacer le pion (pseudo IA)
+        Random rand = new Random();
+        int nbCasesPossibles = 0;
+        for (int i = 0; i < 14; i++) {
+            if (casesAtteignablesJoueurCourant[i] == -1)
+                break;
+            else
+                nbCasesPossibles++;
+        }
+        int caseAlea = rand.nextInt(nbCasesPossibles);
+        // On indique que le pion est maintenant sur la case cliqué
+        plateau[casesAtteignablesJoueurCourant[caseAlea]] = pionMemoire;
+        // On supprime le pion de son ancien emplacement
+        plateau[casePionMemoire] = -1;
+        // On enregistre le pion qui vient d'être bougé
+        dernierPionJoue = pionMemoire;
+        tourDuJoueurBlanc = true;
+        return (byte)caseAlea;
+    }
+
     byte[] getPlateau() { return plateau; }
-    char[] getPlateauCase() {
+    byte[] getPlateauCase() {
         return plateauCase;
     }
 
     public boolean isTourUn() { return isTourUn; }
 
-    public static char getMARRON() {
+    public static byte getMARRON() {
         return MARRON;
     }
 
-    public static char getGREEN() {
+    public static byte getGREEN() {
         return GREEN;
     }
 
-    public static char getRED() {
+    public static byte getRED() {
         return RED;
     }
 
-    public static char getYELLOW() {
+    public static byte getYELLOW() {
         return YELLOW;
     }
 
-    public static char getPINK() {
+    public static byte getPINK() {
         return PINK;
     }
 
-    public static char getVIOLET() {
+    public static byte getVIOLET() {
         return VIOLET;
     }
 
-    public static char getBLUE() {
+    public static byte getBLUE() {
         return BLUE;
     }
 
-    public static char getORANGE() {
+    public static byte getORANGE() {
         return ORANGE;
     }
 
@@ -422,7 +447,7 @@ public class Model_Partie_IA {
         this.plateau = plateau;
     }
 
-    public void setPlateauCase(char[] plateauCase) {
+    public void setPlateauCase(byte[] plateauCase) {
         this.plateauCase = plateauCase;
     }
 
@@ -456,5 +481,21 @@ public class Model_Partie_IA {
 
     public void setCasesAtteignablesTourUn(byte[][] casesAtteignablesTourUn) {
         this.casesAtteignablesTourUn = casesAtteignablesTourUn;
+    }
+
+    public void setCasePionMemoire(byte casePionMemoire) {
+        this.casePionMemoire = casePionMemoire;
+    }
+
+    public byte getCasePionMemoire() {
+        return casePionMemoire;
+    }
+
+    public byte getCouleurPionAJouer() {
+        return couleurPionAJouer;
+    }
+
+    public void setCouleurPionAJouer(byte couleurPionAJouer) {
+        this.couleurPionAJouer = couleurPionAJouer;
     }
 }

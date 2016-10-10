@@ -50,8 +50,8 @@ class Control_Partie_IA extends MouseAdapter
                     accueil.getPartieIa().setPionMemoire(plateau[index]);
                 }
                 // Si il n'y a pas de pion sur la case cliquée et qu'il y a un pionMemoire
-                else if (plateau[index] == -1
-                        && accueil.getPartieIa().getPionMemoire() != -1) {
+                else if (plateau[index] == -1 && accueil.getPartieIa().getPionMemoire() != -1)
+                {
                     // On vérifie que la case cliquée est dans les cases atteignables du pion en mémoire
                     boolean isCaseAtteignable = false;
                     for (i = 0; i < 14; i++)
@@ -67,244 +67,146 @@ class Control_Partie_IA extends MouseAdapter
                     if (isCaseAtteignable)
                     {
                         // On indique que le pion est maintenant sur la case cliqué
-                        plateau[8 * row + column] = accueil.getPartieIa().getPionMemoire();
+                        plateau[index] = accueil.getPartieIa().getPionMemoire();
                         // On supprime le pion de son ancien emplacement
                         for (i = 0; i < 8; i++)
-                        {
                             if (plateau[i] == accueil.getPartieIa().getPionMemoire())
                             {
                                 plateau[i] = -1;
                                 break;
                             }
-                        }
+
                         // On enregistre le pion qui vient d'être bougé
                         accueil.getPartieIa().setDernierPionJoue(accueil.getPartieIa().getPionMemoire());
                         accueil.getPartieIa().setTourUn(false);
                         accueil.getPartieIa().setTourDuJoueurBlanc(false);
+
+                        vue.getVue_plateau().repaint();
+
+                        // On prépare le tour d'après
+                        // On regarde la couleur de la case où se trouve le dernier pion joué
+                        for(i=0; i<64; i++)
+                            if(plateau[i]==accueil.getPartieIa().getDernierPionJoue())
+                                accueil.getPartieIa().setCouleurPionAJouer(accueil.getPartieIa().getPlateauCase()[i]);
+
+                        // On retrouve le pion qui doit jouer et on le met dans le pion mémoire
+                        for (i = 0; i < 64; i++)
+                            if (plateau[i]!=-1 && plateau[i]%8 == accueil.getPartieIa().getCouleurPionAJouer()%8
+                                    && plateau[i]>7)
+                            {
+                                accueil.getPartieIa().setPionMemoire(plateau[i]);
+                                accueil.getPartieIa().setCasePionMemoire(i);
+                            }
+
+                        // On calcul les cases atteignables du pion mémoire
+                        accueil.getPartieIa().setCasesAtteignablesJoueurCourant(false, accueil.getPartieIa().getCasePionMemoire());
+                        // On fait jouer l'IA
+                        accueil.getPartieIa().evaluate(accueil.getPartieIa().getCasePionMemoire());
+
+                        // On prépare le tour suivant
+                        // On regarde la couleur de la case où se trouve le dernier pion joué
+                        for(i=0; i<64; i++)
+                            if(accueil.getPartieIa().getPlateau()[i]==accueil.getPartieIa().getDernierPionJoue())
+                                accueil.getPartieIa().setCouleurPionAJouer(accueil.getPartieIa().getPlateauCase()[i]);
+                        // On retrouve le pion qui doit jouer et on le met dans le pion mémoire
+                        for (i = 0; i < 64; i++)
+                            if (accueil.getPartieIa().getPlateau()[i]!=-1
+                                    && accueil.getPartieIa().getPlateau()[i] == accueil.getPartieIa().getCouleurPionAJouer())
+                            {
+                                accueil.getPartieIa().setPionMemoire(accueil.getPartieIa().getPlateau()[i]);
+                                accueil.getPartieIa().setCasePionMemoire(i);
+                            }
+                        //On calcul les cases atteignables du pion pour le tour suivant
+                        accueil.getPartieIa().setCasesAtteignablesJoueurCourant(true, accueil.getPartieIa().getCasePionMemoire());
                     }
-                    vue.getVue_plateau().repaint();
                 }
             }
             // Si ce n'est pas le premier tour
             else
             {
-                // On regarde la couleur de la case où se trouve le dernier pion joué
-                char couleurPionAJouer = 'e';
-                for(i=0; i<64; i++)
-                    if(plateau[i]==accueil.getPartieIa().getDernierPionJoue())
-                        couleurPionAJouer = accueil.getPartieIa().getPlateauCase()[i];
-
-                // On retrouve le pion qui doit jouer et on le met dans le pion mémoire
-                byte casePionMemoire = -1;
-                if(couleurPionAJouer=='m')
-                {
-                    for (i = 0; i < 64; i++)
-                        if (plateau[i] == Model_Partie_IA.getPIONBLANCMARRON())
-                        {
-                            accueil.getPartieIa().setPionMemoire(plateau[i]);
-                            casePionMemoire = i;
-                        }
-                }
-                else if(couleurPionAJouer=='g')
-                {
-                    for (i = 0; i < 64; i++)
-                        if (plateau[i] == Model_Partie_IA.getPIONBLANCVERT())
-                        {
-                            accueil.getPartieIa().setPionMemoire(plateau[i]);
-                            casePionMemoire = i;
-                        }
-                }
-                else if(couleurPionAJouer=='r')
-                {
-                    for(i=0; i<64; i++)
-                        if(plateau[i]== Model_Partie_IA.getPIONBLANCROUGE())
-                        {
-                            accueil.getPartieIa().setPionMemoire(plateau[i]);
-                            casePionMemoire = i;
-                        }
-                }
-                else if(couleurPionAJouer=='y')
-                {
-                    for(i=0; i<64; i++)
-                        if(plateau[i]== Model_Partie_IA.getPIONBLANCJAUNE())
-                        {
-                            accueil.getPartieIa().setPionMemoire(plateau[i]);
-                            casePionMemoire = i;
-                        }
-                }
-                else if(couleurPionAJouer=='p')
-                {
-                    for(i=0; i<64; i++)
-                        if(plateau[i]== Model_Partie_IA.getPIONBLANCROSE())
-                        {
-                            accueil.getPartieIa().setPionMemoire(plateau[i]);
-                            casePionMemoire = i;
-                        }
-                }
-                else if(couleurPionAJouer=='v')
-                {
-                    for(i=0; i<64; i++)
-                        if(plateau[i] == Model_Partie_IA.getPIONBLANCVIOLET())
-                        {
-                            accueil.getPartieIa().setPionMemoire(plateau[i]);
-                            casePionMemoire = i;
-                        }
-                }
-                else if(couleurPionAJouer=='b')
-                {
-                    for(i=0; i<64; i++)
-                        if(plateau[i]== Model_Partie_IA.getPIONBLANCBLEU())
-                        {
-                            accueil.getPartieIa().setPionMemoire(plateau[i]);
-                            casePionMemoire = i;
-                        }
-                }
-                else if(couleurPionAJouer=='o')
-                {
-                    for(i=0; i<64; i++)
-                        if(plateau[i]== Model_Partie_IA.getPIONBLANCORANGE())
-                        {
-                            accueil.getPartieIa().setPionMemoire(plateau[i]);
-                            casePionMemoire = i;
-                        }
-                }
-
-                // On calcul les cases atteignables du pion mémoire
-                accueil.getPartieIa().setCasesAtteignablesJoueurCourant(true, casePionMemoire);
-
                 if(plateau[index] == -1)
                 {
                     // On vérifie que la case cliquée est dans les cases atteignables du pion en mémoire
                     boolean isCaseAtteignable = false;
                     for (i = 0; i < 14; i++)
-                    {
                         if (accueil.getPartieIa().getCasesAtteignablesJoueurCourant()[i] == index)
                         {
                             isCaseAtteignable = true;
                             break;
                         }
-                    }
 
                     if (isCaseAtteignable)
                     {
 
                         // On indique que le pion est maintenant sur la case cliqué
-                        plateau[8 * row + column] = accueil.getPartieIa().getPionMemoire();
+                        plateau[index] = accueil.getPartieIa().getPionMemoire();
                         // On supprime le pion de son ancien emplacement
-                        plateau[casePionMemoire] = -1;
+                        plateau[accueil.getPartieIa().getCasePionMemoire()] = -1;
                         // On enregistre le pion qui vient d'être bougé
                         accueil.getPartieIa().setDernierPionJoue(accueil.getPartieIa().getPionMemoire());
                         accueil.getPartieIa().setTourDuJoueurBlanc(false);
-                    }
-                    vue.getVue_plateau().repaint();
-                    // On vérifie si il y a victoire ou pas
-                    if(index>55 && index<=63) {
-                        vue.jOptionMessage(texteInternational.getString("joueurBlancGagnant") + " "
-                                + texteInternational.getString("message"),
-                                texteInternational.getString("titreFenetre"));
-                        return;
+
+                        vue.repaint();
+                        // On vérifie si il y a victoire ou pas
+                        if (index > 55 && index <= 63) {
+                            vue.jOptionMessage(texteInternational.getString("joueurBlancGagnant") + " "
+                                            + texteInternational.getString("message"),
+                                    texteInternational.getString("titreFenetre"));
+                            return;
+                        }
+
+                        // On regarde la couleur de la case où se trouve le dernier pion joué
+                        for (i = 0; i < 64; i++)
+                            if (plateau[i] == accueil.getPartieIa().getDernierPionJoue())
+                                accueil.getPartieIa().setCouleurPionAJouer(accueil.getPartieIa().getPlateauCase()[i]);
+
+                        // On retrouve le pion qui doit jouer et on le met dans le pion mémoire
+                        for (i = 0; i < 64; i++)
+                            if (plateau[i] != -1 && plateau[i] % 8 == accueil.getPartieIa().getCouleurPionAJouer() % 8
+                                    && plateau[i] > 7) {
+                                accueil.getPartieIa().setPionMemoire(plateau[i]);
+                                accueil.getPartieIa().setCasePionMemoire(i);
+                            }
+
+                        // On calcul les cases atteignables du pion mémoire
+                        accueil.getPartieIa().setCasesAtteignablesJoueurCourant(false, accueil.getPartieIa().getCasePionMemoire());
                     }
                 }
-
 
                 // Tour du joueur noir (IA)
                 if(!accueil.getPartieIa().isTourDuJoueurBlanc())
                 {
-                    // On regarde la couleur de la case où se trouve le dernier pion joué
-                    couleurPionAJouer = 'e';
-                    for(i=0; i<64; i++)
-                        if(plateau[i]==accueil.getPartieIa().getDernierPionJoue())
-                            couleurPionAJouer = accueil.getPartieIa().getPlateauCase()[i];
-                    // On retrouve le pion qui doit jouer et on le met dans le pion mémoire
-                    casePionMemoire = -1;
-                    if (couleurPionAJouer == 'm') {
-                        for (i = 0; i < 64; i++)
-                            if (plateau[i] == Model_Partie_IA.getPIONNOIRMARRON()) {
-                                accueil.getPartieIa().setPionMemoire(plateau[i]);
-                                casePionMemoire = i;
-                            }
-                    } else if (couleurPionAJouer == 'g') {
-                        for (i = 0; i < 64; i++)
-                            if (plateau[i] == Model_Partie_IA.getPIONNOIRVERT()) {
-                                accueil.getPartieIa().setPionMemoire(plateau[i]);
-                                casePionMemoire = i;
-                            }
-                    } else if (couleurPionAJouer == 'r') {
-                        for (i = 0; i < 64; i++)
-                            if (plateau[i] == Model_Partie_IA.getPIONNOIRROUGE()) {
-                                accueil.getPartieIa().setPionMemoire(plateau[i]);
-                                casePionMemoire = i;
-                            }
-                    } else if (couleurPionAJouer == 'y') {
-                        for (i = 0; i < 64; i++)
-                            if (plateau[i] == Model_Partie_IA.getPIONNOIRJAUNE()) {
-                                accueil.getPartieIa().setPionMemoire(plateau[i]);
-                                casePionMemoire = i;
-                            }
-                    } else if (couleurPionAJouer == 'p') {
-                        for (i = 0; i < 64; i++)
-                            if (plateau[i] == Model_Partie_IA.getPIONNOIRROSE()) {
-                                accueil.getPartieIa().setPionMemoire(plateau[i]);
-                                casePionMemoire = i;
-                            }
-                    } else if (couleurPionAJouer == 'v') {
-                        for (i = 0; i < 64; i++)
-                            if (plateau[i] == Model_Partie_IA.getPIONNOIRVIOLET()) {
-                                accueil.getPartieIa().setPionMemoire(plateau[i]);
-                                casePionMemoire = i;
-                            }
-                    } else if (couleurPionAJouer == 'b') {
-                        for (i = 0; i < 64; i++)
-                            if (plateau[i] == Model_Partie_IA.getPIONNOIRBLEU()) {
-                                accueil.getPartieIa().setPionMemoire(plateau[i]);
-                                casePionMemoire = i;
-                            }
-                    } else if (couleurPionAJouer == 'o') {
-                        for (i = 0; i < 64; i++)
-                            if (plateau[i] == Model_Partie_IA.getPIONNOIRORANGE()) {
-                                accueil.getPartieIa().setPionMemoire(plateau[i]);
-                                casePionMemoire = i;
-                            }
-                    }
-
-                    // On calcul les cases atteignables du pion mémoire
-                    accueil.getPartieIa().setCasesAtteignablesJoueurCourant(false, casePionMemoire);
-
                     // On fait le déplacement aléatoire de l'IA
-                    evaluate(casePionMemoire);
+                    byte caseAlea = accueil.getPartieIa().evaluate(accueil.getPartieIa().getCasePionMemoire());
+
+                    vue.repaint();
+
+                    // On vérifie si il y a victoire ou pas
+                    if (accueil.getPartieIa().getCasesAtteignablesJoueurCourant()[caseAlea] < 8
+                            && accueil.getPartieIa().getCasesAtteignablesJoueurCourant()[caseAlea] >= 0)
+                        vue.jOptionMessage(texteInternational.getString("IAgagnant") + " "
+                                        + texteInternational.getString("message"),
+                                texteInternational.getString("titreFenetre"));
+
+
+                    // On prépare le tour suivant
+                    // On regarde la couleur de la case où se trouve le dernier pion joué
+                    for(i=0; i<64; i++)
+                        if(accueil.getPartieIa().getPlateau()[i]==accueil.getPartieIa().getDernierPionJoue())
+                            accueil.getPartieIa().setCouleurPionAJouer(accueil.getPartieIa().getPlateauCase()[i]);
+                    // On retrouve le pion qui doit jouer et on le met dans le pion mémoire
+                    for (i = 0; i < 64; i++)
+                        if (accueil.getPartieIa().getPlateau()[i]!=-1
+                                && accueil.getPartieIa().getPlateau()[i] == accueil.getPartieIa().getCouleurPionAJouer())
+                        {
+                            accueil.getPartieIa().setPionMemoire(accueil.getPartieIa().getPlateau()[i]);
+                            accueil.getPartieIa().setCasePionMemoire(i);
+                        }
+                    //On calcul les cases atteignables du pion pour le tour suivant
+                    accueil.getPartieIa().setCasesAtteignablesJoueurCourant(true, accueil.getPartieIa().getCasePionMemoire());
                 }
             }
-            // ML fin
         }
     }
-
-    void evaluate(byte casePionMemoire)
-    {
-        // On choisit aléatoirement la case ou va se déplacer le pion (pseudo IA)
-        Random rand = new Random();
-        int nbCasesPossibles = 0;
-        for (int i = 0; i < 14; i++) {
-            if (accueil.getPartieIa().getCasesAtteignablesJoueurCourant()[i] == -1)
-                break;
-            else
-                nbCasesPossibles++;
-        }
-        int caseAlea = rand.nextInt(nbCasesPossibles);
-        // On indique que le pion est maintenant sur la case cliqué
-        accueil.getPartieIa().getPlateau()[accueil.getPartieIa().getCasesAtteignablesJoueurCourant()[caseAlea]] = accueil.getPartieIa().getPionMemoire();
-        // On supprime le pion de son ancien emplacement
-        accueil.getPartieIa().getPlateau()[casePionMemoire] = -1;
-        // On enregistre le pion qui vient d'être bougé
-        accueil.getPartieIa().setDernierPionJoue(accueil.getPartieIa().getPionMemoire());
-        accueil.getPartieIa().setTourDuJoueurBlanc(true);
-
-        vue.getVue_plateau().repaint();
-
-        // On vérifie si il y a victoire ou pas
-        if (accueil.getPartieIa().getCasesAtteignablesJoueurCourant()[caseAlea] < 8
-                && accueil.getPartieIa().getCasesAtteignablesJoueurCourant()[caseAlea] >= 0)
-            vue.jOptionMessage(texteInternational.getString("IAgagnant") + " "
-                    + texteInternational.getString("message"),
-                    texteInternational.getString("titreFenetre"));
-    }
+    // ML fin
 }
