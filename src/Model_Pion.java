@@ -6,6 +6,8 @@ class Model_Pion
     private boolean estBlanc;
     private final int COULEUR;
     private ArrayList<Model_Case> casesAtteignables;
+    protected int relX, relY;
+    protected int incX, incY;
 
     /**
      * Constructeur d'un pion
@@ -134,4 +136,36 @@ class Model_Pion
     Model_Case getCaseActuelle() { return caseActuelle; }
     ArrayList<Model_Case> getCasesAtteignables() { return casesAtteignables; }
     boolean isEstBlanc() { return estBlanc; }
+
+    public int getRelX() {
+        return relX;
+    }
+
+    public void setRelX(int relX) {
+        this.relX = relX;
+    }
+
+    public int getRelY() {
+        return relY;
+    }
+
+    public void setRelY(int relY) {
+        this.relY = relY;
+    }
+
+    public int getIncX() {
+        return incX;
+    }
+
+    public void setIncX(int incX) {
+        this.incX = incX;
+    }
+
+    public int getIncY() {
+        return incY;
+    }
+
+    public void setIncY(int incY) {
+        this.incY = incY;
+    }
 }

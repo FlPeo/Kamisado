@@ -1,6 +1,8 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -13,6 +15,11 @@ class Vue_Plateau extends JPanel
     private BufferedImage[] imagesPionsJoueurBlanc;
     private BufferedImage[] imagesPionsJoueurNoir;
     private BufferedImage background;
+    private int pas;
+    private boolean deplacementEnCours=false;
+    private Model_Case depart;
+
+    private Timer timerAnim;
 
 
     private final int SIZECASE = 80;
@@ -24,6 +31,7 @@ class Vue_Plateau extends JPanel
      */
     Vue_Plateau(Vue vue, Model_Accueil accueil)
     {
+        depart = null; // attente animation
         this.vue = vue;
         this.accueil = accueil;
 
@@ -115,15 +123,14 @@ class Vue_Plateau extends JPanel
                 }
             }
 
-
             g.setColor(new Color(255,255,255,120));
-            for(byte c : accueil.getPartieIa().getCasesAtteignablesJoueurCourant()){
-                if(c!=-1){
+            for(byte c : accueil.getPartieIa().getCasesAtteignablesJoueurCourant())
+                if(c!=-1)
+                {
                     x = c%8;
                     y = c/8;
                     g.fillOval(x * SIZECASE +380 - SIZECASE/4, (8-y) * SIZECASE -20 - SIZECASE/2, SIZECASE, SIZECASE);
                 }
-            }
 
             return;
         }
@@ -168,13 +175,32 @@ class Vue_Plateau extends JPanel
 
                 x = i%8;
                 y = i/8;
-                g.drawImage(typePion[couleurPion], x * SIZECASE +380 - SIZECASE/4, -y * SIZECASE +620 - SIZECASE/2, null);
+
+                // MICHAEL
+                /*
+                On prends le pion a dessiner : soit il s'agit du pion animation soit d'un autre pion
+                si c'est le pion animation on part de sa source et on va jusqu'à la case actuelle
+                 */
+                Model_Pion pionAdessiner = accueil.getPartie().getPlateau().getBoard()[i].getPion();
+                Model_Pion dernierPionJoue = accueil.getPartie().getDernierPionJoue();
+                if (dernierPionJoue != null
+                    && dernierPionJoue.equals(pionAdessiner)
+                    && deplacementEnCours)
+                {
+                    System.out.println(dernierPionJoue.getCaseActuelle().getColumn() + " " + dernierPionJoue.getCaseActuelle().getRow());
+                    g.drawImage(typePion[couleurPion],
+                            depart.getColumn() * SIZECASE + pionSurLaCase.getRelX() + 380 - SIZECASE/4,
+                            -depart.getRow() * SIZECASE - pionSurLaCase.getRelY() + 620 - SIZECASE/2,
+                            null);
+                }
+                else
+                    g.drawImage(typePion[couleurPion],
+                            x  * SIZECASE + 380 - SIZECASE/4,
+                            -y * SIZECASE + 620 - SIZECASE/2,
+                            null);
             }
         }
-
-
-
-
+        //--------FIN MICHAEL
         if(accueil.getPartie().getPionMemoire() != null)
         {
             ArrayList<Model_Case> cases= accueil.getPartie().getPionMemoire().getCasesAtteignables();
@@ -185,5 +211,59 @@ class Vue_Plateau extends JPanel
                             (8-c.getRow()) * SIZECASE -20 - SIZECASE/2,
                             SIZECASE, SIZECASE);
         }
+    }
+    // MICHAEL JUSQU'EN BAS
+    /**
+     * deplacementAnimation
+     * classe gérant le parcours de la pièce de la case de départ à la case d'arrivée
+     *
+     * @param depart (case de départ)
+     * @param arrive (case d'arrivée)
+     * @param piece (pièce qui a bougé)
+     */
+    void deplacementAnimation(Model_Case depart, Model_Case arrive, Model_Pion piece)
+    {
+        this.depart = depart;
+        //reinitialise le rel de piece
+        piece.setRelX(0);
+        piece.setRelY(0);
+
+        piece.setIncX(((arrive.getColumn()-depart.getColumn())*80)/(10));
+        piece.setIncY(((arrive.getRow()-depart.getRow())*80)/(10));
+
+        pas = 0;
+
+        timerAnim = new Timer(30, new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                //calcule nouvelle position
+                piece.setRelX(piece.getRelX()+piece.getIncX());
+                piece.setRelY(piece.getRelY()+piece.getIncY());
+                repaint();
+
+                pas++;
+                if (pas >=10)
+                {
+                    piece.setRelX(0);
+                    piece.setRelY(0);
+
+                    stopTimerAnim();
+                }
+            }
+        });
+        timerAnim.start();
+        deplacementEnCours = true;
+    }
+
+    /**
+     * stopTimerAnim
+     * Arrête l'animation
+     */
+    private void stopTimerAnim()
+    {
+        timerAnim.stop();
+        deplacementEnCours=false;
     }
 }

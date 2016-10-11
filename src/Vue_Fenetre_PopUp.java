@@ -3,18 +3,21 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * Created by fparty2 on 11/10/16.
+ Created by fparty2 on 11/10/16.
  */
-public class Vue_Fenetre_PopUp extends JFrame{
+public class Vue_Fenetre_PopUp extends JFrame
+{
 
-    public Vue_Fenetre_PopUp(JPanel panel){
+    public Vue_Fenetre_PopUp(JPanel panel)
+    {
         setContentPane(panel);
 
         setConfig();
         pack();
     }
 
-    public void setConfig(){
+    public void setConfig()
+    {
         setResizable(false);
         setUndecorated(true);
         setLocationRelativeTo(null);
@@ -22,7 +25,8 @@ public class Vue_Fenetre_PopUp extends JFrame{
         setVisible(true);
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
         final JPanel panel = new JPanel();
         BoxLayout layout = new BoxLayout(panel, BoxLayout.Y_AXIS);
         panel.setLayout(layout);
@@ -34,9 +38,11 @@ public class Vue_Fenetre_PopUp extends JFrame{
 
         final Vue_Fenetre_PopUp popUp = new Vue_Fenetre_PopUp(panel);
 
-        ActionListener listener = new ActionListener() {
+        ActionListener listener = new ActionListener()
+        {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e)
+            {
                 // A adapté en fonction des différents cas : quitter le programme ou simplement fermer la fenêtre
                 // Histoire que le jeux se quitte pas si l'erreur est bénine.
                 if (e.getSource().equals(butOk)){
@@ -48,8 +54,6 @@ public class Vue_Fenetre_PopUp extends JFrame{
                 }
             }
         };
-
-
         butOk.addActionListener(listener);
     }
 }
