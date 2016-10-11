@@ -47,6 +47,9 @@ class Control_Partie_IA extends MouseAdapter
                 {
                     accueil.getPartieIa().setPionMemoire(plateau[index]);
                     accueil.getPartieIa().setCasePionMemoire(index);
+                    accueil.getPartieIa().setCasesAtteignablesJoueurCourant(accueil.getPartieIa().getCasesAtteignablesTourUn()[accueil.getPartieIa().getPionMemoire()]);
+                    vue.getVue_plateau().repaint();
+
                 }
                 // Si il n'y a pas de pion sur la case cliquée et qu'il y a un pionMemoire
                 else if (plateau[index] == -1 && accueil.getPartieIa().getPionMemoire() != -1)

@@ -114,6 +114,17 @@ class Vue_Plateau extends JPanel
                     g.drawImage(typePion[couleurPion], x * SIZECASE +380 - SIZECASE/4, -y * SIZECASE +620 - SIZECASE/2, null);
                 }
             }
+
+
+            g.setColor(new Color(255,255,255,120));
+            for(byte c : accueil.getPartieIa().getCasesAtteignablesJoueurCourant()){
+                if(c!=-1){
+                    x = c%8;
+                    y = c/8;
+                    g.fillOval(x * SIZECASE +380 - SIZECASE/4, (8-y) * SIZECASE -20 - SIZECASE/2, SIZECASE, SIZECASE);
+                }
+            }
+
             return;
         }
 
