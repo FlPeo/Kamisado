@@ -18,6 +18,7 @@ public class Vue_Fenetre_PopUp extends JFrame{
         setResizable(false);
         setUndecorated(true);
         setLocationRelativeTo(null);
+        //setAlwaysOnTop(true);        //a mettre si besoin
         setVisible(true);
     }
 
