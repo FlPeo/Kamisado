@@ -94,9 +94,9 @@ class Vue_Plateau extends JPanel
                         g.setColor(new Color(124, 66, 153, 175));
                         break;
                 }
-                y = i % 8;
-                x = i / 8;
-                g.fillRect(y * SIZECASE + 360, -x * SIZECASE + 580, SIZECASE, SIZECASE);
+                x = i % 8;
+                y = i / 8;
+                g.fillRect(x * SIZECASE + 360, -y * SIZECASE + 580, SIZECASE, SIZECASE);
             }
             //dessine les pieces
             Boolean pionSurLaCase, estBlanc = false;
@@ -140,9 +140,9 @@ class Vue_Plateau extends JPanel
                 case Couleur.VIOLET:
                     g.setColor(new Color(124,66,153,175)); break;
             }
-            y = i%8;
-            x = i/8;
-            g.fillRect(y * SIZECASE + 360, -x * SIZECASE + 580, SIZECASE, SIZECASE);
+            x = i%8;
+            y = i/8;
+            g.fillRect(x * SIZECASE + 360, -y * SIZECASE + 580, SIZECASE, SIZECASE);
         }
 
         //dessine les pieces
