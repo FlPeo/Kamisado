@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 class Vue_Plateau extends JPanel
 {
@@ -157,6 +158,17 @@ class Vue_Plateau extends JPanel
                 x = i%8;
                 y = i/8;
                 g.drawImage(typePion[couleurPion], x * SIZECASE +380 - SIZECASE/4, -y * SIZECASE +620 - SIZECASE/2, null);
+            }
+        }
+
+
+
+
+        if(accueil.getPartie().getPionMemoire() != null){
+            ArrayList<Model_Case> cases= accueil.getPartie().getPionMemoire().getCasesAtteignables();
+                g.setColor(new Color(255,255,255,120));
+                for(Model_Case c : cases){
+                g.fillOval(c.getColumn() * SIZECASE +380 - SIZECASE/4, (8-c.getRow()) * SIZECASE -20 - SIZECASE/2, SIZECASE, SIZECASE);
             }
         }
     }
