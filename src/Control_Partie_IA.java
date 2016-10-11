@@ -1,7 +1,6 @@
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Locale;
-import java.util.Random;
 import java.util.ResourceBundle;
 
 class Control_Partie_IA extends MouseAdapter
@@ -40,7 +39,6 @@ class Control_Partie_IA extends MouseAdapter
                 && row >= 0
                 && row <= 7)
         {
-            // ML début
             if (accueil.getPartieIa().isTourUn())
             {
                 // Joueur blanc = humain et c'est lui qui commence
@@ -66,11 +64,6 @@ class Control_Partie_IA extends MouseAdapter
                     }
                     if (isCaseAtteignable)
                     {
-                        // todo ca c'est une méthode de modele elle s'occupe de deplacerLaPiece
-                        // todo pas efficace il faudrait juste mettre en mémoire son emplacement dans un attribut du
-                        // todo model pour ne pas avoir à faire cette boucle qui peut rajouter jusqu'à 63 instructions
-                        // todo inutiles
-
                         // Déplacement de la pièce
                         accueil.getPartieIa().deplacerPiece(index);
 
@@ -201,5 +194,4 @@ class Control_Partie_IA extends MouseAdapter
             }
         }
     }
-    // ML fin
 }

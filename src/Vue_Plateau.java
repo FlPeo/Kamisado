@@ -100,7 +100,7 @@ class Vue_Plateau extends JPanel
                 g.fillRect(x * SIZECASE + 360, -y * SIZECASE + 580, SIZECASE, SIZECASE);
             }
             //dessine les pieces
-            Boolean pionSurLaCase, estBlanc = false;
+            Boolean pionSurLaCase, estBlanc;
             for(i=0; i<tailleDuPlateau; i++)
             {
                 pionSurLaCase = !(accueil.getPartieIa().getPlateau()[i]==-1);
@@ -164,12 +164,15 @@ class Vue_Plateau extends JPanel
 
 
 
-        if(accueil.getPartie().getPionMemoire() != null){
+        if(accueil.getPartie().getPionMemoire() != null)
+        {
             ArrayList<Model_Case> cases= accueil.getPartie().getPionMemoire().getCasesAtteignables();
                 g.setColor(new Color(255,255,255,120));
-                for(Model_Case c : cases){
-                g.fillOval(c.getColumn() * SIZECASE +380 - SIZECASE/4, (8-c.getRow()) * SIZECASE -20 - SIZECASE/2, SIZECASE, SIZECASE);
-            }
+                for(Model_Case c : cases)
+                    g.fillOval(
+                            c.getColumn() * SIZECASE +380 - SIZECASE/4,
+                            (8-c.getRow()) * SIZECASE -20 - SIZECASE/2,
+                            SIZECASE, SIZECASE);
         }
     }
 }

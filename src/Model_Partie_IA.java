@@ -256,29 +256,37 @@ public class Model_Partie_IA {
             {
                 if (row + decal <= 7
                         && row + decal >= 0
-                        && plateau[column + (row + decal) * LIGNE] < 0) {
+                        && plateau[column + (row + decal) * LIGNE] < 0)
+                {
                     casesAtteignablesJoueurCourant[curseur] = (byte)(column + (row + decal) * LIGNE);
                     curseur++;
-                } else
+                }
+                else
                     deplacableNS = false;
             }
-            if (deplacableO) {
+            if (deplacableO)
+            {
                 if (row + decal <= 7 && column - decal >= 0
                         && row + decal >= 0 && column - decal <= 7
-                        && plateau[(column - decal) + (row + decal) * LIGNE] < 0) {
+                        && plateau[(column - decal) + (row + decal) * LIGNE] < 0)
+                {
                     casesAtteignablesJoueurCourant[curseur] = (byte)((column - decal) + (row + decal) * LIGNE);
                     curseur++;
-                } else
+                }
+                else
                     deplacableO = false;
             }
-            if (deplacableE) {
+            if (deplacableE)
+            {
                 if (row + decal <= 7 && column + decal <= 7
                         && row + decal >=0 && column + decal >=0
-                        && plateau[(column + decal) + (row + decal) * LIGNE] < 0) {
+                        && plateau[(column + decal) + (row + decal) * LIGNE] < 0)
+                {
                     casesAtteignablesJoueurCourant[curseur] = (byte)((column + decal) + (row + decal) * LIGNE);
                     curseur++;
 
-                } else
+                }
+                else
                     deplacableE = false;
             }
             if(isTourBlanc)
@@ -293,12 +301,11 @@ public class Model_Partie_IA {
         // On choisit aléatoirement la case ou va se déplacer le pion (pseudo IA)
         Random rand = new Random();
         int nbCasesPossibles = 0;
-        for (int i = 0; i < NBCASESATTEIGNABLESPOSSIBLESJOUEURCOURANT; i++) {
+        for (int i = 0; i < NBCASESATTEIGNABLESPOSSIBLESJOUEURCOURANT; i++)
             if (casesAtteignablesJoueurCourant[i] == -1)
                 break;
             else
                 nbCasesPossibles++;
-        }
         int caseAlea = rand.nextInt(nbCasesPossibles);
         // On indique que le pion est maintenant sur la case cliqué
         plateau[casesAtteignablesJoueurCourant[caseAlea]] = pionMemoire;
@@ -326,107 +333,6 @@ public class Model_Partie_IA {
     }
 
     public boolean isTourUn() { return isTourUn; }
-
-    public static byte getMARRON() {
-        return MARRON;
-    }
-
-    public static byte getGREEN() {
-        return GREEN;
-    }
-
-    public static byte getRED() {
-        return RED;
-    }
-
-    public static byte getYELLOW() {
-        return YELLOW;
-    }
-
-    public static byte getPINK() {
-        return PINK;
-    }
-
-    public static byte getVIOLET() {
-        return VIOLET;
-    }
-
-    public static byte getBLUE() {
-        return BLUE;
-    }
-
-    public static byte getORANGE() {
-        return ORANGE;
-    }
-
-    public static byte getLIGNE() {
-        return LIGNE;
-    }
-
-    public static byte getPIONBLANCMARRON() {
-        return PIONBLANCMARRON;
-    }
-
-    public static byte getPIONBLANCVERT() {
-        return PIONBLANCVERT;
-    }
-
-    public static byte getPIONBLANCROUGE() {
-        return PIONBLANCROUGE;
-    }
-
-    public static byte getPIONBLANCJAUNE() {
-        return PIONBLANCJAUNE;
-    }
-
-    public static byte getPIONBLANCROSE() {
-        return PIONBLANCROSE;
-    }
-
-    public static byte getPIONBLANCVIOLET() {
-        return PIONBLANCVIOLET;
-    }
-
-    public static byte getPIONBLANCBLEU() {
-        return PIONBLANCBLEU;
-    }
-
-    public static byte getPIONBLANCORANGE() {
-        return PIONBLANCORANGE;
-    }
-
-    public static byte getPIONNOIRMARRON() {
-        return PIONNOIRMARRON;
-    }
-
-    public static byte getPIONNOIRVERT() {
-        return PIONNOIRVERT;
-    }
-
-    public static byte getPIONNOIRROUGE() {
-        return PIONNOIRROUGE;
-    }
-
-    public static byte getPIONNOIRJAUNE() {
-        return PIONNOIRJAUNE;
-    }
-
-    public static byte getPIONNOIRROSE() {
-        return PIONNOIRROSE;
-    }
-
-    public static byte getPIONNOIRVIOLET() {
-        return PIONNOIRVIOLET;
-    }
-
-    public static byte getPIONNOIRBLEU() {
-        return PIONNOIRBLEU;
-    }
-
-    public static byte getPIONNOIRORANGE() {
-        return PIONNOIRORANGE;
-    }
-
     public void setTourUn(boolean tourUn) {
         isTourUn = tourUn;
     }
@@ -438,31 +344,6 @@ public class Model_Partie_IA {
     public void setTourDuJoueurBlanc(boolean tourDuJoueurBlanc) {
         this.tourDuJoueurBlanc = tourDuJoueurBlanc;
     }
-
-    public boolean isJoueurBlancGagnant() {
-        return joueurBlancGagnant;
-    }
-
-    public void setJoueurBlancGagnant(boolean joueurBlancGagnant) {
-        this.joueurBlancGagnant = joueurBlancGagnant;
-    }
-
-    public boolean isEstGagnee() {
-        return estGagnee;
-    }
-
-    public void setEstGagnee(boolean estGagnee) {
-        this.estGagnee = estGagnee;
-    }
-
-    public void setPlateau(byte[] plateau) {
-        this.plateau = plateau;
-    }
-
-    public void setPlateauCase(byte[] plateauCase) {
-        this.plateauCase = plateauCase;
-    }
-
     public byte getPionMemoire() {
         return pionMemoire;
     }
@@ -474,27 +355,12 @@ public class Model_Partie_IA {
     public byte getDernierPionJoue() {
         return dernierPionJoue;
     }
-
-    public void setDernierPionJoue(byte dernierPionJoue) {
-        this.dernierPionJoue = dernierPionJoue;
-    }
-
     public byte[] getCasesAtteignablesJoueurCourant() {
         return casesAtteignablesJoueurCourant;
     }
-
-    public void setCasesAtteignablesJoueurCourant(byte[] casesAtteignablesJoueurCourant) {
-        this.casesAtteignablesJoueurCourant = casesAtteignablesJoueurCourant;
-    }
-
     public byte[][] getCasesAtteignablesTourUn() {
         return casesAtteignablesTourUn;
     }
-
-    public void setCasesAtteignablesTourUn(byte[][] casesAtteignablesTourUn) {
-        this.casesAtteignablesTourUn = casesAtteignablesTourUn;
-    }
-
     public void setCasePionMemoire(byte casePionMemoire) {
         this.casePionMemoire = casePionMemoire;
     }
