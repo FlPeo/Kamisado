@@ -296,7 +296,7 @@ public class Model_Partie_IA {
         }
     }
 
-    byte evaluate(byte casePionMemoire)
+    byte evaluate()
     {
         // On choisit aléatoirement la case ou va se déplacer le pion (pseudo IA)
         Random rand = new Random();
@@ -307,6 +307,8 @@ public class Model_Partie_IA {
             else
                 nbCasesPossibles++;
         int caseAlea = rand.nextInt(nbCasesPossibles);
+        // On récupère la couleur de la case où va etre déplacer le pion pour le tour d'après
+        couleurPionAJouer = plateauCase[casesAtteignablesJoueurCourant[caseAlea]];
         // On indique que le pion est maintenant sur la case cliqué
         plateau[casesAtteignablesJoueurCourant[caseAlea]] = pionMemoire;
         // On supprime le pion de son ancien emplacement
@@ -327,53 +329,50 @@ public class Model_Partie_IA {
         dernierPionJoue = pionMemoire;
     }
 
+    boolean controlBlocage()
+    {
+        return casesAtteignablesJoueurCourant[0] == -1;
+    }
+
     byte[] getPlateau() { return plateau; }
     byte[] getPlateauCase() {
         return plateauCase;
     }
-
-    public boolean isTourUn() { return isTourUn; }
-    public void setTourUn(boolean tourUn) {
+    boolean isTourUn() { return isTourUn; }
+    void setTourUn(boolean tourUn) {
         isTourUn = tourUn;
     }
-
-    public boolean isTourDuJoueurBlanc() {
+    boolean isTourDuJoueurBlanc() {
         return tourDuJoueurBlanc;
     }
-
-    public void setTourDuJoueurBlanc(boolean tourDuJoueurBlanc) {
+    void setTourDuJoueurBlanc(boolean tourDuJoueurBlanc) {
         this.tourDuJoueurBlanc = tourDuJoueurBlanc;
     }
-    public byte getPionMemoire() {
+    byte getPionMemoire() {
         return pionMemoire;
     }
-
-    public void setPionMemoire(byte pionMemoire) {
+    void setPionMemoire(byte pionMemoire) {
         this.pionMemoire = pionMemoire;
     }
-
-    public byte getDernierPionJoue() {
+    byte getDernierPionJoue() {
         return dernierPionJoue;
     }
-    public byte[] getCasesAtteignablesJoueurCourant() {
+    byte[] getCasesAtteignablesJoueurCourant() {
         return casesAtteignablesJoueurCourant;
     }
-    public byte[][] getCasesAtteignablesTourUn() {
+    byte[][] getCasesAtteignablesTourUn() {
         return casesAtteignablesTourUn;
     }
-    public void setCasePionMemoire(byte casePionMemoire) {
+    void setCasePionMemoire(byte casePionMemoire) {
         this.casePionMemoire = casePionMemoire;
     }
-
-    public byte getCasePionMemoire() {
+    byte getCasePionMemoire() {
         return casePionMemoire;
     }
-
-    public byte getCouleurPionAJouer() {
+    byte getCouleurPionAJouer() {
         return couleurPionAJouer;
     }
-
-    public void setCouleurPionAJouer(byte couleurPionAJouer) {
+    void setCouleurPionAJouer(byte couleurPionAJouer) {
         this.couleurPionAJouer = couleurPionAJouer;
     }
 }
