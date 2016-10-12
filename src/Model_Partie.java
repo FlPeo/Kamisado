@@ -183,4 +183,8 @@ class Model_Partie {
     public Model_Joueur getJoueurNoir() {
         return joueurNoir;
     }
+
+    public Model_Pion getDernierPionJoue() {
+        return dernierPionJoue;
+    }
 }

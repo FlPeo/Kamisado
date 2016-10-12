@@ -196,8 +196,13 @@ public class Model_Partie_IA {
         plateau[57] = PIONNOIRBLEU;
         plateau[56] = PIONNOIRORANGE;
     }
-    public void setCasesAtteignablesPremierTour()
-    {
+    public void setCasesAtteignablesPremierTour() {
+        for (int i = 0; i < casesAtteignablesTourUn.length; i++){
+            for(int j=0 ; j<casesAtteignablesTourUn[i].length; j++)
+                casesAtteignablesTourUn[i][j] = -1;
+        }
+
+
         for (int i = 0; i < casesAtteignablesTourUn.length; i++)
         {
             int row = i / 8, column = i % 8;
@@ -374,5 +379,9 @@ public class Model_Partie_IA {
     }
     void setCouleurPionAJouer(byte couleurPionAJouer) {
         this.couleurPionAJouer = couleurPionAJouer;
+    }
+
+    public void setCasesAtteignablesJoueurCourant(byte[] casesAtteignablesJoueurCourant) {
+        this.casesAtteignablesJoueurCourant = casesAtteignablesJoueurCourant;
     }
 }

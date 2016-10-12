@@ -3,6 +3,8 @@ import java.awt.event.MouseEvent;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import static java.lang.Thread.sleep;
+
 class Control_Partie extends MouseAdapter
 {
     private Vue vue;
@@ -41,7 +43,26 @@ class Control_Partie extends MouseAdapter
                 && row >=0
                 && row <=7)
         {
-            if(accueil.getPartie().isTourDuJoueurBlanc())
+            if(accueil.getPartie().getPionMemoire() != null
+            && accueil.getPartie().getPionMemoire().getCasesAtteignables() != null
+                && accueil.getPartie().getPionMemoire().getCasesAtteignables().contains(
+                        accueil.getPartie().getPlateau().getBoard()[row*Model_Plateau.LIGNE + column]) )
+            {
+                vue.getVue_plateau().deplacementAnimation(
+                        accueil.getPartie().getPionMemoire().getCaseActuelle(),
+                        accueil.getPartie().getPlateau().getBoard()[row*Model_Plateau.LIGNE + column],
+                        accueil.getPartie().getPionMemoire()
+                );
+                try
+                {
+                    sleep(1);
+                }
+                catch(InterruptedException ex)
+                {
+                    ex.printStackTrace();
+                }
+            }
+            if( accueil.getPartie().isTourDuJoueurBlanc() )
                 accueil.getPartie().getJoueurBlanc().gestionTourJoueur(row, column);
             else
                 accueil.getPartie().getJoueurNoir().gestionTourJoueur(row, column);

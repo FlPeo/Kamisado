@@ -9,9 +9,11 @@ class Model_Joueur
         estJoueurBlanc = joueurBlanc;
     }
 
-    void gestionTourJoueur(int row, int column) {
+    void gestionTourJoueur(int row, int column)
+    {
         Model_Case casesPlateau[] = model_partie2V2.getPlateau().getBoard();
-        int ligne = Model_Plateau.LIGNE;                      //utiliser autre chose (sqrt(casesPlateau.length) par ex) si besoin d'un mock plus reduit
+        int ligne = Model_Plateau.LIGNE;
+        //utiliser autre chose (sqrt(casesPlateau.length) par ex) si besoin d'un mock plus reduit
 
         if (model_partie2V2.isTourUn())
         {
