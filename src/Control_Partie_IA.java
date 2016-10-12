@@ -158,7 +158,8 @@ class Control_Partie_IA extends MouseAdapter
                     // Si le pion du joueur blanc (humain) est bloqué
                     else
                     {
-                        accueil.getPartieIa().setCouleurPionAJouer(accueil.getPartieIa().getPionMemoire());
+                        // On trouve la couleur de la case sur laquelle se trouve le pion bloqué
+                        accueil.getPartieIa().setCouleurPionAJouer(accueil.getPartieIa().getPlateauCase()[accueil.getPartieIa().getCasePionMemoire()]);
                         // On retrouve le pion qui doit jouer et on le met dans le pion mémoire
                         for (i = 0; i < plateau.length; i++)
                             if (plateau[i] != -1 && plateau[i]%8 == accueil.getPartieIa().getCouleurPionAJouer()%8
@@ -204,7 +205,7 @@ class Control_Partie_IA extends MouseAdapter
                     }
                     else
                     {
-                        accueil.getPartieIa().setCouleurPionAJouer((byte)(accueil.getPartieIa().getPionMemoire()-8));
+                        accueil.getPartieIa().setCouleurPionAJouer(accueil.getPartieIa().getPlateauCase()[accueil.getPartieIa().getCasePionMemoire()]);
                         // On retrouve le pion qui doit jouer et on le met dans le pion mémoire
                         for (i = 0; i < plateau.length; i++)
                             if (accueil.getPartieIa().getPlateau()[i] != -1
