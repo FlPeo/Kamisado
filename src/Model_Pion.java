@@ -6,8 +6,8 @@ class Model_Pion
     private boolean estBlanc;
     private final int COULEUR;
     private ArrayList<Model_Case> casesAtteignables;
-    protected int relX, relY;
-    protected int incX, incY;
+    private int relX, relY;
+    private int incX, incY;
 
     /**
      * Constructeur d'un pion
@@ -20,7 +20,7 @@ class Model_Pion
         this.estBlanc = estBlanc;
         this.caseActuelle = caseInitiale;
         this.COULEUR = COULEUR;
-        this.casesAtteignables = new ArrayList<Model_Case>();
+        this.casesAtteignables = new ArrayList<>();
     }
 
     /**
@@ -136,36 +136,12 @@ class Model_Pion
     Model_Case getCaseActuelle() { return caseActuelle; }
     ArrayList<Model_Case> getCasesAtteignables() { return casesAtteignables; }
     boolean isEstBlanc() { return estBlanc; }
-
-    public int getRelX() {
-        return relX;
-    }
-
-    public void setRelX(int relX) {
-        this.relX = relX;
-    }
-
-    public int getRelY() {
-        return relY;
-    }
-
-    public void setRelY(int relY) {
-        this.relY = relY;
-    }
-
-    public int getIncX() {
-        return incX;
-    }
-
-    public void setIncX(int incX) {
-        this.incX = incX;
-    }
-
-    public int getIncY() {
-        return incY;
-    }
-
-    public void setIncY(int incY) {
-        this.incY = incY;
-    }
+    int getRelX() { return relX; }
+    int getRelY() { return relY; }
+    int getIncX() { return incX; }
+    int getIncY() { return incY; }
+    void setRelX(int relX) { this.relX = relX; }
+    void setRelY(int relY) { this.relY = relY; }
+    void setIncX(int incX) { this.incX = incX; }
+    void setIncY(int incY) { this.incY = incY; }
 }
