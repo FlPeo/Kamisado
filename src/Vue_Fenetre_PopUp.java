@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 public class Vue_Fenetre_PopUp extends JFrame
 {
 
-    public Vue_Fenetre_PopUp(JPanel panel)
+    public Vue_Fenetre_PopUp(JPanel panel)      //si on ne donne pes de titre à la fenetre
     {
         setContentPane(panel);
 
@@ -16,10 +16,27 @@ public class Vue_Fenetre_PopUp extends JFrame
         pack();
     }
 
+    public Vue_Fenetre_PopUp(JPanel panel, String titre)   //si on donne un titre à la fenetre
+    {
+        setContentPane(panel);
+
+        setConfig(titre);
+        pack();
+    }
+
     public void setConfig()
     {
         setResizable(false);
         setUndecorated(true);
+        setLocationRelativeTo(null);
+        //setAlwaysOnTop(true);        //a mettre si besoin
+        setVisible(true);
+    }
+
+    public void setConfig(String titre)
+    {
+        setTitle(titre);
+        setResizable(false);
         setLocationRelativeTo(null);
         //setAlwaysOnTop(true);        //a mettre si besoin
         setVisible(true);
@@ -36,7 +53,7 @@ public class Vue_Fenetre_PopUp extends JFrame
         panel.add(lab);
         panel.add(butOk);
 
-        final Vue_Fenetre_PopUp popUp = new Vue_Fenetre_PopUp(panel);
+        final Vue_Fenetre_PopUp popUp = new Vue_Fenetre_PopUp(panel, "gyugyuè");
 
         ActionListener listener = new ActionListener()
         {
