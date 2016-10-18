@@ -1,6 +1,5 @@
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Locale;
 import java.util.ResourceBundle;
 
 import static java.lang.Thread.sleep;
@@ -11,7 +10,6 @@ class Control_Partie extends MouseAdapter
     private Model_Accueil accueil;
 
     private ResourceBundle texteInternational;
-    private Locale locale = new Locale("");
 
     /**
      * Constructeur du controleur d'une partie
@@ -22,7 +20,6 @@ class Control_Partie extends MouseAdapter
     {
         this.accueil = accueil;
         this.vue = vue;
-        Locale.setDefault(locale);
         texteInternational = ResourceBundle.getBundle("Traductions.victoire");
         vue.setPartieControl(this);
     }
@@ -89,9 +86,8 @@ class Control_Partie extends MouseAdapter
             nomJoueur = accueil.getPartie().getJoueurBlanc().getNom();
         else
             nomJoueur = accueil.getPartie().getJoueurNoir().getNom();
-        vue.jOptionMessage(nomJoueur
-                + " "
-                + texteInternational.getString("message"),
-                texteInternational.getString("titreFenetre"));
+
+
+        Vue_FactorPopup.creerPopupJoueurGagnant(nomJoueur);
     }
 }

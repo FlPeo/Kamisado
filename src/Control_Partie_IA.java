@@ -1,6 +1,5 @@
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Locale;
 import java.util.ResourceBundle;
 
 class Control_Partie_IA extends MouseAdapter
@@ -9,13 +8,11 @@ class Control_Partie_IA extends MouseAdapter
     private final Model_Accueil accueil;
     private final Vue vue;
     private ResourceBundle texteInternational;
-    private Locale locale = new Locale("");
 
     Control_Partie_IA(Model_Accueil accueil, Vue vue)
     {
         this.accueil = accueil;
         this.vue = vue;
-        Locale.setDefault(locale);
         texteInternational = ResourceBundle.getBundle("Traductions.victoire");
         vue.setPartieControl(this);
     }
@@ -136,9 +133,7 @@ class Control_Partie_IA extends MouseAdapter
                             vue.repaint();
                             // On vérifie si il y a victoire ou pas
                             if (index > 55 && index <= 63) {
-                                vue.jOptionMessage(texteInternational.getString("joueurBlancGagnant") + " "
-                                                + texteInternational.getString("message"),
-                                        texteInternational.getString("titreFenetre"));
+                                Vue_FactorPopup.creerPopupJoueurGagnant(texteInternational.getString("joueurBlancGagnant"));
                                 return;
                             }
 
@@ -188,9 +183,7 @@ class Control_Partie_IA extends MouseAdapter
                         // On vérifie si il y a victoire ou pas
                         if (accueil.getPartieIa().getCasesAtteignablesJoueurCourant()[caseAlea] < 8
                                 && accueil.getPartieIa().getCasesAtteignablesJoueurCourant()[caseAlea] >= 0)
-                            vue.jOptionMessage(texteInternational.getString("IAgagnant") +
-                                            " " + texteInternational.getString("message"),
-                                    texteInternational.getString("titreFenetre"));
+                            Vue_FactorPopup.creerPopupJoueurGagnant(texteInternational.getString("IAgagnant"));
 
                         // On prépare le tour suivant
                         // On retrouve le pion qui doit jouer et on le met dans le pion mémoire

@@ -1,9 +1,5 @@
-import javax.imageio.ImageIO;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
 class Control_Menu_Accueil implements ActionListener
 {
@@ -57,11 +53,7 @@ class Control_Menu_Accueil implements ActionListener
         }
         else if(e.getSource().equals(vue.getCredits()))
         {
-            vue.jOptionMessage("Jeu réalisé par : " +
-                    "\n Marie-Lucile Caniard " +
-                    "\n Michael Boutboul " +
-                    "\n Adonis N'Dolo " +
-                    "\n Florian Party", "Crédits");
+            Vue_FactorPopup.creerPopupCredits();
         }
         else if (e.getSource().equals(vue.getQuitter()))
         {

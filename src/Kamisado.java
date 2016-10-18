@@ -1,7 +1,12 @@
+import java.util.Locale;
+
 class Kamisado
 {
     public static void main (String[] args)
     {
+        Locale locale = new Locale("fr");
+        Locale.setDefault(locale);
+
         javax.swing.SwingUtilities.invokeLater(new Runnable()
         {
             @Override

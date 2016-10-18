@@ -4,11 +4,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
-import java.util.Locale;
 import java.util.ResourceBundle;
 
-import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
-import static javax.swing.JOptionPane.showMessageDialog;
 
 class Vue extends JFrame
 {
@@ -28,7 +25,6 @@ class Vue extends JFrame
     private JLabel background;
 
     private ResourceBundle texteInternational;
-    private Locale locale = new Locale("");  // mettre "" pour anglais, code de deux lettres du pays pour les autres
 
 
 
@@ -58,7 +54,6 @@ class Vue extends JFrame
      */
     private void initAttribut()
     {
-        Locale.setDefault(locale);
         texteInternational = ResourceBundle.getBundle("Traductions.boutons");
 
         titre = new JLabel(texteInternational.getString("titre"));
@@ -84,7 +79,7 @@ class Vue extends JFrame
         }
         catch (FontFormatException fe)
         {
-            jOptionMessage("pas le bon format !", "Erreur");
+            Vue_FactorPopup.creerPopupErreurChargement();
         }
         catch (IOException io)
         {
@@ -94,15 +89,6 @@ class Vue extends JFrame
         titre.setFont(policeTitre);
     }
 
-    /**
-     * Affiche une fenêtre popup
-     * @param message (chaine de caractères qui sera affichée dans le corps de la fenêtre
-     * @param titreFenetre (titre de la fenêtre)
-     */
-    void jOptionMessage(String message, String titreFenetre)
-    {
-        JOptionPane.showMessageDialog(this, message, titreFenetre, JOptionPane.INFORMATION_MESSAGE);
-    }
 
     /**
      * Organise la vue de l'accueil
