@@ -1,6 +1,7 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+
 /**
  Created by cladlink on 06/11/16.
  */
@@ -52,7 +53,7 @@ class Control_Partie_Menu implements ActionListener
         else if (e.getSource().equals(vue.getUndoMenu()))
         {
             boolean undo = vue.boolJOptionPane("Voulez-vous annuler le dernier coup ?");
-            if (true)
+            if (undo)
             {
                 if(!accueil.getPartie().undo())
                     Vue_FactorPopup.creerPopupText();

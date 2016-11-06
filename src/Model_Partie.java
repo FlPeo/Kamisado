@@ -67,7 +67,10 @@ class Model_Partie {
         // Le premier tour est géré séparément car c'est un cas particulier où le joueur à la possibilité de choisir
         // le pion qu'il va bouger.
         if(isTourUn)
+        {
+            pionMemoire = null; // en cas de undo il faut remettre le pion memoire à null
             for(Model_Pion pionsTour : pionsDuTour) pionsTour.casesAtteignables();
+        }
         else
         {
             int couleurDuPionQuiDoitBouger = dernierPionJoue.getCaseActuelle().getCOULEUR();
@@ -94,32 +97,45 @@ class Model_Partie {
             return false;
         String[] listesCoups = history.split(":");
         String dernierCoup = listesCoups[(listesCoups.length-1)];
+        String[] tabCoupDecoupe = dernierCoup.split("");
+
         if (dernierCoup.equals("!"))
         {
+            history = "";
             for (int i = 0; i < listesCoups.length-1; i++)
                 history += listesCoups[i] + ":";
+
+            tourDuJoueurBlanc = !tourDuJoueurBlanc;
             undo();
         }
-        String[] tabCoupDecoupe = dernierCoup.split("");
-        int rowDepart = Integer.parseInt(tabCoupDecoupe[0]);
-        int columnDepart = Integer.parseInt(tabCoupDecoupe[1]);
-        int rowArrivee = Integer.parseInt(tabCoupDecoupe[2]);
-        int columnArrivee = Integer.parseInt(tabCoupDecoupe[3]);
+        else
+        {
+            int rowDepart = Integer.parseInt(tabCoupDecoupe[0]);
+            int columnDepart = Integer.parseInt(tabCoupDecoupe[1]);
+            int rowArrivee = Integer.parseInt(tabCoupDecoupe[2]);
+            int columnArrivee = Integer.parseInt(tabCoupDecoupe[3]);
+            Model_Case caseDepart = plateau.getBoard()[rowDepart*Model_Plateau.LIGNE+columnDepart];
+            Model_Case caseArrivee = plateau.getBoard()[rowArrivee*Model_Plateau.LIGNE+columnArrivee];
+            Model_Pion pieceBougee = caseArrivee.getPion();
+            plateau.deplacer(caseArrivee, caseDepart, pieceBougee);
+            history = "";
+            for (int i = 0; i < listesCoups.length-1; i++)
+                history += listesCoups[i] + ":";
+            if (history.length() == 0)
+            {
+                isTourUn = true;
+                tourDuJoueurBlanc = !tourDuJoueurBlanc;
+                casesAtteignablesProchainTour();
+                return true;
+            }
 
-        Model_Case caseDepart = plateau.getBoard()[rowDepart*Model_Plateau.LIGNE+columnDepart];
-        Model_Case caseArrivee = plateau.getBoard()[rowArrivee*Model_Plateau.LIGNE+columnArrivee];
-        Model_Pion pieceBougee = caseArrivee.getPion();
-        plateau.deplacer(caseArrivee, caseDepart, pieceBougee);
+            tourDuJoueurBlanc = !tourDuJoueurBlanc;
 
-        tourDuJoueurBlanc = !tourDuJoueurBlanc;
-        history = "";
-        for (int i = 0; i < listesCoups.length-1; i++)
-            history += listesCoups[i] + ":";
-        if (history.length() == 0) isTourUn = true;
-        int rowDernierpionJoue = Character.getNumericValue(listesCoups[listesCoups.length-2].charAt(2));
-        int colDernierpionJoue = Character.getNumericValue(listesCoups[listesCoups.length-2].charAt(3));
-        dernierPionJoue = plateau.getBoard()[rowDernierpionJoue*Model_Plateau.LIGNE + colDernierpionJoue].getPion();
-        casesAtteignablesProchainTour();
+            int rowDernierpionJoue = Character.getNumericValue(listesCoups[listesCoups.length-2].charAt(2));
+            int colDernierpionJoue = Character.getNumericValue(listesCoups[listesCoups.length-2].charAt(3));
+            dernierPionJoue = plateau.getBoard()[rowDernierpionJoue*Model_Plateau.LIGNE + colDernierpionJoue].getPion();
+            casesAtteignablesProchainTour();
+        }
         return true;
     }
 
@@ -144,6 +160,7 @@ class Model_Partie {
     {
         if(pionMemoire.getCasesAtteignables().isEmpty())
         {
+            history+="!:";
             boolean impossibleDeJouer = false;
             boolean joueurBlancGagnantSiJeuBloque = tourDuJoueurBlanc;
             ArrayList<Model_Pion> arrayPions = new ArrayList<>();

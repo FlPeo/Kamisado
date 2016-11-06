@@ -89,7 +89,6 @@ class Control_Partie extends MouseAdapter
         else
             nomJoueur = accueil.getPartie().getJoueurNoir().getNom();
 
-
         Vue_FactorPopup.creerPopupJoueurGagnant(nomJoueur);
     }
 }
