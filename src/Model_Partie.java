@@ -83,13 +83,51 @@ class Model_Partie {
         }
     }
 
+    /**
+     * undo()
+     *
+     * @return (if undo is ok)
+     */
+    boolean undo()
+    {
+        if(history.length() == 0)
+            return false;
+        String[] listesCoups = history.split(":");
+        String dernierCoup = listesCoups[(listesCoups.length-1)];
+        if (dernierCoup.equals("!"))
+        {
+            for (int i = 0; i < listesCoups.length-1; i++)
+                history += listesCoups[i] + ":";
+            undo();
+        }
+        String[] tabCoupDecoupe = dernierCoup.split("");
+        int rowDepart = Integer.parseInt(tabCoupDecoupe[0]);
+        int columnDepart = Integer.parseInt(tabCoupDecoupe[1]);
+        int rowArrivee = Integer.parseInt(tabCoupDecoupe[2]);
+        int columnArrivee = Integer.parseInt(tabCoupDecoupe[3]);
 
+        Model_Case caseDepart = plateau.getBoard()[rowDepart*Model_Plateau.LIGNE+columnDepart];
+        Model_Case caseArrivee = plateau.getBoard()[rowArrivee*Model_Plateau.LIGNE+columnArrivee];
+        Model_Pion pieceBougee = caseArrivee.getPion();
+        plateau.deplacer(caseArrivee, caseDepart, pieceBougee);
+
+        tourDuJoueurBlanc = !tourDuJoueurBlanc;
+        history = "";
+        for (int i = 0; i < listesCoups.length-1; i++)
+            history += listesCoups[i] + ":";
+        if (history.length() == 0) isTourUn = true;
+        int rowDernierpionJoue = Character.getNumericValue(listesCoups[listesCoups.length-2].charAt(2));
+        int colDernierpionJoue = Character.getNumericValue(listesCoups[listesCoups.length-2].charAt(3));
+        dernierPionJoue = plateau.getBoard()[rowDernierpionJoue*Model_Plateau.LIGNE + colDernierpionJoue].getPion();
+        casesAtteignablesProchainTour();
+        return true;
+    }
 
     /**
      * Vérifie si nous sommes ou non dans une situation gagnante, donc de fin de partie
      * @param row (ligne sur laquelle a été déplacé le dernier pion joué)
      */
-    public void verifieVictoire(int row)
+    void verifieVictoire(int row)
     {
         if((tourDuJoueurBlanc && row == 7)
                 || (!tourDuJoueurBlanc && row == 0))
@@ -109,13 +147,10 @@ class Model_Partie {
             boolean impossibleDeJouer = false;
             boolean joueurBlancGagnantSiJeuBloque = tourDuJoueurBlanc;
             ArrayList<Model_Pion> arrayPions = new ArrayList<>();
-
             arrayPions.add(pionMemoire);
             dernierPionJoue = pionMemoire;
             tourDuJoueurBlanc = !tourDuJoueurBlanc;
             casesAtteignablesProchainTour();
-
-
             while(pionMemoire.getCasesAtteignables().isEmpty() && !impossibleDeJouer)
             {
                 if(arrayPions.contains(pionMemoire))
@@ -128,7 +163,6 @@ class Model_Partie {
                     casesAtteignablesProchainTour();
                 }
             }
-
             if(impossibleDeJouer)
             {
                 estGagnee = true;

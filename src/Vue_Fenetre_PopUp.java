@@ -8,15 +8,14 @@ import java.awt.event.ActionListener;
 public class Vue_Fenetre_PopUp extends JFrame
 {
 
-    public Vue_Fenetre_PopUp(JPanel panel)      //si on ne donne pes de titre à la fenetre
+    public Vue_Fenetre_PopUp(JPanel panel) //si on ne donne pes de titre à la fenetre
     {
         setContentPane(panel);
-
         setConfig();
         pack();
     }
 
-    public Vue_Fenetre_PopUp(JPanel panel, String titre)   //si on donne un titre à la fenetre
+    Vue_Fenetre_PopUp(JPanel panel, String titre)   //si on donne un titre à la fenetre
     {
         setContentPane(panel);
 
@@ -24,7 +23,7 @@ public class Vue_Fenetre_PopUp extends JFrame
         pack();
     }
 
-    public void setConfig()
+    private void setConfig()
     {
         setResizable(false);
         setUndecorated(true);
@@ -33,7 +32,7 @@ public class Vue_Fenetre_PopUp extends JFrame
         setVisible(true);
     }
 
-    public void setConfig(String titre)
+    private void setConfig(String titre)
     {
         setTitle(titre);
         setResizable(false);
@@ -65,7 +64,6 @@ public class Vue_Fenetre_PopUp extends JFrame
                 if (e.getSource().equals(butOk)){
                     //Arrête le programme
                     //System.exit(0);
-
                     //Ferme la fenêtre
                     popUp.dispose();
                 }

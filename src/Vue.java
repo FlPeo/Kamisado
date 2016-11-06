@@ -23,10 +23,8 @@ class Vue extends JFrame
     private Vue_Bouton quitter;
     private JLabel titre;
     private JLabel background;
-
+    private Vue_Bouton undoMenu, retourMenuPrincipalMenu;
     private ResourceBundle texteInternational;
-
-
 
     /**
      * Constructeur de la vu
@@ -89,6 +87,46 @@ class Vue extends JFrame
         titre.setFont(policeTitre);
     }
 
+    /**
+     * initMenuPartie
+     * Instancie les attributs de la bar de menu
+     *
+     */
+    private void initMenuPartie()
+    {
+        JMenuBar barMenu = new JMenuBar();
+
+        JMenu optionPartie = new JMenu("Fichier");
+        JMenu parametres = new JMenu("Options");
+
+        retourMenuPrincipalMenu = new Vue_Bouton("Menu Principal");
+
+        undoMenu = new Vue_Bouton("Undo");
+
+        optionPartie.add(retourMenuPrincipalMenu);
+        optionPartie.addSeparator();
+        optionPartie.add(quitter);
+
+        parametres.add(undoMenu);
+
+        barMenu.add(optionPartie);
+        barMenu.add(parametres);
+
+        setJMenuBar(barMenu);
+    }
+
+    /**
+     * boolJOptionPane
+     * Fenetre de dialogue qui demande confiramtion a l'utilisateur (choix YES ou NO)
+     * @param message (texte affiché)
+     * @return choix de l'utilisateur
+     *
+     */
+    boolean boolJOptionPane(String message)
+    {
+        int answer = JOptionPane.showConfirmDialog(null, message, null, JOptionPane.YES_NO_OPTION);
+        return (answer == JOptionPane.YES_OPTION);
+    }
 
     /**
      * Organise la vue de l'accueil
@@ -124,7 +162,24 @@ class Vue extends JFrame
     /**
      * Lance la vue du plateau
      */
-    void creerWidgetPartie() { setContentPane(vue_plateau); }
+    void creerWidgetPartie()
+    {
+        initMenuPartie();
+        setControlMenu(new Control_Partie_Menu(this, accueil));
+        setContentPane(vue_plateau);
+    }
+
+    /**
+     * afficherMenu
+     * Permet de relancer la musique du menu et d'afficher les boutons du menu
+     *
+     */
+    void afficherMenu()
+    {
+        //MusiqueChess.playMedievalTheme();
+        creerWidgetAccueil();
+        setVisible(true);
+    }
 
     /**
      * Ecoute les evenements sur les cases du plateau
@@ -153,6 +208,18 @@ class Vue extends JFrame
         quitter.addActionListener(listener);
     }
 
+    /**
+     * setControlMenu
+     * Ecoute les evenements du menu
+     * @param e (ecouteur de type ActionListener)
+     */
+    void setControlMenu(ActionListener e)
+    {
+        retourMenuPrincipalMenu.addActionListener(e);
+        undoMenu.addActionListener(e);
+        quitter.addActionListener(e);
+    }
+
     // GETTERS & SETTERS
 
     Vue_Bouton getLancerPartieContreIA() { return lancerPartieContreIA; }
@@ -160,32 +227,19 @@ class Vue extends JFrame
     void setVue_plateau(Vue_Plateau vue_plateau) { this.vue_plateau = vue_plateau; }
     void display(){ setVisible(true); }
     Vue_Bouton getLancerPartieLocale() { return lancerPartieLocale; }
+    public Vue_Bouton getLancerPartieEnReseau() { return lancerPartieEnReseau; }
+    public Vue_Bouton getChargerPartie() { return chargerPartie; }
+    public Vue_Bouton getHistorique() { return historique; }
+    public Vue_Bouton getStatistiquesDuJoueur() { return statistiquesDuJoueur; }
+    public Vue_Bouton getOptions() { return options;}
+    Vue_Bouton getCredits() { return credits; }
+    Vue_Bouton getQuitter() { return quitter; }
 
-    public Vue_Bouton getLancerPartieEnReseau() {
-        return lancerPartieEnReseau;
+    public Vue_Bouton getRetourMenuPrincipalMenu() {
+        return retourMenuPrincipalMenu;
     }
 
-    public Vue_Bouton getChargerPartie() {
-        return chargerPartie;
-    }
-
-    public Vue_Bouton getHistorique() {
-        return historique;
-    }
-
-    public Vue_Bouton getStatistiquesDuJoueur() {
-        return statistiquesDuJoueur;
-    }
-
-    public Vue_Bouton getOptions() {
-        return options;
-    }
-
-    public Vue_Bouton getCredits() {
-        return credits;
-    }
-
-    public Vue_Bouton getQuitter() {
-        return quitter;
+    public Vue_Bouton getUndoMenu() {
+        return undoMenu;
     }
 }

@@ -14,6 +14,7 @@ class Vue_Bouton extends JButton
         setBorderPainted(false);
         setSize(50, 20);
         setMaximumSize(new Dimension(150, 20));
+        setSelected(false);
         setBackground(Color.black);
         setForeground(Color.white);
         setFocusable(false);
