@@ -264,6 +264,7 @@ class Vue extends JFrame
         nouveauPseudo.addActionListener(listener);
     }
 
+
     /**
      * setControlMenu
      * Ecoute les evenements du menu

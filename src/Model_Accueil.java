@@ -9,6 +9,7 @@ class Model_Accueil
     private String pseudoJoueurNoir;
     private boolean ia = false;
 
+
     /**
      * Constructeur du model relatif à l'accueil
      */
