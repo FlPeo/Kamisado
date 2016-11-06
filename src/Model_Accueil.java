@@ -26,8 +26,8 @@ class Model_Accueil
         for(int i=0; i<Model_Plateau.LIGNE; i++) board[i].addPion(pionsBlancs[i]);
         for(int i=0; i<pionsNoirs.length; i++) board[56+i].addPion(pionsNoirs[i]);
 
-        Model_Joueur joueurBlanc = new Model_Joueur("blanc", true);
-        Model_Joueur joueurNoir = new Model_Joueur("noir", false);
+        Model_Joueur joueurBlanc = new Model_Joueur("blanc", true, 1); // todo id indicatif à modifier lorsque le joueur
+        Model_Joueur joueurNoir = new Model_Joueur("noir", false, 2); // todo sera choisis par l'utilisateur
         this.partie = Model_Partie.factPartie(this, joueurBlanc, joueurNoir, board, pionsBlancs, pionsNoirs, null, true);
 
         joueurBlanc.setPartie(partie);
@@ -45,12 +45,6 @@ class Model_Accueil
 
     // GETTERS & SETTERS
     Model_Partie getPartie() { return partie; }
-
-    public boolean getia() {
-        return ia;
-    }
-
-    public Model_Partie_IA getPartieIa() {
-        return partieIa;
-    }
+    boolean getia() { return ia; }
+    Model_Partie_IA getPartieIa() { return partieIa; }
 }

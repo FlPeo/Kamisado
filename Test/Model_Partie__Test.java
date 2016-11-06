@@ -36,8 +36,8 @@ public class Model_Partie__Test
 
 
         Model_Accueil accueil = new Model_Accueil();
-        Model_Joueur joueurBlanc = new Model_Joueur("blanc", true);
-        Model_Joueur joueurNoir = new Model_Joueur("noir", false);
+        Model_Joueur joueurBlanc = new Model_Joueur("blanc", true, 1);
+        Model_Joueur joueurNoir = new Model_Joueur("noir", false, 2);
         Model_Partie partie = Model_Partie.factPartie(accueil, joueurBlanc, joueurNoir, cases, pionsBlancs, pionsNoirs, pionsBlancs[0], true);
         //le true en dernier parametre indique qu'on est au premier tour
 
@@ -77,8 +77,8 @@ public class Model_Partie__Test
 
 
         Model_Accueil accueil = new Model_Accueil();
-        Model_Joueur joueurBlanc = new Model_Joueur("blanc", true);
-        Model_Joueur joueurNoir = new Model_Joueur("noir", false);
+        Model_Joueur joueurBlanc = new Model_Joueur("blanc", true, 1);
+        Model_Joueur joueurNoir = new Model_Joueur("noir", false, 2);
         Model_Partie partie = Model_Partie.factPartie(accueil, joueurBlanc, joueurNoir, cases, pionsBlancs, pionsNoirs, pionsBlancs[0], false);
         //le false en dernier parametre indique qu'ON N'EST PAS au premier tour
 
@@ -128,8 +128,8 @@ public class Model_Partie__Test
 
 
         Model_Accueil accueil = new Model_Accueil();
-        Model_Joueur joueurBlanc = new Model_Joueur("blanc", true);
-        Model_Joueur joueurNoir = new Model_Joueur("noir", false);
+        Model_Joueur joueurBlanc = new Model_Joueur("blanc", true, 1);
+        Model_Joueur joueurNoir = new Model_Joueur("noir", false, 2);
         Model_Partie partie = Model_Partie.factPartie(accueil, joueurBlanc, joueurNoir, cases, pionsBlancs, pionsNoirs, pionsBlancs[0], false);
         //on est pas au premier tour, car ce genre de cas ne se rencontre pas au premier tour
 
@@ -180,8 +180,8 @@ public class Model_Partie__Test
 
 
         Model_Accueil accueil = new Model_Accueil();
-        Model_Joueur joueurBlanc = new Model_Joueur("blanc", true);
-        Model_Joueur joueurNoir = new Model_Joueur("noir", false);
+        Model_Joueur joueurBlanc = new Model_Joueur("blanc", true, 1);
+        Model_Joueur joueurNoir = new Model_Joueur("noir", false, 2);
         Model_Partie partie = Model_Partie.factPartie(accueil, joueurBlanc, joueurNoir, cases, pionsBlancs, pionsNoirs, pionsBlancs[0], false);
 
         joueurBlanc.setPartie(partie);

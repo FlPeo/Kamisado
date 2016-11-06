@@ -82,6 +82,8 @@ class Control_Partie extends MouseAdapter
         String nomJoueur;
         vue.setPartieControl(null);
 
+        BDD_Tools.saveHistory(1, 2, accueil.getPartie().getHistory());
+
         if(accueil.getPartie().isJoueurBlancGagnant())
             nomJoueur = accueil.getPartie().getJoueurBlanc().getNom();
         else

@@ -18,6 +18,7 @@ class Model_Partie {
     private Model_Joueur joueurNoir;
 
     private boolean estGagnee;
+    private String history;
 
     /**
      * Instancie les objets qui doivent l'être avant de
@@ -53,6 +54,7 @@ class Model_Partie {
 
         joueurBlanc = j1;
         joueurNoir = j2;
+        history = "";
     }
 
     /**
@@ -65,9 +67,7 @@ class Model_Partie {
         // Le premier tour est géré séparément car c'est un cas particulier où le joueur à la possibilité de choisir
         // le pion qu'il va bouger.
         if(isTourUn)
-        {
             for(Model_Pion pionsTour : pionsDuTour) pionsTour.casesAtteignables();
-        }
         else
         {
             int couleurDuPionQuiDoitBouger = dernierPionJoue.getCaseActuelle().getCOULEUR();
@@ -141,10 +141,15 @@ class Model_Partie {
      * Permet de déplacer un pion sur la case voulue
      * @param caseDest (case où le pion doit arriver)
      */
-    public void deplacerPion(Model_Case caseDest)
+    void deplacerPion(Model_Case caseDest)
     {
+        history += pionMemoire.getCaseActuelle().getRow() + "" +
+                + pionMemoire.getCaseActuelle().getColumn() + "" +
+                + caseDest.getRow() + "" +
+                + caseDest.getColumn()+':';
         plateau.deplacer(pionMemoire.getCaseActuelle(), caseDest, pionMemoire);
-        setDernierPionJoue(pionMemoire);
+        System.out.println(history);
+        dernierPionJoue = pionMemoire;
         tourDuJoueurBlanc = !tourDuJoueurBlanc;
         casesAtteignablesProchainTour();
     }
@@ -152,39 +157,14 @@ class Model_Partie {
     // GETTERS & SETTERS
     boolean isJoueurBlancGagnant() { return joueurBlancGagnant; }
     Model_Plateau getPlateau() { return plateau; }
-    void setDernierPionJoue(Model_Pion dernierPionJoue) { this.dernierPionJoue = dernierPionJoue; }
     boolean isTourUn() { return isTourUn; }
     boolean estGagnee() { return estGagnee; }
-
-    boolean isTourDuJoueurBlanc() {
-        return tourDuJoueurBlanc;
-    }
-
-    void setTourDuJoueurBlanc(boolean tourDuJoueurBlanc) {
-        this.tourDuJoueurBlanc = tourDuJoueurBlanc;
-    }
-
-    public Model_Pion getPionMemoire() {
-        return pionMemoire;
-    }
-
-    public void setPionMemoire(Model_Pion pionMemoire) {
-        this.pionMemoire = pionMemoire;
-    }
-
-    public void setTourUn(boolean tourUn) {
-        isTourUn = tourUn;
-    }
-
-    public Model_Joueur getJoueurBlanc() {
-        return joueurBlanc;
-    }
-
-    public Model_Joueur getJoueurNoir() {
-        return joueurNoir;
-    }
-
-    public Model_Pion getDernierPionJoue() {
-        return dernierPionJoue;
-    }
+    boolean isTourDuJoueurBlanc() { return tourDuJoueurBlanc; }
+    Model_Pion getPionMemoire() { return pionMemoire; }
+    void setPionMemoire(Model_Pion pionMemoire) { this.pionMemoire = pionMemoire; }
+    void setTourUn(boolean tourUn) { isTourUn = tourUn; }
+    Model_Joueur getJoueurBlanc() { return joueurBlanc; }
+    Model_Joueur getJoueurNoir() { return joueurNoir; }
+    Model_Pion getDernierPionJoue() { return dernierPionJoue; }
+    String getHistory() { return history; }
 }

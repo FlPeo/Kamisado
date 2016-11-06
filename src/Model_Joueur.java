@@ -1,10 +1,13 @@
 class Model_Joueur
 {
+    private int id;
     private String nom;
     private Model_Partie model_partie2V2;
     private boolean estJoueurBlanc;
 
-    public Model_Joueur(String nom, boolean joueurBlanc){
+    Model_Joueur(String nom, boolean joueurBlanc, int id)
+    {
+        this.id = id;
         this.nom = nom;
         estJoueurBlanc = joueurBlanc;
     }

@@ -26,7 +26,7 @@ class BDDManager
             Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection(BDD_URL, BDD_USER, BDD_PASSWORD);
             statement = connection.createStatement();
-            edit("USE ECHEC;");
+            edit("USE kamisado;");
         }
         catch (SQLException | ClassNotFoundException e)
         {
@@ -169,7 +169,10 @@ class BDDManager
     {
         BDDManager bdd = new BDDManager();
         bdd.start();
-        bdd.lire("src/BDD_Kamisado.sql");
+        bdd.edit(
+                "INSERT INTO JOUEUR(pseudoJoueur, nbPartiesGagneesJoueur, nbPartiesPerduesJoueur) VALUES" +
+                        "(\"toto\", 0, 0);");
+        //System.out.println(bdd.ask("SELECT * FROM JOUEUR;"));
         bdd.stop();
         //bdd.edit("DELETE FROM SAUVEGARDE;");
         //bdd.edit("DELETE FROM HISTORIQUE;");
