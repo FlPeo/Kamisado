@@ -1,5 +1,6 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Vector;
 
 class Control_Menu_Accueil implements ActionListener
 {
@@ -31,10 +32,19 @@ class Control_Menu_Accueil implements ActionListener
     @Override
     public void actionPerformed(ActionEvent e)
     {
-
-
         if(e.getSource().equals(vue.getLancerPartieLocale()))
         {
+            vue.creerWidgetChoixPseudos();
+        }
+        else if(e.getSource().equals(vue.getLancerPartieLocale2()))
+        {
+            accueil.setPseudoJoueurBlanc((String)vue.getListePseudo1().getSelectedItem());
+            accueil.setPseudoJoueurNoir((String)vue.getListePseudo2().getSelectedItem());
+            if(accueil.getPseudoJoueurBlanc().equals(accueil.getPseudoJoueurNoir()))
+            {
+                vue.jOptionMessage("Vous ne pouvez pas jouer contre vous-même !");
+                return;
+            }
             accueil.demarrerPartie();
             vue.setVue_plateau(new Vue_Plateau(vue, accueil));
             vue.creerWidgetPartie();
@@ -51,6 +61,15 @@ class Control_Menu_Accueil implements ActionListener
             accueil.getPartieIa().setCasesAtteignablesPremierTour();
             vue.display();
         }
+        else if(e.getSource().equals(vue.getHistorique()))
+        {
+            vue.choixHistoriqueAConsulter();
+            if(accueil.getPartieAVisualiser() == null || accueil.getPartieAVisualiser().equals(""))
+            {
+                System.err.println("escape");
+                return;
+            }
+        }
         else if(e.getSource().equals(vue.getCredits()))
         {
             Vue_FactorPopup.creerPopupCredits();
@@ -58,6 +77,27 @@ class Control_Menu_Accueil implements ActionListener
         else if (e.getSource().equals(vue.getQuitter()))
         {
             System.exit(0);
+        }
+        else if(e.getSource().equals(vue.getRetourMenu()))
+        {
+            vue.afficherMenu();
+        }
+        else if(e.getSource().equals(vue.getNouveauPseudo()))
+        {
+            String pseudo = vue.messagePop("Entrez un nouveau pseudo :");
+            if (pseudo == null)
+                return;
+            String[] listeJoueurs = accueil.listePseudos();
+            for(int i = 0; i < listeJoueurs.length; i++)
+            {
+                if (listeJoueurs[i].equals(pseudo)) {
+                    vue.jOptionMessage("Ce pseudo n'est pas disponible");
+                    return;
+                }
+            }
+            accueil.ajouterNouveauJoueur(pseudo);
+            vue.majListeJoueur();
+            vue.creerWidgetChoixPseudos();
         }
     }
 }

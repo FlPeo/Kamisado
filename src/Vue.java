@@ -1,10 +1,14 @@
+import javafx.scene.control.ComboBox;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.Vector;
 
 
 class Vue extends JFrame
@@ -21,10 +25,19 @@ class Vue extends JFrame
     private Vue_Bouton options;
     private Vue_Bouton credits;
     private Vue_Bouton quitter;
+    private Vue_Bouton retourMenu;
+    private Vue_Bouton lancerPartieLocale2;
+    private Vue_Bouton nouveauPseudo;
     private JLabel titre;
     private JLabel background;
+    private JLabel joueur1;
+    private JLabel joueur2;
     private Vue_Bouton undoMenu, retourMenuPrincipalMenu;
+    private JComboBox listePseudo1;
+    private JComboBox listePseudo2;
+
     private ResourceBundle texteInternational;
+    private ResourceBundle texteInternational2;
 
     /**
      * Constructeur de la vu
@@ -53,6 +66,7 @@ class Vue extends JFrame
     private void initAttribut()
     {
         texteInternational = ResourceBundle.getBundle("Traductions.boutons");
+        texteInternational2 = ResourceBundle.getBundle("Traductions.labels");
 
         titre = new JLabel(texteInternational.getString("titre"));
         lancerPartieLocale = new Vue_Bouton(texteInternational.getString("partieLocale"));
@@ -65,6 +79,14 @@ class Vue extends JFrame
         options=new Vue_Bouton(texteInternational.getString("options"));
         credits=new Vue_Bouton(texteInternational.getString("credits"));
         quitter=new Vue_Bouton(texteInternational.getString("quitter"));
+        retourMenu=new Vue_Bouton(texteInternational.getString("retourMenu"));
+        lancerPartieLocale2=new Vue_Bouton(texteInternational.getString("partieLocale"));
+        nouveauPseudo=new Vue_Bouton(texteInternational.getString("ajouterPseudo"));
+
+        majListeJoueur();
+
+        joueur1 = new JLabel(texteInternational2.getString("pseudoJ1"));
+        joueur2 = new JLabel(texteInternational2.getString("pseudoJ2"));
 
         GraphicsEnvironment fontLabel = GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsEnvironment fontTitre = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -84,7 +106,10 @@ class Vue extends JFrame
             io.printStackTrace();
         }
         Font policeTitre = new Font("Ace Records", Font.BOLD, 150);
+        Font policeLabel = new Font("Cardinal", Font.BOLD, 25);
         titre.setFont(policeTitre);
+        joueur1.setFont(policeLabel);
+        joueur2.setFont(policeLabel);
     }
 
     /**
@@ -159,6 +184,34 @@ class Vue extends JFrame
         setContentPane(background);
     }
 
+    void creerWidgetChoixPseudos()
+    {
+        JPanel pseudos = new JPanel(new GridLayout(3, 3));
+        pseudos.setOpaque(false);
+        pseudos.add(joueur1);
+        pseudos.add(Box.createVerticalGlue());
+        pseudos.add(joueur2);
+        pseudos.add(listePseudo1);
+        pseudos.add(Box.createVerticalGlue());
+        pseudos.add(listePseudo2);
+        pseudos.add(nouveauPseudo);
+        pseudos.add(lancerPartieLocale2);
+        pseudos.add(retourMenu);
+
+        JPanel organisation = new JPanel(new BorderLayout());
+        organisation.setOpaque(false);
+        organisation.add(titre, BorderLayout.NORTH);
+        organisation.add(pseudos, BorderLayout.SOUTH);
+
+        // Mise en place du fond d'écran
+        background = new JLabel(new ImageIcon("Images/Fonds/fond1.jpg"));
+        background.setSize(xSize, ySize);
+        background.setLayout(new FlowLayout());
+        background.add(organisation, BorderLayout.CENTER);
+
+        setContentPane(background);
+    }
+
     /**
      * Lance la vue du plateau
      */
@@ -206,6 +259,9 @@ class Vue extends JFrame
         options.addActionListener(listener);
         credits.addActionListener(listener);
         quitter.addActionListener(listener);
+        retourMenu.addActionListener(listener);
+        lancerPartieLocale2.addActionListener(listener);
+        nouveauPseudo.addActionListener(listener);
     }
 
     /**
@@ -220,6 +276,86 @@ class Vue extends JFrame
         quitter.addActionListener(e);
     }
 
+    void choixHistoriqueAConsulter()
+    {
+        int i,j;
+        BDDManager bdd = new BDDManager();
+        bdd.start();
+
+        // On récupère les id des joueurs ayants sauvegardé une partie
+        ArrayList<ArrayList<String>> idJoueursHistorique = bdd.ask("SELECT joueurBlanc_id, joueurNoir_id" +
+                " FROM HISTORIQUEPARTIE;");
+
+        if(idJoueursHistorique.isEmpty())
+        {
+            JOptionPane.showMessageDialog(this, "Il n'y a pas d'historique disponible.", "Voir l'historique d'une partie"
+                    , JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        String[][] pseudosJoueurs = new String[idJoueursHistorique.size()][2];
+
+        String[] joueursBlancs = new String[idJoueursHistorique.size()];
+        String[] joueursNoirs = new String[idJoueursHistorique.size()];
+
+        // On récupère les pseudos corespondants à chaque id récupérés précédamment
+        for (i = 0; i < idJoueursHistorique.size(); i++)
+        {
+            for(j=0; j<idJoueursHistorique.get(i).size(); j++)
+            {
+                pseudosJoueurs[i][j] = bdd.ask("SELECT JOUEUR.pseudoJoueur FROM JOUEUR WHERE JOUEUR.id = "
+                        + idJoueursHistorique.get(i).get(j) + ";").get(0).get(0) + "";
+            }
+            joueursBlancs[i] = pseudosJoueurs[i][0];
+            joueursNoirs[i] = pseudosJoueurs[i][1];
+        }
+
+        // On crée une liste qui va être affichée dans une fenetre popup pour que l'utilisateur choisisse
+        // quelle sauvegarde il veut reprendre
+        String[] possibilitesParties = new String[idJoueursHistorique.size()];
+        for(i=0; i<possibilitesParties.length; i++)
+            possibilitesParties[i] = joueursBlancs[i] + " VS " + joueursNoirs[i];
+
+        // On crée la boite de dialogue
+        accueil.setPartieAVisualiser((String) JOptionPane.showInputDialog(null, "De quelle partie voulez-vous charger l'historique ?",
+                "Voir l'historique d'une partie", JOptionPane.QUESTION_MESSAGE, null, possibilitesParties,
+                possibilitesParties[0]));
+
+        bdd.stop();
+    }
+
+    /**
+     * messagePop
+     * Permet d'afficher une fenetre pop-up avec un champs de saisi pour récupérer une information
+     * @param message (texte à afficher)
+     * @return fenetre qui s'affiche
+     */
+    String messagePop(String message)
+    {
+        return JOptionPane.showInputDialog(this, message, "ChessMaster", JOptionPane.QUESTION_MESSAGE);
+    }
+
+    /**
+     * jOptionMessage
+     * Fenetre de dialogue permettant de donner une information a l'utilisateur
+     * @param message (texte affiché)
+     *
+     */
+    void jOptionMessage(String message)
+    {
+        JOptionPane.showMessageDialog(this, message, "A propos", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    /**
+     * majListeJoueur
+     * Met à jour la liste des joueurs pour le formulaire
+     */
+    void majListeJoueur()
+    {
+        listePseudo1 = new JComboBox(accueil.listePseudos());
+        listePseudo2 = new JComboBox(accueil.listePseudos());
+    }
+
     // GETTERS & SETTERS
 
     Vue_Bouton getLancerPartieContreIA() { return lancerPartieContreIA; }
@@ -227,19 +363,32 @@ class Vue extends JFrame
     void setVue_plateau(Vue_Plateau vue_plateau) { this.vue_plateau = vue_plateau; }
     void display(){ setVisible(true); }
     Vue_Bouton getLancerPartieLocale() { return lancerPartieLocale; }
-    public Vue_Bouton getLancerPartieEnReseau() { return lancerPartieEnReseau; }
-    public Vue_Bouton getChargerPartie() { return chargerPartie; }
-    public Vue_Bouton getHistorique() { return historique; }
-    public Vue_Bouton getStatistiquesDuJoueur() { return statistiquesDuJoueur; }
-    public Vue_Bouton getOptions() { return options;}
+    Vue_Bouton getLancerPartieEnReseau() { return lancerPartieEnReseau; }
+    Vue_Bouton getChargerPartie() { return chargerPartie; }
+    Vue_Bouton getHistorique() { return historique; }
+    Vue_Bouton getStatistiquesDuJoueur() { return statistiquesDuJoueur; }
+    Vue_Bouton getOptions() { return options;}
     Vue_Bouton getCredits() { return credits; }
     Vue_Bouton getQuitter() { return quitter; }
-
-    public Vue_Bouton getRetourMenuPrincipalMenu() {
+    Vue_Bouton getRetourMenuPrincipalMenu() {
         return retourMenuPrincipalMenu;
     }
-
-    public Vue_Bouton getUndoMenu() {
+    Vue_Bouton getUndoMenu() {
         return undoMenu;
+    }
+    Vue_Bouton getRetourMenu() {
+        return retourMenu;
+    }
+    Vue_Bouton getLancerPartieLocale2() {
+        return lancerPartieLocale2;
+    }
+    Vue_Bouton getNouveauPseudo() {
+        return nouveauPseudo;
+    }
+    JComboBox getListePseudo1() {
+        return listePseudo1;
+    }
+    JComboBox getListePseudo2() {
+        return listePseudo2;
     }
 }
