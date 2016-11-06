@@ -9,6 +9,7 @@ class Control_Menu_Accueil implements ActionListener
     private Control_Partie Control_Partie;
     private Control_Partie_IA control_Partie_IA;
 
+
     /**
      * Constructeur du controleur de l'accueil
      * @param accueil (model de l'accueil)
