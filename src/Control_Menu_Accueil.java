@@ -25,6 +25,7 @@ class Control_Menu_Accueil implements ActionListener
         vue.setButtonControl(this);
     }
 
+
     /**
      * Définition des actions à entreprendre si un écouteur détecte une action
      * @param e (evenement détecté)

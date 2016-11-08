@@ -22,6 +22,7 @@ class Model_Accueil
         pseudoJoueurNoir = "";
     }
 
+
     /**
      * Instanciation d'une partie
      */

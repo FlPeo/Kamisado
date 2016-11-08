@@ -24,6 +24,7 @@ class Control_Partie extends MouseAdapter
         vue.setPartieControl(this);
     }
 
+
     /**
      * Définition des actions à entreprendre si un écouteur détecte une action
      * @param e (evenement détecté)

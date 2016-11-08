@@ -308,6 +308,7 @@ class Vue extends JFrame
             return;
         }
 
+
         String[][] pseudosJoueurs = new String[idJoueursHistorique.size()][2];
 
         String[] joueursBlancs = new String[idJoueursHistorique.size()];

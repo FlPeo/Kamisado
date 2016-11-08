@@ -7,6 +7,7 @@ class Control_Group
     private Control_Partie_IA control_partie_IA;
     private Control_Historique control_historique;
 
+
     /**
      * Crée l'ensmeble des éléments du model MVC
      */
