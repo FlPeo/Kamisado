@@ -28,14 +28,18 @@ class Vue extends JFrame
     private Vue_Bouton retourMenu;
     private Vue_Bouton lancerPartieLocale2;
     private Vue_Bouton nouveauPseudo;
+    private Vue_Bouton undoMenu, retourMenuPrincipalMenu;
+    private Vue_Bouton precedent;
+    private Vue_Bouton retour;
+    private Vue_Bouton suivant;
     private JLabel titre;
     private JLabel background;
     private JLabel joueur1;
     private JLabel joueur2;
-    private Vue_Bouton undoMenu, retourMenuPrincipalMenu;
     private JComboBox listePseudo1;
-    private JComboBox listePseudo2;
+    private JFrame vueHisto;
 
+    private JComboBox listePseudo2;
     private ResourceBundle texteInternational;
     private ResourceBundle texteInternational2;
 
@@ -82,6 +86,9 @@ class Vue extends JFrame
         retourMenu=new Vue_Bouton(texteInternational.getString("retourMenu"));
         lancerPartieLocale2=new Vue_Bouton(texteInternational.getString("partieLocale"));
         nouveauPseudo=new Vue_Bouton(texteInternational.getString("ajouterPseudo"));
+        precedent=new Vue_Bouton(texteInternational.getString("precedent"));
+        suivant=new Vue_Bouton(texteInternational.getString("suivant"));
+        retour=new Vue_Bouton(texteInternational.getString("retour"));
 
         majListeJoueur();
 
@@ -264,6 +271,13 @@ class Vue extends JFrame
         nouveauPseudo.addActionListener(listener);
     }
 
+    void setButtonHistoriqueControl(ActionListener listener)
+    {
+        retour.addActionListener(listener);
+        suivant.addActionListener(listener);
+        precedent.addActionListener(listener);
+    }
+
 
     /**
      * setControlMenu
@@ -309,6 +323,11 @@ class Vue extends JFrame
             }
             joueursBlancs[i] = pseudosJoueurs[i][0];
             joueursNoirs[i] = pseudosJoueurs[i][1];
+        }
+        System.out.println("c'est ici : ");
+        for(i=0; i<joueursBlancs.length; i++)
+        {
+            System.out.println(joueursBlancs[i]);
         }
 
         // On crée une liste qui va être affichée dans une fenetre popup pour que l'utilisateur choisisse
@@ -357,8 +376,52 @@ class Vue extends JFrame
         listePseudo2 = new JComboBox(accueil.listePseudos());
     }
 
-    // GETTERS & SETTERS
+    void creerWidgetAfficherHistorique()
+    {
+        vue_plateau = new Vue_Plateau(this, accueil);
+        vueHisto = new JFrame();
 
+        JPanel panelBoard = new JPanel();
+        panelBoard.setLayout(new GridLayout(1,1));
+        panelBoard.add(vue_plateau);
+
+        JPanel panelButton = new JPanel();
+        panelButton.add(precedent);
+        panelButton.add(suivant);
+        panelButton.add(retour);
+
+        JPanel panelGeneral = new JPanel();
+        panelGeneral.setLayout(new BoxLayout(panelGeneral, BoxLayout.Y_AXIS));
+        panelGeneral.add(panelBoard);
+        panelGeneral.add(panelButton);
+
+        setContentPane(panelGeneral);
+    }
+
+    ArrayList<String> recupererHistoCoupsPartie()
+    {
+        BDDManager bdd = new BDDManager();
+        bdd.start();
+
+        // partieAVisualiser au format : "pseudo1 VS pseudo2"
+        String joueurBlanc = accueil.getPartieAVisualiser().split(" ")[0];
+        String joueurNoir = accueil.getPartieAVisualiser().split(" ")[2];
+
+        String idJB = bdd.ask("SELECT id FROM JOUEUR WHERE pseudoJoueur LIKE '" + joueurBlanc + "';").get(0).get(0);
+        String idJN = bdd.ask("SELECT id FROM JOUEUR WHERE pseudoJoueur LIKE '" + joueurNoir + "';").get(0).get(0);
+        String requete = "SELECT coupsJouee FROM HISTORIQUEPARTIE "
+                + "WHERE joueurBlanc_id = " + idJB
+                + " AND joueurNoir_id = " + idJN
+                + ";";
+        String histo = bdd.ask(requete).get(0).get(0);
+        ArrayList<String> coups = new ArrayList<>();
+        for(int i=0; i<histo.split(":").length; i++)
+            coups.add(histo.split(":")[i]);
+        bdd.stop();
+        return coups;
+    }
+
+    // GETTERS & SETTERS
     Vue_Bouton getLancerPartieContreIA() { return lancerPartieContreIA; }
     Vue_Plateau getVue_plateau() { return vue_plateau; }
     void setVue_plateau(Vue_Plateau vue_plateau) { this.vue_plateau = vue_plateau; }
@@ -391,5 +454,14 @@ class Vue extends JFrame
     }
     JComboBox getListePseudo2() {
         return listePseudo2;
+    }
+    Vue_Bouton getPrecedent() {
+        return precedent;
+    }
+    Vue_Bouton getRetour() {
+        return retour;
+    }
+    Vue_Bouton getSuivant() {
+        return suivant;
     }
 }

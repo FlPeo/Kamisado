@@ -63,12 +63,16 @@ class Control_Menu_Accueil implements ActionListener
         }
         else if(e.getSource().equals(vue.getHistorique()))
         {
+            accueil.setPartieAVisualiser(null);
             vue.choixHistoriqueAConsulter();
             if(accueil.getPartieAVisualiser() == null || accueil.getPartieAVisualiser().equals(""))
             {
                 System.err.println("escape");
                 return;
             }
+            accueil.demarrerPartieFictive();
+            vue.creerWidgetAfficherHistorique();
+            vue.display();
         }
         else if(e.getSource().equals(vue.getCredits()))
         {

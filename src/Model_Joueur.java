@@ -54,4 +54,8 @@ class Model_Joueur
     public void setPartie(Model_Partie model_partie2V2) {
         this.model_partie2V2 = model_partie2V2;
     }
+
+    public int getId() {
+        return id;
+    }
 }
