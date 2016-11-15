@@ -308,11 +308,13 @@ class Vue extends JFrame
             return;
         }
 
+        ArrayList<ArrayList<String>> datesParties = bdd.ask("SELECT dateHistorique FROM HISTORIQUEPARTIE;");
 
         String[][] pseudosJoueurs = new String[idJoueursHistorique.size()][2];
 
         String[] joueursBlancs = new String[idJoueursHistorique.size()];
         String[] joueursNoirs = new String[idJoueursHistorique.size()];
+        String[] dates = new String[datesParties.size()];
 
         // On récupère les pseudos corespondants à chaque id récupérés précédamment
         for (i = 0; i < idJoueursHistorique.size(); i++)
@@ -325,17 +327,15 @@ class Vue extends JFrame
             joueursBlancs[i] = pseudosJoueurs[i][0];
             joueursNoirs[i] = pseudosJoueurs[i][1];
         }
-        System.out.println("c'est ici : ");
-        for(i=0; i<joueursBlancs.length; i++)
-        {
-            System.out.println(joueursBlancs[i]);
-        }
+        for (i = 0; i < datesParties.size(); i++)
+            for(j=0; j<datesParties.get(i).size(); j++)
+                dates[i] = datesParties.get(i).get(j);
 
         // On crée une liste qui va être affichée dans une fenetre popup pour que l'utilisateur choisisse
         // quelle sauvegarde il veut reprendre
         String[] possibilitesParties = new String[idJoueursHistorique.size()];
         for(i=0; i<possibilitesParties.length; i++)
-            possibilitesParties[i] = joueursBlancs[i] + " VS " + joueursNoirs[i];
+            possibilitesParties[i] = joueursBlancs[i] + " VS " + joueursNoirs[i] + " le " + dates[i];
 
         // On crée la boite de dialogue
         accueil.setPartieAVisualiser((String) JOptionPane.showInputDialog(null, "De quelle partie voulez-vous charger l'historique ?",
@@ -405,15 +405,18 @@ class Vue extends JFrame
         bdd.start();
 
         // partieAVisualiser au format : "pseudo1 VS pseudo2"
-        String joueurBlanc = accueil.getPartieAVisualiser().split(" ")[0];
-        String joueurNoir = accueil.getPartieAVisualiser().split(" ")[2];
+        String[] partieAVisualiserSplitee = accueil.getPartieAVisualiser().split(" ");
+        String joueurBlanc = partieAVisualiserSplitee[0];
+        String joueurNoir = partieAVisualiserSplitee[2];
+        String dates = partieAVisualiserSplitee[4] + " " + partieAVisualiserSplitee[5];
 
         String idJB = bdd.ask("SELECT id FROM JOUEUR WHERE pseudoJoueur LIKE '" + joueurBlanc + "';").get(0).get(0);
         String idJN = bdd.ask("SELECT id FROM JOUEUR WHERE pseudoJoueur LIKE '" + joueurNoir + "';").get(0).get(0);
         String requete = "SELECT coupsJouee FROM HISTORIQUEPARTIE "
                 + "WHERE joueurBlanc_id = " + idJB
                 + " AND joueurNoir_id = " + idJN
-                + ";";
+                + " AND dateHistorique = '" + dates
+                + "';";
         String histo = bdd.ask(requete).get(0).get(0);
         ArrayList<String> coups = new ArrayList<>();
         for(int i=0; i<histo.split(":").length; i++)

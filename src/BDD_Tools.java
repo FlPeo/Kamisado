@@ -8,7 +8,7 @@ class BDD_Tools
         String requeteHistorique = "INSERT INTO HISTORIQUEPARTIE VALUES (null, "
                 + j1 + ", "
                 + j2 + ", '"
-                + history + "');";
+                + history + "', now());";
         BDDManager bdd = new BDDManager();
         bdd.start();
         bdd.edit(requeteHistorique);

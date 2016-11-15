@@ -15,6 +15,7 @@ CREATE TABLE HISTORIQUEPARTIE
 	joueurBlanc_id INT(100),
 	joueurNoir_id INT(100),
 	coupsJouee text,
+	dateHistorique DATETIME,
 	CONSTRAINT fk_historique_joueurBlanc FOREIGN KEY (joueurBlanc_id) REFERENCES JOUEUR(id),
 	CONSTRAINT fk_historique_joueurNoir FOREIGN KEY (joueurNoir_id) REFERENCES JOUEUR(id),
 	PRIMARY KEY(id)
