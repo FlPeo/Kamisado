@@ -1,6 +1,7 @@
 /**
  Created by cladlink on 06/11/16.
  */
+
 class BDD_Tools
 {
     static void saveHistory(int j1, int j2, String history)

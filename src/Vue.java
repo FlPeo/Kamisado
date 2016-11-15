@@ -399,6 +399,7 @@ class Vue extends JFrame
         setContentPane(panelGeneral);
     }
 
+
     ArrayList<String> recupererHistoCoupsPartie()
     {
         BDDManager bdd = new BDDManager();
