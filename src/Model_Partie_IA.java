@@ -298,6 +298,7 @@ public class Model_Partie_IA {
     }
 
     byte evaluate() {
+        //tout ce qui est commente : ancienne version de evaluate en random
         // On choisit aléatoirement la case ou va se déplacer le pion (pseudo IA)
         /*Random rand = new Random();
         int nbCasesPossibles = 0;
@@ -342,47 +343,20 @@ public class Model_Partie_IA {
             //simuler(coup actuel)
             sauvegardePlateau1 = plateau[casesAtteignablesJoueurCourant[i]];
 
-            /*couleurPionAJouer = plateauCase[casesAtteignablesJoueurCourant[i]];
-            // On indique que le pion est maintenant sur la case cliqué
-            //plateau[casesAtteignablesJoueurCourant[i]] = pionMemoire;
-            // On supprime le pion de son ancien emplacement
-            plateau[casePionMemoire] = -1;
-            // On enregistre le pion qui vient d'être bougé
-            plateau[casePionMemoire] = pionMemoire;
-            dernierPionJoue = pionMemoire;
-            pionMemoire = (byte)(8 + getCouleurPionAJouer());
-            System.out.println("CasePionMem : "+ casePionMemoire);
-            casePionMemoire = plateau[casesAtteignablesJoueurCourant[i]];
-            System.out.println("CasePionMem : "+ casePionMemoire);*/
-
             plateau[casePionMemoire] = -1;
             plateau[casesAtteignablesJoueurCourant[i]] = pionMemoire;
             caseDernierPionJoue = casesAtteignablesJoueurCourant[i];
             dernierPionJoue = pionMemoire;
-            //casePionMemoire = plateau[casesAtteignablesJoueurCourant[i]];
             couleurPionAJouer = plateauCase[casesAtteignablesJoueurCourant[i]];
             pionMemoire = getCouleurPionAJouer();
-            //System.out.println(couleurPionAJouer);
-            //System.out.println(pionMemoire);
 
-
-            //casePionMemoire = plateau[pionMemoire];
             for (byte j=0; j< plateau.length; j++)
                 if (plateau[j] == pionMemoire)
                 {
                     casePionMemoire = j;
                     break;
                 }
-
-            setCasesAtteignablesJoueurCourant(!tourDuJoueurBlanc, getCasePionMemoire());  //bool = false en theorie
-
-            /*for(int j =0 ; j<casesAtteignablesJoueurCourant.length ; j++){
-                System.out.println("Init1 : " + j+" "+casesAtteignablesJoueurCourant[j]);
-            }*/
-            //   !!!!!!!!!!!!! Changer ca !
-            //setCasesAtteignablesJoueurCourant(tourDuJoueurBlanc, getCasePionMemoire());  //bool = false en theorie
-            //marche PAS : met que des -1 ds le tab
-
+            setCasesAtteignablesJoueurCourant(!tourDuJoueurBlanc, getCasePionMemoire());
 
 
 
@@ -392,6 +366,7 @@ public class Model_Partie_IA {
                 maxVal = val;
                 meilleur_coup = i;
             }
+
 
             //annuler_coup(coup_actuel)
             couleurPionAJouer = sauvegardeCouleur;
@@ -408,11 +383,8 @@ public class Model_Partie_IA {
 
         //Jouer(meilleur coup)
         couleurPionAJouer = plateauCase[casesAtteignablesJoueurCourant[meilleur_coup]];
-        // On indique que le pion est maintenant sur la case cliqué
         plateau[casesAtteignablesJoueurCourant[meilleur_coup]] = pionMemoire;
-        // On supprime le pion de son ancien emplacement
         plateau[casePionMemoire] = -1;
-        // On enregistre le pion qui vient d'être bougé
         dernierPionJoue = pionMemoire;
         tourDuJoueurBlanc = true;
 
@@ -446,47 +418,23 @@ public class Model_Partie_IA {
             //simuler(coup_actuel);
             tourDuJoueurBlanc = true;
             sauvegardePlateau1 = plateau[casesAtteignablesJoueurCourant[i]];
-            /*couleurPionAJouer = plateauCase[casesAtteignablesJoueurCourant[i]];
-            // On indique que le pion est maintenant sur la case cliqué
-            //plateau[casesAtteignablesJoueurCourant[i]] = pionMemoire;
-            // On supprime le pion de son ancien emplacement
-            plateau[casePionMemoire] = -1;
-            // On enregistre le pion qui vient d'être bougé
-            dernierPionJoue = pionMemoire;
-            plateau[casePionMemoire] = pionMemoire;
-            pionMemoire = (byte)(getCouleurPionAJouer());
-            casePionMemoire = plateau[casesAtteignablesJoueurCourant[i]];*/
-
-            /*plateau[casePionMemoire] = -1;
-            plateau[casesAtteignablesJoueurCourant[i]] = pionMemoire;
-            dernierPionJoue = pionMemoire;
-            casePionMemoire = plateau[casesAtteignablesJoueurCourant[i]];
-            couleurPionAJouer = plateauCase[casePionMemoire];
-            pionMemoire = (byte)(8 + getCouleurPionAJouer());
-            setCasesAtteignablesJoueurCourant(tourDuJoueurBlanc, getCasePionMemoire());  //bool = false en theorie
-            /*for(int j =0 ; j<casesAtteignablesJoueurCourant.length ; j++){
-                System.out.println("Min: " + j+" "+casesAtteignablesJoueurCourant[j]);
-            }*/
 
 
             plateau[casePionMemoire] = -1;
             plateau[casesAtteignablesJoueurCourant[i]] = pionMemoire;
             caseDernierPionJoue = casesAtteignablesJoueurCourant[i];
             dernierPionJoue = pionMemoire;
-            //casePionMemoire = plateau[casesAtteignablesJoueurCourant[i]];
-            //System.out.println(casePionMemoire);
             couleurPionAJouer = plateauCase[casesAtteignablesJoueurCourant[i]];
             pionMemoire = (byte)(8 + getCouleurPionAJouer());
 
 
-            //casePionMemoire = plateau[pionMemoire];
             for (byte j=0; j< plateau.length; j++)
                 if (plateau[j] == pionMemoire)
                 {
                     casePionMemoire = j;
                     break;
                 }
-            setCasesAtteignablesJoueurCourant(!tourDuJoueurBlanc, getCasePionMemoire());  //bool = false en theorie
+            setCasesAtteignablesJoueurCourant(!tourDuJoueurBlanc, getCasePionMemoire());
 
 
 
@@ -517,7 +465,6 @@ public class Model_Partie_IA {
 
     int max(byte profondeur){    //tour de l'IA
         if(caseDernierPionJoue > 55 && caseDernierPionJoue <= 63){
-            //System.out.println("defaite");
             return eval(profondeur, DEFAITE_IA);
         }
         else if(profondeur == 0){
@@ -543,55 +490,25 @@ public class Model_Partie_IA {
             //simuler(coup_actuel);
             tourDuJoueurBlanc = false;
             sauvegardePlateau1 = plateau[casesAtteignablesJoueurCourant[i]];
-            /*couleurPionAJouer = plateauCase[casesAtteignablesJoueurCourant[i]];
-            // On indique que le pion est maintenant sur la case cliqué
-            //plateau[casesAtteignablesJoueurCourant[i]] = pionMemoire;
-            // On supprime le pion de son ancien emplacement
-            plateau[casePionMemoire] = -1;
-            // On enregistre le pion qui vient d'être bougé
-            dernierPionJoue = pionMemoire;
-            plateau[casePionMemoire] = pionMemoire;
-            pionMemoire = (byte)(getCouleurPionAJouer() + 8);
-            casePionMemoire = plateau[casesAtteignablesJoueurCourant[i]];*/
-            /*plateau[casePionMemoire] = -1;
-            plateau[casesAtteignablesJoueurCourant[i]] = pionMemoire;
-            dernierPionJoue = pionMemoire;
-            casePionMemoire = plateau[casesAtteignablesJoueurCourant[i]];
-            couleurPionAJouer = plateauCase[casePionMemoire];
-            pionMemoire = (byte)(getCouleurPionAJouer());
-
-            setCasesAtteignablesJoueurCourant(tourDuJoueurBlanc, getCasePionMemoire());  //bool = false en theorie
-
-            /*for(int j =0 ; j<casesAtteignablesJoueurCourant.length ; j++){
-                System.out.println("Max: " + j+" "+casesAtteignablesJoueurCourant[j]);
-            }*/
-            //le der : pas bon
 
 
             plateau[casePionMemoire] = -1;
             plateau[casesAtteignablesJoueurCourant[i]] = pionMemoire;
             caseDernierPionJoue = casesAtteignablesJoueurCourant[i];
             dernierPionJoue = pionMemoire;
-            ////casePionMemoire = plateau[casesAtteignablesJoueurCourant[i]];
-            ////System.out.println(casePionMemoire);
             couleurPionAJouer = plateauCase[casesAtteignablesJoueurCourant[i]];
             pionMemoire = getCouleurPionAJouer();
-            //System.out.println("Pion mem : "+pionMemoire);
-            //System.out.println(couleurPionAJouer);
 
 
-            //casePionMemoire = plateau[pionMemoire];
             for (byte j=0; j< plateau.length; j++)
                 if (plateau[j] == pionMemoire)
                 {
                     casePionMemoire = j;
                     break;
                 }
-
             setCasesAtteignablesJoueurCourant(!tourDuJoueurBlanc, getCasePionMemoire());  //bool = false en theorie
 
 
-            //System.out.println(casePionMemoire);
 
             val = min((byte)(profondeur - 1));
             cumul += val;
