@@ -117,7 +117,7 @@ class Control_Partie_IA extends MouseAdapter
                     {
                         // On vérifie que la case cliquée est dans les cases atteignables du pion en mémoire
                         boolean isCaseAtteignable = false;
-                        for (i = 0; i < Model_Partie_IA.NBCASESATTEIGNABLESPOSSIBLESJOUEURCOURANT; i++)
+                        for (i = 0; i < Model_Partie_IA.getNBCASESATTEIGNABLESPOSSIBLESJOUEURCOURANT(); i++)
                             if (accueil.getPartieIa().getCasesAtteignablesJoueurCourant()[i] == index) {
                                 isCaseAtteignable = true;
                                 break;
