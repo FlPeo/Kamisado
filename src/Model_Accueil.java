@@ -47,6 +47,25 @@ class Model_Accueil
         joueurNoir.setPartie(partie);
     }
 
+    void demarrerPartieRapide()
+    {
+        Model_Case[] board = Model_Case.initCasesPlateau();
+        Model_Pion[] pionsBlancs = Model_Pion.creationPionsBlancs(board);
+        Model_Pion[] pionsNoirs = Model_Pion.creationPionsNoirs(board);
+
+        for(int i=0; i<Model_Plateau.LIGNE; i++) board[i].addPion(pionsBlancs[i]);
+        for(int i=0; i<pionsNoirs.length; i++) board[56+i].addPion(pionsNoirs[i]);
+        int idBlanc, idNoir;
+        idBlanc = 0;
+        idNoir = 1;
+        Model_Joueur joueurBlanc = new Model_Joueur("Joueur Blanc", true, idBlanc);
+        Model_Joueur joueurNoir = new Model_Joueur("Joueur Noir", false, idNoir);
+        this.partie = Model_Partie.factPartie(this, joueurBlanc, joueurNoir, board, pionsBlancs, pionsNoirs, null, true);
+
+        joueurBlanc.setPartie(partie);
+        joueurNoir.setPartie(partie);
+    }
+
     void demarrerPartieFictive()
     {
         Model_Case[] board = Model_Case.initCasesPlateau();

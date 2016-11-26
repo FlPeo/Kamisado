@@ -16,6 +16,7 @@ class Vue extends JFrame
     private Model_Accueil accueil;
     private Vue_Plateau vue_plateau;
     private int xSize, ySize;
+    private Vue_Bouton lancerPartieRapide;
     private Vue_Bouton lancerPartieLocale;
     private Vue_Bouton lancerPartieContreIA;
     private Vue_Bouton lancerPartieEnReseau;
@@ -73,6 +74,7 @@ class Vue extends JFrame
         texteInternational2 = ResourceBundle.getBundle("Traductions.labels");
 
         titre = new JLabel(texteInternational.getString("titre"));
+        lancerPartieRapide = new Vue_Bouton(texteInternational.getString("partieRapide"));
         lancerPartieLocale = new Vue_Bouton(texteInternational.getString("partieLocale"));
         lancerPartieContreIA = new Vue_Bouton(texteInternational.getString("defierIA"));
 
@@ -165,8 +167,9 @@ class Vue extends JFrame
      */
     private void creerWidgetAccueil()
     {
-        JPanel boutonsMenu = new JPanel(new GridLayout(9, 1, 0, 10));
+        JPanel boutonsMenu = new JPanel(new GridLayout(10, 1, 0, 10));
         boutonsMenu.setOpaque(false);
+        boutonsMenu.add(lancerPartieRapide);
         boutonsMenu.add(lancerPartieLocale);
         boutonsMenu.add(lancerPartieContreIA);
         boutonsMenu.add(lancerPartieEnReseau);
@@ -257,6 +260,7 @@ class Vue extends JFrame
      */
     void setButtonControl(ActionListener listener)
     {
+        lancerPartieRapide.addActionListener(listener);
         lancerPartieLocale.addActionListener(listener);
         lancerPartieContreIA.addActionListener(listener);
         lancerPartieEnReseau.addActionListener(listener);
@@ -468,5 +472,9 @@ class Vue extends JFrame
     }
     Vue_Bouton getSuivant() {
         return suivant;
+    }
+
+    public Vue_Bouton getLancerPartieRapide() {
+        return lancerPartieRapide;
     }
 }

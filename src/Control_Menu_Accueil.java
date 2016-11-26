@@ -33,7 +33,15 @@ class Control_Menu_Accueil implements ActionListener
     @Override
     public void actionPerformed(ActionEvent e)
     {
-        if(e.getSource().equals(vue.getLancerPartieLocale()))
+        if (e.getSource().equals(vue.getLancerPartieRapide())){
+            accueil.demarrerPartieRapide();
+            vue.setVue_plateau(new Vue_Plateau(vue, accueil));
+            vue.creerWidgetPartie();
+            vue.setPartieControl(Control_Partie);
+            accueil.getPartie().casesAtteignablesProchainTour();
+            vue.display();
+        }
+        else if(e.getSource().equals(vue.getLancerPartieLocale()))
         {
             vue.creerWidgetChoixPseudos();
         }
@@ -74,6 +82,9 @@ class Control_Menu_Accueil implements ActionListener
             accueil.demarrerPartieFictive();
             vue.creerWidgetAfficherHistorique();
             vue.display();
+        }
+        else if (e.getSource().equals(vue.getStatistiquesDuJoueur())){
+            System.out.println("listener Ok");
         }
         else if(e.getSource().equals(vue.getCredits()))
         {
