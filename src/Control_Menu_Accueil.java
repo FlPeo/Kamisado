@@ -84,7 +84,11 @@ class Control_Menu_Accueil implements ActionListener
             vue.display();
         }
         else if (e.getSource().equals(vue.getStatistiquesDuJoueur())){
-            System.out.println("listener Ok");
+            vue.statistiquesJoueur();
+            if (accueil.getPseudoChoisi() != null)
+                vue.fenetreStatsJoueur(accueil.getPseudoChoisi());
+            else
+                System.err.println("escape");
         }
         else if(e.getSource().equals(vue.getCredits()))
         {

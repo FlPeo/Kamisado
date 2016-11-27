@@ -7,6 +7,7 @@ class Model_Accueil
     private String partieAVisualiser;
     private String pseudoJoueurBlanc;
     private String pseudoJoueurNoir;
+    private String pseudoChoisi;
     private boolean ia = false;
 
 
@@ -20,6 +21,7 @@ class Model_Accueil
         partieAVisualiser = "";
         pseudoJoueurBlanc = "";
         pseudoJoueurNoir = "";
+        pseudoChoisi = "";
     }
 
 
@@ -144,5 +146,10 @@ class Model_Accueil
     }
     String getPseudoJoueurNoir() {
         return pseudoJoueurNoir;
+    }
+    public String getPseudoChoisi() { return pseudoChoisi; }
+
+    public void setPseudoChoisi(String pseudoChoisi) {
+        this.pseudoChoisi = pseudoChoisi;
     }
 }

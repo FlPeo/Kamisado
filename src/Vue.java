@@ -430,6 +430,54 @@ class Vue extends JFrame
         return coups;
     }
 
+    /**
+     * Provenance : Jeux d'Echec
+     * Propose une liste déroulante des joueurs de la base de donnée
+     */
+    void statistiquesJoueur()
+    {
+        int i;
+        BDDManager bdd = new BDDManager();
+        bdd.start();
+
+        ArrayList<ArrayList<String>> listeJoueur = bdd.ask("SELECT * FROM JOUEUR;");
+
+        String[] pseudoJoueurs = new String[listeJoueur.size()];
+        for(i=0;i<listeJoueur.size(); i++)
+            pseudoJoueurs[i] = listeJoueur.get(i).get(1);
+
+        accueil.setPseudoChoisi((String) JOptionPane.showInputDialog(null, "Afficher les statistique du joueur :",
+                "Statistiques", JOptionPane.QUESTION_MESSAGE, null, pseudoJoueurs,
+                pseudoJoueurs[0]));
+
+        bdd.stop();
+    }
+
+    /**
+     * Provenance : Jeux d'Echec
+     * Affiche les statistiques du joueur dont le nom est passé en paramètre
+     * @param pseudo (joueur dont les statistiques doivent être affiché)
+     */
+    void fenetreStatsJoueur(String pseudo)
+    {
+        BDDManager bdd = new BDDManager();
+        bdd.start();
+
+        ArrayList<String> caracteristique = bdd.ask("SELECT * FROM JOUEUR WHERE pseudoJoueur = '" + pseudo + "';").get(0);
+
+        int partiesJouees = Integer.parseInt(caracteristique.get(2)) +
+                Integer.parseInt(caracteristique.get(3));
+
+        String stats = "\n\nPseudo : " + caracteristique.get(1) + "\n" +
+                "Nombre de parties jouées : " + partiesJouees + "\n" +
+                "Nombre de parties gagnées : " + caracteristique.get(2) + "\n" +
+                "Nombre de parties perdues : " + caracteristique.get(3) + "\n";
+
+        JOptionPane.showMessageDialog(this, "Statistiques :" + stats, "Statistiques d'un joueur", JOptionPane.INFORMATION_MESSAGE);
+
+        bdd.stop();
+    }
+
     // GETTERS & SETTERS
     Vue_Bouton getLancerPartieContreIA() { return lancerPartieContreIA; }
     Vue_Plateau getVue_plateau() { return vue_plateau; }
