@@ -87,10 +87,17 @@ class Control_Partie extends MouseAdapter
                 accueil.getPartie().getHistory());
 
         if(accueil.getPartie().isJoueurBlancGagnant())
+        {
             nomJoueur = accueil.getPartie().getJoueurBlanc().getNom();
+            String nomJoueurPerdant = accueil.getPartie().getJoueurNoir().getNom();
+            Model_Joueur.ajouteVictoire(nomJoueur, nomJoueurPerdant);
+        }
         else
+        {
             nomJoueur = accueil.getPartie().getJoueurNoir().getNom();
-
+            String nomJoueurPerdant =  accueil.getPartie().getJoueurBlanc().getNom();
+            Model_Joueur.ajouteVictoire(nomJoueur,nomJoueurPerdant);
+        }
         Vue_FactorPopup.creerPopupJoueurGagnant(nomJoueur);
     }
 }

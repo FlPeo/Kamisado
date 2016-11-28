@@ -1,9 +1,12 @@
 class Model_Joueur
 {
+    private final static BDDManager bdd = new BDDManager();
+
     private int id;
     private String nom;
     private Model_Partie model_partie2V2;
     private boolean estJoueurBlanc;
+
 
     Model_Joueur(String nom, boolean joueurBlanc, int id)
     {
@@ -51,6 +54,23 @@ class Model_Joueur
         return estJoueurBlanc;
     }
 
+    /**
+     * Provenance : Echec
+     * Met à jour les stats des participants d'une partie
+     * @param JoueurGagnant
+     * @param JoueurPerdant
+     */
+    static void ajouteVictoire(String JoueurGagnant, String JoueurPerdant)
+    {
+        bdd.start();
+        bdd.edit("UPDATE JOUEUR " +
+                "SET nbPartiesGagneesJoueur = nbPartiesGagneesJoueur+1 " +
+                "WHERE pseudoJoueur = \"" + JoueurGagnant + "\";");
+        bdd.edit("UPDATE JOUEUR " +
+                "SET nbPartiesPerduesJoueur = nbPartiesPerduesJoueur+1 " +
+                "WHERE pseudoJoueur = \"" + JoueurPerdant + "\";");
+        bdd.stop();
+    }
 
     public void setPartie(Model_Partie model_partie2V2) {
         this.model_partie2V2 = model_partie2V2;
