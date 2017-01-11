@@ -31,7 +31,7 @@ class Vue extends JFrame
     private Vue_Bouton retour;
     private Vue_Bouton suivant;
     private JLabel titre;
-    private JLabel background;
+    private JPanel background;
     private JLabel joueur1;
     private JLabel joueur2;
     private JComboBox listePseudo1;
@@ -54,14 +54,14 @@ class Vue extends JFrame
     Vue(Model_Accueil accueil)
     {
         this.accueil = accueil;
+        Toolkit tk = Toolkit.getDefaultToolkit();
+        xSize = (int) tk.getScreenSize().getWidth();
+        ySize = (int) tk.getScreenSize().getHeight();
 
         initAttribut();
         creerWidgetAccueil();
 
         setUndecorated(true);
-        Toolkit tk = Toolkit.getDefaultToolkit();
-        xSize = (int) tk.getScreenSize().getWidth();
-        ySize = (int) tk.getScreenSize().getHeight();
         setSize(xSize, ySize);
         setTitle("Kamisado");
         setResizable(false);
@@ -199,7 +199,7 @@ class Vue extends JFrame
         organisation.add(boutonsMenu, BorderLayout.SOUTH);
 
         // Mis ene place du fond d'écran
-        background = new JLabel(new ImageIcon("Images/Fonds/fond1.jpg"));
+        background = new BackgroundPanel(xSize, ySize, "Images/Fonds/fond1.jpg");//new ImageIcon("Images/Fonds/fond1.jpg"));
         background.setSize(xSize, ySize);
         background.setLayout(new FlowLayout());
         background.add(organisation, BorderLayout.CENTER);
@@ -242,7 +242,7 @@ class Vue extends JFrame
         organisation.add(pseudos, BorderLayout.SOUTH);
 
         // Mise en place du fond d'écran
-        background = new JLabel(new ImageIcon("Images/Fonds/fond1.jpg"));
+        background = new BackgroundPanel(xSize, ySize, "Images/Fonds/fond1.jpg");//new ImageIcon("Images/Fonds/fond1.jpg"));
         background.setSize(xSize, ySize);
         background.setLayout(new FlowLayout());
         background.add(organisation, BorderLayout.CENTER);
@@ -286,8 +286,7 @@ class Vue extends JFrame
         organisation.add(retourMenu, BorderLayout.EAST);
 
         // Mise en place du fond d'écran
-        background = new JLabel(new ImageIcon("Images/Fonds/fond1.jpg"));
-        background.setSize(xSize, ySize);
+        background = new BackgroundPanel(xSize, ySize, "Images/Fonds/fond1.jpg");//new ImageIcon("Images/Fonds/fond1.jpg"));
         background.setLayout(new FlowLayout());
         background.add(organisation, BorderLayout.CENTER);
 
