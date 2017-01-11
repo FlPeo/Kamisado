@@ -1,6 +1,9 @@
 import java.util.Arrays;
 import java.util.Random;
 
+//blanc = joueur
+
+
 /**
  * On définira dans cette classe et dans un soucis d'économie de place :
  * - les pions blancs et noirs seront définis de la facon suivante :
@@ -35,8 +38,7 @@ import java.util.Random;
  * 6 = bleu
  * 7 = orange
  */
-public class Model_Partie_IA
-{
+public class Model_Partie_IA {
     static final byte MARRON = 0;
     static final byte GREEN = 1;
     static final byte RED = 2;
@@ -93,15 +95,14 @@ public class Model_Partie_IA
 
     private static final int MOINS_INFINI = -1000000;
     private static final int INFINI = 1000000;
-    private static final byte PROFONDEUR_MINMAX = 4;
+    private static final byte PROFONDEUR_MINMAX = 6;
 
     private static final byte VICTOIRE_IA = 0;
     private static final byte DEFAITE_IA = 1;
     private static final byte CONTINU = 2;
 
 
-    Model_Partie_IA()
-    {
+    Model_Partie_IA() {
         plateau = new byte[LIGNE * LIGNE];
         Arrays.fill(plateau, (byte) -1);
         placePionsBlancs();
@@ -251,8 +252,7 @@ public class Model_Partie_IA
         }
     }
 
-    public void setCasesAtteignablesJoueurCourant(boolean isTourBlanc, byte casePion)
-    {
+    public void setCasesAtteignablesJoueurCourant(boolean isTourBlanc, byte casePion) {
         //On réinitialise le tableau de case atteignable
         for (int i = 0; i < casesAtteignablesJoueurCourant.length; i++)
             casesAtteignablesJoueurCourant[i] = -1;
@@ -300,8 +300,32 @@ public class Model_Partie_IA
         }
     }
 
-    byte evaluate()
-    {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    byte evaluate() {
         //tout ce qui est commente : ancienne version de evaluate en random
         // On choisit aléatoirement la case ou va se déplacer le pion (pseudo IA)
         /*Random rand = new Random();
@@ -326,8 +350,7 @@ public class Model_Partie_IA
         return evaluateMinMax();
     }
 
-    private byte evaluateMinMax()
-    {
+    byte evaluateMinMax() {
         int maxVal = MOINS_INFINI;
         int val;
         byte meilleur_coup = 0;
@@ -342,10 +365,9 @@ public class Model_Partie_IA
 
         byte sauvegardeCasePionMemoire = casePionMemoire;
 
-        for(byte i = 0 ;
-            i<NBCASESATTEIGNABLESPOSSIBLESJOUEURCOURANT&& casesAtteignablesJoueurCourant[i] !=-1;
-            i++)
-        {
+
+
+        for(byte i = 0 ; i<NBCASESATTEIGNABLESPOSSIBLESJOUEURCOURANT && casesAtteignablesJoueurCourant[i] !=-1; i++){
             //simuler(coup actuel)
             sauvegardePlateau1 = plateau[casesAtteignablesJoueurCourant[i]];
 
@@ -364,13 +386,15 @@ public class Model_Partie_IA
                 }
             setCasesAtteignablesJoueurCourant(!tourDuJoueurBlanc, getCasePionMemoire());
 
+
+
             val = min(PROFONDEUR_MINMAX);
             System.out.println("val "+ i+ " = "+val);
-            if(val > maxVal)
-            {
+            if(val > maxVal) {
                 maxVal = val;
                 meilleur_coup = i;
             }
+
 
             //annuler_coup(coup_actuel)
             couleurPionAJouer = sauvegardeCouleur;
@@ -395,13 +419,13 @@ public class Model_Partie_IA
         return meilleur_coup;
     }
 
-    private int min(byte profondeur)
-    {
-        //tour du joueur blanc
-        if(caseDernierPionJoue >=0 && caseDernierPionJoue < 8)
+    int min(byte profondeur){   //tour du joueur blanc
+        if(caseDernierPionJoue >=0 && caseDernierPionJoue < 8){
             return eval(profondeur, VICTOIRE_IA);
-        else if(profondeur == 0)
+        }
+        else if(profondeur == 0){
             return eval(profondeur, CONTINU);
+        }
 
         int minVal = INFINI;
         int val;
@@ -415,10 +439,14 @@ public class Model_Partie_IA
         byte sauvegardeCasePionMemoire = casePionMemoire;
         byte sauvegardeCaseDerPionJoue = caseDernierPionJoue;
 
+
+
+
         for(byte i = 0 ; i<casesAtteignablesJoueurCourant.length && casesAtteignablesJoueurCourant[i] !=-1; i++) {
             //simuler(coup_actuel);
             tourDuJoueurBlanc = true;
             sauvegardePlateau1 = plateau[casesAtteignablesJoueurCourant[i]];
+
 
             plateau[casePionMemoire] = -1;
             plateau[casesAtteignablesJoueurCourant[i]] = pionMemoire;
@@ -436,12 +464,14 @@ public class Model_Partie_IA
                 }
             setCasesAtteignablesJoueurCourant(!tourDuJoueurBlanc, getCasePionMemoire());
 
+
+
             val = max((byte)(profondeur - 1));
             cumul += val;
-            if (val < minVal)
-            {
+            if (val < minVal) {
                 minVal = val;
             }
+
 
             //annuler_coup(coup_actuel);
             couleurPionAJouer = sauvegardeCouleur;
@@ -457,21 +487,22 @@ public class Model_Partie_IA
 
         }
 
-        //return minVal;
-        return cumul;
+        return minVal;
+        //return cumul;
     }
 
-    private int max(byte profondeur)
-    {
-        //tour de l'IA
-        if(caseDernierPionJoue > 55 && caseDernierPionJoue <= 63)
+    int max(byte profondeur){    //tour de l'IA
+        if(caseDernierPionJoue > 55 && caseDernierPionJoue <= 63){
             return eval(profondeur, DEFAITE_IA);
-        else if(profondeur == 0)
+        }
+        else if(profondeur == 0){
             return eval(profondeur, CONTINU);
+        }
 
         int maxVal = MOINS_INFINI;
         int val;
         int cumul = 0;
+
 
         byte sauvegardeCouleur = couleurPionAJouer;
         byte sauvegardePlateau1;
@@ -482,10 +513,12 @@ public class Model_Partie_IA
         byte sauvegardeCasePionMemoire = casePionMemoire;
         byte sauvegardeCaseDerPionJoue = caseDernierPionJoue;
 
+
         for(byte i = 0 ; i<casesAtteignablesJoueurCourant.length && casesAtteignablesJoueurCourant[i] !=-1; i++) {
             //simuler(coup_actuel);
             tourDuJoueurBlanc = false;
             sauvegardePlateau1 = plateau[casesAtteignablesJoueurCourant[i]];
+
 
             plateau[casePionMemoire] = -1;
             plateau[casesAtteignablesJoueurCourant[i]] = pionMemoire;
@@ -493,6 +526,7 @@ public class Model_Partie_IA
             dernierPionJoue = pionMemoire;
             couleurPionAJouer = plateauCase[casesAtteignablesJoueurCourant[i]];
             pionMemoire = getCouleurPionAJouer();
+
 
             for (byte j=0; j< plateau.length; j++)
                 if (plateau[j] == pionMemoire)
@@ -502,10 +536,14 @@ public class Model_Partie_IA
                 }
             setCasesAtteignablesJoueurCourant(!tourDuJoueurBlanc, getCasePionMemoire());  //bool = false en theorie
 
+
+
             val = min((byte)(profondeur - 1));
             cumul += val;
-            if(val>maxVal)
+            if(val>maxVal){
                 maxVal = val;
+            }
+
 
             //annuler_coup(coup_actuel);
             couleurPionAJouer = sauvegardeCouleur;
@@ -520,27 +558,24 @@ public class Model_Partie_IA
             tourDuJoueurBlanc = true;
 
         }
-        //return maxVal;
-        return cumul;
+
+        return maxVal;
+        //return cumul;
     }
 
-    private int eval(byte profondeur, byte situation)
-    {
+    int eval(byte profondeur, byte situation){
         //int nbCoups = PROFONDEUR_MINMAX-profondeur;
         int pts;
 
-        if(situation == VICTOIRE_IA)
-        {
+        if(situation == VICTOIRE_IA){
             //return 1000 - nbCoups;
             pts = 1000 * profondeur;
         }
-        else if(situation == DEFAITE_IA)
-        {
+        else if(situation == DEFAITE_IA){
             //return -1000 + nbCoups;
             pts = -1000 * profondeur;
         }
-        else
-        {
+        else{
             Random r = new Random();
             pts = r.nextInt(18);   //condition a trouver
         }
@@ -550,8 +585,7 @@ public class Model_Partie_IA
     }
 
 
-    void deplacerPiece(byte caseArrivee)
-    {
+    void deplacerPiece(byte caseArrivee) {
         // On indique que le pion est maintenant sur la case cliqué
         plateau[caseArrivee] = pionMemoire;
         // On supprime le pion de son ancien emplacement
