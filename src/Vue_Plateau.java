@@ -8,7 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-class Vue_Plateau extends JPanel
+class   Vue_Plateau extends JPanel
 {
     private Model_Accueil accueil;
     private Vue vue;

@@ -118,12 +118,14 @@ class Control_Partie_IA extends MouseAdapter
                         // On vérifie que la case cliquée est dans les cases atteignables du pion en mémoire
                         boolean isCaseAtteignable = false;
                         for (i = 0; i < Model_Partie_IA.getNBCASESATTEIGNABLESPOSSIBLESJOUEURCOURANT(); i++)
-                            if (accueil.getPartieIa().getCasesAtteignablesJoueurCourant()[i] == index) {
+                            if (accueil.getPartieIa().getCasesAtteignablesJoueurCourant()[i] == index)
+                            {
                                 isCaseAtteignable = true;
                                 break;
                             }
 
-                        if (isCaseAtteignable) {
+                        if (isCaseAtteignable)
+                        {
                             // On reprend la couleur de la case ou va être déplacer le pion pour le tour d'après
                             accueil.getPartieIa().setCouleurPionAJouer(accueil.getPartieIa().getPlateauCase()[index]);
                             // Déplacement de la pièce

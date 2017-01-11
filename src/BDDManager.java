@@ -169,15 +169,15 @@ class BDDManager
     {
         BDDManager bdd = new BDDManager();
         bdd.start();
-        bdd.edit(
+        /*bdd.edit(
                 "INSERT INTO JOUEUR(pseudoJoueur, nbPartiesGagneesJoueur, nbPartiesPerduesJoueur) VALUES" +
-                        "(\"toto\", 0, 0);");
+                        "(\"toto\", 0, 0);");*/
         //System.out.println(bdd.ask("SELECT * FROM JOUEUR;"));
-        bdd.stop();
         //bdd.edit("DELETE FROM SAUVEGARDE;");
         //bdd.edit("DELETE FROM HISTORIQUE;");
         //bdd.edit("DELETE FROM JOUEUR;");
-        //bdd.edit("DELETE FROM HISTORIQUE;");
+        //bdd.edit("DELETE FROM HISTORIQUEPARTIE;");
+        bdd.stop();
         //bdd.edit("drop table JOUEUR;");
         /*bdd.edit("INSERT INTO JOUEUR (pseudoJoueur, nbPartiesJoueur, nbPartiesGagneesJoueur," +
                 " nbPartiesPerduesJoueur, nbPartiesAbandonneeJoueur, partieEnCoursJoueur, trophee1, trophee2, trophee3)" +
