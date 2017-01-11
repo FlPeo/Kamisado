@@ -1,5 +1,4 @@
 import java.util.Arrays;
-import java.util.Random;
 
 //blanc = joueur
 
@@ -95,7 +94,7 @@ public class Model_Partie_IA {
 
     private static final int MOINS_INFINI = -1000000;
     private static final int INFINI = 1000000;
-    private static final byte PROFONDEUR_MINMAX = 6;
+    private static final byte PROFONDEUR_MINMAX = 7;    //pair : IA qui finit de jouer : pas bon pour evalFinProfondeur
 
     private static final byte VICTOIRE_IA = 0;
     private static final byte DEFAITE_IA = 1;
@@ -575,13 +574,44 @@ public class Model_Partie_IA {
             //return -1000 + nbCoups;
             pts = -1000 * profondeur;
         }
-        else{
-            Random r = new Random();
-            pts = r.nextInt(18);   //condition a trouver
+        else{    //situation = CONTINU
+            pts = evalFinProfondeur();
         }
 
         //System.out.println(profondeur + " "+ situation + " " + pts+"\n");
         return pts;
+    }
+
+    private int evalFinProfondeur() {
+        int pts = 0;
+
+        pts += evalFinProfondeurGagnerDeXFacon();
+
+        //a completer
+
+        return pts;
+    }
+
+    private int evalFinProfondeurGagnerDeXFacon() {
+        //>=56
+        int nbFaconsDeGagner = 0;
+        for(byte i = 0 ; i<casesAtteignablesJoueurCourant.length && casesAtteignablesJoueurCourant[i] !=-1; i++) {
+            if(casesAtteignablesJoueurCourant[i] >= 56){
+                nbFaconsDeGagner++;
+            }
+        }
+
+        switch (nbFaconsDeGagner){
+            case 0:
+                return 0;
+            case 1:
+                return 10;
+            case 2:
+                return 20;
+            default:           //3
+                return 25;
+        }
+
     }
 
 
