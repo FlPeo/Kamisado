@@ -18,7 +18,7 @@ class Control_Partie_Menu implements ActionListener
     @Override
     public void actionPerformed(ActionEvent e)
     {
-        if (e.getSource().equals(vue.getQuitter()))
+        if (e.getSource().equals(vue.getQuitterMenu()))
         {
             if (!(accueil.getPartie().getHistory().length() == 0))
             {
