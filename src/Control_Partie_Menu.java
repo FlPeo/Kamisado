@@ -1,7 +1,5 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-
 /**
  Created by cladlink on 06/11/16.
  */
@@ -22,14 +20,13 @@ class Control_Partie_Menu implements ActionListener
         {
             if (!(accueil.getPartie().getHistory().length() == 0))
             {
-                boolean sauvegarde = vue.boolJOptionPane("Voulez-vous sauvegarder avant de quitter  (pas fontionnel)?");
+                boolean sauvegarde = vue.boolJOptionPane("Voulez-vous sauvegarder avant de quitter ?");
                 if (sauvegarde)
                 {
-                    /*if (!accueil.getPartie().save())
-                        vue.("Vous ne pouvez pas enregistrer car vous avez déjà une partie interrompue.");
-                    System.exit(0);*/
+                    if (!accueil.getPartie().save())
+                        vue.messagePop("Vous ne pouvez pas enregistrer car vous avez déjà une partie interrompue.");
+                    System.exit(0);
                 }
-                // todo voir avec Florian pour la vue en boolean
                 System.exit(0);
             }
             else
@@ -39,14 +36,13 @@ class Control_Partie_Menu implements ActionListener
         {
             if (!(accueil.getPartie().getHistory().length() == 0))
             {
-                boolean sauvegarde = vue.boolJOptionPane("Voulez-vous sauvegarder avant de quitter (pas fonctionnel)?");
-                /*if (sauvegarde)
+                boolean sauvegarde = vue.boolJOptionPane("Voulez-vous sauvegarder avant de quitter ?");
+                if (sauvegarde)
                 {
                     if(!accueil.getPartie().save())
                         vue.jOptionMessage("Vous ne pouvez pas enregistrer car vous avez déjà une partie interrompue.");
-                }*/
+                }
             }
-
             vue.setJMenuBar(null);
             vue.afficherMenu();
         }

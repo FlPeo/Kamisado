@@ -206,6 +206,48 @@ class Model_Partie
         casesAtteignablesProchainTour();
     }
 
+    /**
+     *
+     * @return
+     */
+    boolean save()
+    {
+        BDDManager bdd = new BDDManager();
+        bdd.start();
+        int jb = Integer.parseInt(bdd.ask("SELECT id FROM JOUEUR WHERE pseudoJoueur = '" + joueurBlanc.getNom() + "';")
+                .get(0).get(0));
+        int jn = Integer.parseInt(bdd.ask("SELECT id FROM JOUEUR WHERE pseudoJoueur = '" + joueurNoir.getNom() + "';")
+                .get(0).get(0));
+        System.out.println(jb);
+        System.out.println(jn);
+        ArrayList<ArrayList<String>> joueurs = bdd.ask("" +
+                "SELECT joueurBlancSave, joueurNoirSave " +
+                "FROM SAUVEGARDEPARTIE " +
+                "WHERE joueurBlancSave = '" + jb +"' AND joueurNoirSave = '" + jn + "';");
+        if (joueurs != null)
+            return false;
+
+        boolean tour = tourDuJoueurBlanc; // true si joueur blanc
+        String etatPlateau = "";
+        for (int i = 0; i < plateau.getBoard().length; i++)
+        {
+            if(plateau.getBoard()[i].getPion() == null)
+                etatPlateau+=" ,";
+            else
+                etatPlateau += plateau.getBoard()[i].getPion().getCOULEUR() + ",";
+        }
+        int id = BDD_Tools.saveHistory(jb, jn, history);
+
+        bdd.edit("INSERT INTO SAUVEGARDEPARTIE VALUES(null, '"+
+                jb + "', '" +
+                jn + "', " +
+                tour + ", '" +
+                etatPlateau + "', " +
+                id + ");");
+        bdd.stop();
+        return true;
+    }
+
     // GETTERS & SETTERS
     boolean isJoueurBlancGagnant() { return joueurBlancGagnant; }
     Model_Plateau getPlateau() { return plateau; }
@@ -219,4 +261,5 @@ class Model_Partie
     Model_Joueur getJoueurNoir() { return joueurNoir; }
     Model_Pion getDernierPionJoue() { return dernierPionJoue; }
     String getHistory() { return history; }
+
 }

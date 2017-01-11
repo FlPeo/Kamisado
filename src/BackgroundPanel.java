@@ -2,7 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Created by Flo on 11/01/2017.
+ Created by Flo on 11/01/2017.
  */
 public class BackgroundPanel extends JPanel{
     private int width;
