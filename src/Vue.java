@@ -351,10 +351,11 @@ class Vue extends JFrame
         ArrayList<ArrayList<String>> idJoueursHistorique = bdd.ask("SELECT joueurBlanc_id, joueurNoir_id" +
                 " FROM HISTORIQUEPARTIE;");
 
+        System.out.println(idJoueursHistorique);
         if(idJoueursHistorique.isEmpty())
         {
-            JOptionPane.showMessageDialog(this, "Il n'y a pas d'historique disponible.", "Voir l'historique d'une partie"
-                    , JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Il n'y a pas d'historique disponible.",
+                    "Voir l'historique d'une partie", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
 
@@ -366,7 +367,7 @@ class Vue extends JFrame
         String[] joueursNoirs = new String[idJoueursHistorique.size()];
         String[] dates = new String[datesParties.size()];
 
-        // On récupère les pseudos corespondants à chaque id récupérés précédamment
+        // On récupère les pseudos corespondants à chaque id récupérés précédemment
         for (i = 0; i < idJoueursHistorique.size(); i++)
         {
             for(j=0; j<idJoueursHistorique.get(i).size(); j++)
