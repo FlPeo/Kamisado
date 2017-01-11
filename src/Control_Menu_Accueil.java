@@ -119,5 +119,10 @@ class Control_Menu_Accueil implements ActionListener
             vue.majListeJoueur();
             vue.creerWidgetChoixPseudos();
         }
+        else if(e.getSource().equals(vue.getOptions()))
+        {
+            vue.creerWidgetOptions();
+
+        }
     }
 }

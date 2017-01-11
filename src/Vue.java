@@ -36,6 +36,12 @@ class Vue extends JFrame
     private JLabel joueur2;
     private JComboBox listePseudo1;
     private JFrame vueHisto;
+    // Options
+    private JLabel titreOptions;
+    private JButton francaisFlag;
+    private JButton anglaisFlag;
+    private JLabel france;
+    private JLabel angleterre;
 
     private JComboBox listePseudo2;
     private ResourceBundle texteInternationalBoutons;
@@ -89,6 +95,14 @@ class Vue extends JFrame
         suivant=new Vue_Bouton(texteInternationalBoutons.getString("suivant"));
         retour=new Vue_Bouton(texteInternationalBoutons.getString("retour"));
 
+        // Options
+        france = new JLabel(new ImageIcon("Images/drapeaux/franceFlag.jpg"));
+        angleterre = new JLabel(new ImageIcon("Images/drapeaux/anglaisFlag.jpg"));
+        francaisFlag = new JButton(france.getIcon());
+        anglaisFlag = new JButton(angleterre.getIcon());
+        titreOptions = new JLabel(texteInternationalLabels.getString("titreOption"));
+
+
         majListeJoueur();
 
         joueur1 = new JLabel(texteInternationalLabels.getString("pseudoJ1"));
@@ -112,8 +126,10 @@ class Vue extends JFrame
             io.printStackTrace();
         }
         Font policeTitre = new Font("Ace Records", Font.BOLD, 150);
+        Font policeTitreSecondaire = new Font("Ace Records", Font.BOLD, 70);
         Font policeLabel = new Font("Cardinal", Font.BOLD, 25);
         titre.setFont(policeTitre);
+        titreOptions.setFont(policeTitreSecondaire);
         joueur1.setFont(policeLabel);
         joueur2.setFont(policeLabel);
     }
@@ -227,6 +243,39 @@ class Vue extends JFrame
         initMenuPartie();
         setControlMenu(new Control_Partie_Menu(this, accueil));
         setContentPane(vue_plateau);
+    }
+
+    /**
+     * Lance la vue des options
+     */
+    void creerWidgetOptions()
+    {
+        JPanel titres = new JPanel(new GridLayout(2,1));
+        titres.setOpaque(false);
+        titres.add(titre);
+        titres.add(titreOptions);
+
+        JPanel options = new JPanel(new GridLayout(2,2));
+        options.setOpaque(false);
+        francaisFlag.setOpaque(false);
+        anglaisFlag.setOpaque(false);
+        options.add(francaisFlag);
+        options.add(anglaisFlag);
+        options.add(Box.createVerticalGlue());
+        options.add(Box.createVerticalGlue());
+
+        JPanel organisation = new JPanel(new BorderLayout());
+        organisation.setOpaque(false);
+        organisation.add(titres, BorderLayout.NORTH);
+        organisation.add(options, BorderLayout.SOUTH);
+
+        // Mise en place du fond d'écran
+        background = new JLabel(new ImageIcon("Images/Fonds/fond1.jpg"));
+        background.setSize(xSize, ySize);
+        background.setLayout(new FlowLayout());
+        background.add(organisation, BorderLayout.CENTER);
+
+        setContentPane(background);
     }
 
     /**
@@ -521,8 +570,31 @@ class Vue extends JFrame
     Vue_Bouton getSuivant() {
         return suivant;
     }
-
-    public Vue_Bouton getLancerPartieRapide() {
+    JButton getFrancaisFlag() {
+        return francaisFlag;
+    }
+    void setFrancaisFlag(JButton francaisFlag) {
+        this.francaisFlag = francaisFlag;
+    }
+    JButton getAnglaisFlag() {
+        return anglaisFlag;
+    }
+    void setAnglaisFlag(JButton anglaisFlag) {
+        this.anglaisFlag = anglaisFlag;
+    }
+    JLabel getFrance() {
+        return france;
+    }
+    void setFrance(JLabel france) {
+        this.france = france;
+    }
+    JLabel getAngleterre() {
+        return angleterre;
+    }
+    void setAngleterre(JLabel angleterre) {
+        this.angleterre = angleterre;
+    }
+    Vue_Bouton getLancerPartieRapide() {
         return lancerPartieRapide;
     }
 }
