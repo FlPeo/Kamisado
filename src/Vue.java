@@ -1,5 +1,3 @@
-import javafx.scene.control.ComboBox;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -8,7 +6,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
-import java.util.Vector;
 
 
 class Vue extends JFrame
@@ -29,7 +26,7 @@ class Vue extends JFrame
     private Vue_Bouton retourMenu;
     private Vue_Bouton lancerPartieLocale2;
     private Vue_Bouton nouveauPseudo;
-    private Vue_Bouton undoMenu, retourMenuPrincipalMenu;
+    private JMenuItem undoMenu, retourMenuPrincipalMenu, quitterMenu;
     private Vue_Bouton precedent;
     private Vue_Bouton retour;
     private Vue_Bouton suivant;
@@ -41,8 +38,8 @@ class Vue extends JFrame
     private JFrame vueHisto;
 
     private JComboBox listePseudo2;
-    private ResourceBundle texteInternational;
-    private ResourceBundle texteInternational2;
+    private ResourceBundle texteInternationalBoutons;
+    private ResourceBundle texteInternationalLabels;
 
     /**
      * Constructeur de la vu
@@ -70,32 +67,32 @@ class Vue extends JFrame
      */
     private void initAttribut()
     {
-        texteInternational = ResourceBundle.getBundle("Traductions.boutons");
-        texteInternational2 = ResourceBundle.getBundle("Traductions.labels");
+        texteInternationalBoutons = ResourceBundle.getBundle("Traductions.boutons");
+        texteInternationalLabels = ResourceBundle.getBundle("Traductions.labels");
 
-        titre = new JLabel(texteInternational.getString("titre"));
-        lancerPartieRapide = new Vue_Bouton(texteInternational.getString("partieRapide"));
-        lancerPartieLocale = new Vue_Bouton(texteInternational.getString("partieLocale"));
-        lancerPartieContreIA = new Vue_Bouton(texteInternational.getString("defierIA"));
+        titre = new JLabel(texteInternationalBoutons.getString("titre"));
+        lancerPartieRapide = new Vue_Bouton(texteInternationalBoutons.getString("partieRapide"));
+        lancerPartieLocale = new Vue_Bouton(texteInternationalBoutons.getString("partieLocale"));
+        lancerPartieContreIA = new Vue_Bouton(texteInternationalBoutons.getString("defierIA"));
 
-        lancerPartieEnReseau = new Vue_Bouton(texteInternational.getString("partieReseau"));
-        chargerPartie = new Vue_Bouton(texteInternational.getString("chargerPartie"));
-        historique = new Vue_Bouton(texteInternational.getString("historique"));
-        statistiquesDuJoueur = new Vue_Bouton(texteInternational.getString("statistiques"));
-        options=new Vue_Bouton(texteInternational.getString("options"));
-        credits=new Vue_Bouton(texteInternational.getString("credits"));
-        quitter=new Vue_Bouton(texteInternational.getString("quitter"));
-        retourMenu=new Vue_Bouton(texteInternational.getString("retourMenu"));
-        lancerPartieLocale2=new Vue_Bouton(texteInternational.getString("partieLocale"));
-        nouveauPseudo=new Vue_Bouton(texteInternational.getString("ajouterPseudo"));
-        precedent=new Vue_Bouton(texteInternational.getString("precedent"));
-        suivant=new Vue_Bouton(texteInternational.getString("suivant"));
-        retour=new Vue_Bouton(texteInternational.getString("retour"));
+        lancerPartieEnReseau = new Vue_Bouton(texteInternationalBoutons.getString("partieReseau"));
+        chargerPartie = new Vue_Bouton(texteInternationalBoutons.getString("chargerPartie"));
+        historique = new Vue_Bouton(texteInternationalBoutons.getString("historique"));
+        statistiquesDuJoueur = new Vue_Bouton(texteInternationalBoutons.getString("statistiques"));
+        options=new Vue_Bouton(texteInternationalBoutons.getString("options"));
+        credits=new Vue_Bouton(texteInternationalBoutons.getString("credits"));
+        quitter=new Vue_Bouton(texteInternationalBoutons.getString("quitter"));
+        retourMenu=new Vue_Bouton(texteInternationalBoutons.getString("retourMenu"));
+        lancerPartieLocale2=new Vue_Bouton(texteInternationalBoutons.getString("partieLocale"));
+        nouveauPseudo=new Vue_Bouton(texteInternationalBoutons.getString("ajouterPseudo"));
+        precedent=new Vue_Bouton(texteInternationalBoutons.getString("precedent"));
+        suivant=new Vue_Bouton(texteInternationalBoutons.getString("suivant"));
+        retour=new Vue_Bouton(texteInternationalBoutons.getString("retour"));
 
         majListeJoueur();
 
-        joueur1 = new JLabel(texteInternational2.getString("pseudoJ1"));
-        joueur2 = new JLabel(texteInternational2.getString("pseudoJ2"));
+        joueur1 = new JLabel(texteInternationalLabels.getString("pseudoJ1"));
+        joueur2 = new JLabel(texteInternationalLabels.getString("pseudoJ2"));
 
         GraphicsEnvironment fontLabel = GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsEnvironment fontTitre = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -133,13 +130,13 @@ class Vue extends JFrame
         JMenu optionPartie = new JMenu("Fichier");
         JMenu parametres = new JMenu("Options");
 
-        retourMenuPrincipalMenu = new Vue_Bouton("Menu Principal");
-
-        undoMenu = new Vue_Bouton("Undo");
+        retourMenuPrincipalMenu = new JMenuItem(texteInternationalBoutons.getString("retourMenu"));
+        quitterMenu = new JMenuItem(texteInternationalBoutons.getString("quitter"));
+        undoMenu = new JMenuItem(texteInternationalBoutons.getString("undo"));
 
         optionPartie.add(retourMenuPrincipalMenu);
         optionPartie.addSeparator();
-        optionPartie.add(quitter);
+        optionPartie.add(quitterMenu);
 
         parametres.add(undoMenu);
 
@@ -292,7 +289,7 @@ class Vue extends JFrame
     {
         retourMenuPrincipalMenu.addActionListener(e);
         undoMenu.addActionListener(e);
-        quitter.addActionListener(e);
+        quitterMenu.addActionListener(e);
     }
 
     void choixHistoriqueAConsulter()
@@ -492,11 +489,14 @@ class Vue extends JFrame
     Vue_Bouton getOptions() { return options;}
     Vue_Bouton getCredits() { return credits; }
     Vue_Bouton getQuitter() { return quitter; }
-    Vue_Bouton getRetourMenuPrincipalMenu() {
+    JMenuItem getRetourMenuPrincipalMenu() {
         return retourMenuPrincipalMenu;
     }
-    Vue_Bouton getUndoMenu() {
+    JMenuItem getUndoMenu() {
         return undoMenu;
+    }
+    JMenuItem getQuitterMenu() {
+        return quitterMenu;
     }
     Vue_Bouton getRetourMenu() {
         return retourMenu;
