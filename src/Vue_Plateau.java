@@ -69,7 +69,7 @@ class   Vue_Plateau extends JPanel
     public void paintComponent(Graphics g)
     {
         super.paintComponent(g);
-        g.drawImage(background, 0, 0, 1380, 768, null);
+        g.drawImage(background, 0, 0, vue.getWidth(), vue.getHeight(), null);
         int i, x, y, tailleDuPlateau = 64;
         int couleurCase, couleurPion;
         if(accueil.getia())
@@ -200,7 +200,6 @@ class   Vue_Plateau extends JPanel
                             null);
             }
         }
-        //--------FIN MICHAEL
         if(accueil.getPartie().getPionMemoire() != null)
         {
             ArrayList<Model_Case> cases= accueil.getPartie().getPionMemoire().getCasesAtteignables();

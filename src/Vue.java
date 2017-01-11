@@ -209,16 +209,31 @@ class Vue extends JFrame
 
     void creerWidgetChoixPseudos()
     {
-        JPanel pseudos = new JPanel(new GridLayout(3, 3));
+        JPanel pseudos = new JPanel(new GridLayout(7, 3, 50, 20));
         pseudos.setOpaque(false);
+
+        pseudos.add(Box.createVerticalGlue());
+        pseudos.add(Box.createVerticalGlue());
+        pseudos.add(Box.createVerticalGlue());
+
         pseudos.add(joueur1);
-        pseudos.add(Box.createVerticalGlue());
         pseudos.add(joueur2);
-        pseudos.add(listePseudo1);
         pseudos.add(Box.createVerticalGlue());
+
+        pseudos.add(listePseudo1);
         pseudos.add(listePseudo2);
         pseudos.add(nouveauPseudo);
+
+        pseudos.add(Box.createVerticalGlue());
+        pseudos.add(Box.createVerticalGlue());
+        pseudos.add(Box.createVerticalGlue());
+
+        pseudos.add(Box.createVerticalGlue());
+        pseudos.add(Box.createVerticalGlue());
         pseudos.add(lancerPartieLocale2);
+
+        pseudos.add(Box.createVerticalGlue());
+        pseudos.add(Box.createVerticalGlue());
         pseudos.add(retourMenu);
 
         JPanel organisation = new JPanel(new BorderLayout());
@@ -268,6 +283,7 @@ class Vue extends JFrame
         organisation.setOpaque(false);
         organisation.add(titres, BorderLayout.NORTH);
         organisation.add(options, BorderLayout.SOUTH);
+        organisation.add(retourMenu, BorderLayout.EAST);
 
         // Mise en place du fond d'écran
         background = new JLabel(new ImageIcon("Images/Fonds/fond1.jpg"));
