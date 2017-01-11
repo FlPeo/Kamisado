@@ -1,3 +1,6 @@
+drop table if exists SAUVEGARDEPARTIE;
+drop table if exists HISTORIQUEPARTIE;
+drop table if exists JOUEUR;
 CREATE TABLE JOUEUR
 (
 	id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
