@@ -95,6 +95,35 @@ class Model_Accueil
         joueurNoir.setPartie(partie);
     }
 
+    void demarrerPartieChargee()
+    {
+        Model_Case[] board = Model_Case.initCasesPlateau();
+        Model_Pion[] pionsBlancs = Model_Pion.creationPionsBlancs(board);
+        Model_Pion[] pionsNoirs = Model_Pion.creationPionsNoirs(board);
+
+        BDDManager bdd = new BDDManager();
+        bdd.start();
+
+        int idBlanc, idNoir;
+
+        idBlanc = Integer.parseInt(bdd.ask("SELECT id FROM JOUEUR WHERE pseudoJoueur LIKE '" + pseudoJoueurBlanc + "';").get(0).get(0));
+        idNoir = Integer.parseInt(bdd.ask("SELECT id FROM JOUEUR WHERE pseudoJoueur LIKE '" + pseudoJoueurNoir + "';").get(0).get(0));
+
+        String etatPlateau = bdd.ask("SELECT etatPlateauSave FROM SAUVEGARDEPARTIE WHERE joueurBlancSave = " + idBlanc).get(0).get(0);
+
+        String[] placesPions = etatPlateau.split(",");
+
+        for(int i=0; i<Model_Plateau.LIGNE; i++) board[i].addPion(pionsBlancs[i]);
+        for(int i=0; i<pionsNoirs.length; i++) board[56+i].addPion(pionsNoirs[i]);
+
+        Model_Joueur joueurBlanc = new Model_Joueur(pseudoJoueurBlanc, true, idBlanc);
+        Model_Joueur joueurNoir = new Model_Joueur(pseudoJoueurNoir, false, idNoir);
+        this.partie = Model_Partie.factPartie(this, joueurBlanc, joueurNoir, board, pionsBlancs, pionsNoirs, null, true);
+
+        joueurBlanc.setPartie(partie);
+        joueurNoir.setPartie(partie);
+    }
+
     /**
      * initie la partie contre l'IA
      */

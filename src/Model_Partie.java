@@ -231,10 +231,18 @@ class Model_Partie
         String etatPlateau = "";
         for (int i = 0; i < plateau.getBoard().length; i++)
         {
-            if(plateau.getBoard()[i].getPion() == null)
-                etatPlateau+=" ,";
+            if(plateau.getBoard()[i].getPion() == null) {
+                etatPlateau += " ,";
+            }
             else
-                etatPlateau += plateau.getBoard()[i].getPion().getCOULEUR() + ",";
+            {
+                if(plateau.getBoard()[i].getPion().isEstBlanc())
+                    etatPlateau += plateau.getBoard()[i].getPion().getCOULEUR() + "b,";
+                else
+                    etatPlateau += plateau.getBoard()[i].getPion().getCOULEUR() + "n,";
+
+            }
+
         }
         int id = BDD_Tools.saveHistory(jb, jn, history);
 

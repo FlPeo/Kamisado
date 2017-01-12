@@ -198,7 +198,6 @@ class BDDManager
         {
             System.out.println(test.get(i));
         }*/
-
         ArrayList<ArrayList<String>> bla = bdd.ask("SELECT * FROM SAUVEGARDEPARTIE;");
         for (int i = 0; i < bla.size(); i++)
         {

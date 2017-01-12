@@ -2,7 +2,6 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Locale;
-import java.util.Vector;
 
 class Control_Menu_Accueil implements ActionListener
 {
@@ -123,7 +122,39 @@ class Control_Menu_Accueil implements ActionListener
         }
         else if(e.getSource().equals(vue.getChargerPartie()))
         {
+            // Affichage de la pop-up pour le choix des parties à charger
             vue.afficherPartiesACharger();
+
+            // Si aucune partie n'est séléctionnée
+            if(accueil.getPartieACharger() == null)
+                return;
+
+            // Initialisation des joueurs
+            String jBlanc = accueil.getPartieACharger().split(" ")[0];
+            String jNoir = accueil.getPartieACharger().split(" ")[2];
+            accueil.setPseudoJoueurBlanc(jBlanc);
+            accueil.setPseudoJoueurNoir(jNoir);
+            accueil.demarrerPartie();
+
+            vue.setVue_plateau(new Vue_Plateau(vue, accueil));
+            vue.creerWidgetPartie();
+            vue.setPartieControl(Control_Partie);
+            accueil.getPartie().casesAtteignablesProchainTour();
+            vue.display();
+
+            // On supprime pour ne pas interférer avec la prochaine fois qu'un joueur voudra charger une partie. Ex : si
+            // on ne supprime pas et qu'un joueur clique sur Charger une partie et que finalement il fait Annuler, la
+            // partie chargée sera quand même lancée.
+            accueil.setPartieACharger("");
+
+            /*
+            accueil.demarrerPartie();
+            vue.setVue_plateau(new Vue_Plateau(vue, accueil));
+            vue.creerWidgetPartie();
+            vue.setPartieControl(Control_Partie);
+            accueil.getPartie().casesAtteignablesProchainTour();
+            vue.display();
+            */
         }
         else if(e.getSource().equals(vue.getOptions()))
         {
