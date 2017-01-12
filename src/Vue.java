@@ -4,8 +4,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.ResourceBundle;
+import java.util.*;
 
 
 class Vue extends JFrame
@@ -536,6 +535,39 @@ class Vue extends JFrame
                 "Nombre de parties perdues : " + caracteristique.get(3) + "\n";
 
         JOptionPane.showMessageDialog(this, "Statistiques :" + stats, "Statistiques d'un joueur", JOptionPane.INFORMATION_MESSAGE);
+
+        bdd.stop();
+    }
+
+    void afficherPartiesACharger()
+    {
+        BDDManager bdd = new BDDManager();
+        bdd.start();
+        //Récupération des id des joueurs qui ont une partie sauvegardée
+        ArrayList<ArrayList<String>> joueurs = bdd.ask("SELECT joueurBlancSave, joueurNoirSave FROM SAUVEGARDEPARTIE;");
+
+        // Cas ou il n'y a pas de parties sauvegardée
+        if(joueurs.isEmpty())
+        {
+            JOptionPane.showMessageDialog(this, "Il n'y a pas de partie enregistrée.", "Continuer une partie", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+
+        // Construction des lignes à proposer en fonction du pseudo des deux joueurs
+        String[] nomPartiesDispos = new String[joueurs.size()];
+        String[] pseudos = new String[2];
+        for(int i=0; i<joueurs.size(); i++)
+        {
+            // Transformation idJoueur --> pseudo
+            pseudos[0] = bdd.ask("SELECT pseudoJoueur FROM JOUEUR WHERE id = " + joueurs.get(i).get(0)).get(0).get(0);
+            pseudos[1] = bdd.ask("SELECT pseudoJoueur FROM JOUEUR WHERE id = " + joueurs.get(i).get(1)).get(0).get(0);
+            nomPartiesDispos[i] = pseudos[0] + "  VS  " + pseudos[1];
+        }
+
+        // On crée la boite de dialogue
+        accueil.setPartieACharger((String) JOptionPane.showInputDialog(null, "Quelle partie voulez-vous continuer ?",
+                "Continuer une partie", JOptionPane.QUESTION_MESSAGE, null, nomPartiesDispos,
+                nomPartiesDispos[0]));
 
         bdd.stop();
     }

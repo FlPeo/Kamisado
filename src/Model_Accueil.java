@@ -8,6 +8,7 @@ class Model_Accueil
     private String pseudoJoueurBlanc;
     private String pseudoJoueurNoir;
     private String pseudoChoisi;
+    private String partieACharger;
     private boolean ia = false;
 
 
@@ -22,6 +23,7 @@ class Model_Accueil
         pseudoJoueurBlanc = "";
         pseudoJoueurNoir = "";
         pseudoChoisi = "";
+        partieACharger = "";
     }
 
 
@@ -151,5 +153,13 @@ class Model_Accueil
 
     public void setPseudoChoisi(String pseudoChoisi) {
         this.pseudoChoisi = pseudoChoisi;
+    }
+
+    public String getPartieACharger() {
+        return partieACharger;
+    }
+
+    public void setPartieACharger(String partieACharger) {
+        this.partieACharger = partieACharger;
     }
 }

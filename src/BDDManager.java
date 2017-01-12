@@ -172,7 +172,9 @@ class BDDManager
         BDDManager bdd = new BDDManager();
         bdd.start();
 
-        bdd.lire("src/BDD_Kamisado.sql");
+        //bdd.lire("src/BDD_Kamisado.sql");
+        ArrayList<ArrayList<String>> test = bdd.ask("SELECT * FROM HISTORIQUEPARTIE;");
+        for (ArrayList<String> aTest : test) System.out.println(aTest);
 
         /*bdd.edit(
                 "INSERT INTO JOUEUR(pseudoJoueur, nbPartiesGagneesJoueur, nbPartiesPerduesJoueur) VALUES" +
@@ -182,7 +184,6 @@ class BDDManager
         //bdd.edit("DELETE FROM HISTORIQUE;");
         //bdd.edit("DELETE FROM JOUEUR;");
         //bdd.edit("DELETE FROM HISTORIQUEPARTIE;");
-        bdd.stop();
         //bdd.edit("drop table JOUEUR;");
         /*bdd.edit("INSERT INTO JOUEUR (pseudoJoueur, nbPartiesJoueur, nbPartiesGagneesJoueur," +
                 " nbPartiesPerduesJoueur, nbPartiesAbandonneeJoueur, partieEnCoursJoueur, trophee1, trophee2, trophee3)" +
@@ -198,11 +199,11 @@ class BDDManager
             System.out.println(test.get(i));
         }*/
 
-        /*ArrayList<ArrayList<String>> test = bdd.ask("SELECT * FROM HISTORIQUE;");
-        for (int i = 0; i < test.size(); i++)
+        ArrayList<ArrayList<String>> bla = bdd.ask("SELECT * FROM SAUVEGARDEPARTIE;");
+        for (int i = 0; i < bla.size(); i++)
         {
-            System.out.println(test.get(i));
+            System.out.println(bla.get(i));
         }
-        bdd.stop();*/
+        bdd.stop();
     }
 }
