@@ -350,10 +350,272 @@ public class Model_Partie_IA {
         tourDuJoueurBlanc = true;
         return (byte) caseAlea;*/
 
-        return evaluateMinMax();
+        //return evaluateMinMax();
+
+        return evaluateMax();
     }
 
-    byte evaluateMinMax() {
+    private byte evaluateMax() {
+        System.out.println("Minmax");
+        int maxVal = MOINS_INFINI*600;
+        int val;
+        byte meilleur_coup = 0;
+
+        byte sauvegardeCouleur = couleurPionAJouer;
+        byte sauvegardePlateau1;
+        byte sauvegardePlateauPionMem = plateau[casePionMemoire];
+        byte sauvegardeDerPionJoue = dernierPionJoue;
+        byte sauvegardeCaseDerPionJoue = caseDernierPionJoue;
+
+        byte[] sauvegardeCasesAtteignablesJoueurCourant = Arrays.copyOf(casesAtteignablesJoueurCourant,
+                casesAtteignablesJoueurCourant.length);
+
+        byte sauvegardeCasePionMemoire = casePionMemoire;
+
+        byte i;
+        for(i = 0 ; i<NBCASESATTEIGNABLESPOSSIBLESJOUEURCOURANT && casesAtteignablesJoueurCourant[i] !=-1; i++){
+            //simuler(coup actuel)
+            sauvegardePlateau1 = plateau[casesAtteignablesJoueurCourant[i]];
+
+            plateau[casePionMemoire] = -1;
+            System.out.println("case at = "+casesAtteignablesJoueurCourant[i]);
+            plateau[casesAtteignablesJoueurCourant[i]] = pionMemoire;
+            caseDernierPionJoue = casesAtteignablesJoueurCourant[i];
+            dernierPionJoue = pionMemoire;
+            couleurPionAJouer = plateauCase[casesAtteignablesJoueurCourant[i]];
+            pionMemoire = getCouleurPionAJouer();
+
+            for (byte j=0; j< plateau.length; j++)
+                if (plateau[j] == pionMemoire)
+                {
+                    casePionMemoire = j;
+                    break;
+                }
+            setCasesAtteignablesJoueurCourant(!tourDuJoueurBlanc, getCasePionMemoire());
+
+
+
+            val = max(PROFONDEUR_MINMAX);
+            System.out.println("val "+ i+ " = "+val);
+            if(val > maxVal) {
+                maxVal = val;
+                meilleur_coup = i;
+            }
+
+
+            //annuler_coup(coup_actuel)
+            couleurPionAJouer = sauvegardeCouleur;
+            caseDernierPionJoue = sauvegardeCaseDerPionJoue;
+            casePionMemoire = sauvegardeCasePionMemoire;
+            plateau[casePionMemoire] = sauvegardePlateauPionMem;
+            pionMemoire = dernierPionJoue;
+            dernierPionJoue = sauvegardeDerPionJoue;
+            casesAtteignablesJoueurCourant = Arrays.copyOf(sauvegardeCasesAtteignablesJoueurCourant,
+                    sauvegardeCasesAtteignablesJoueurCourant.length);
+            plateau[casesAtteignablesJoueurCourant[i]] = sauvegardePlateau1;
+        }
+
+
+        //Jouer(meilleur coup)
+        couleurPionAJouer = plateauCase[casesAtteignablesJoueurCourant[meilleur_coup]];
+        plateau[casesAtteignablesJoueurCourant[meilleur_coup]] = pionMemoire;
+        plateau[casePionMemoire] = -1;
+        dernierPionJoue = pionMemoire;
+        tourDuJoueurBlanc = true;
+
+        return meilleur_coup;
+    }
+
+    private int max(byte profondeur) {
+        if(caseDernierPionJoue >=56 && caseDernierPionJoue <64  && tourDuJoueurBlanc){    //prodondeur pair = IA vient de jouer
+            return eval(profondeur, DEFAITE_IA);
+        }
+        else if(caseDernierPionJoue >=0 && caseDernierPionJoue < 8 && !tourDuJoueurBlanc){
+            return eval(profondeur, VICTOIRE_IA);
+        }
+        else if(profondeur == 0){
+            return eval(profondeur, CONTINU);
+        }
+
+
+        int cumul;
+
+        if(!tourDuJoueurBlanc){   //different car valeur changee dans le for
+            cumul = 0;
+        }
+        else{
+            cumul = MOINS_INFINI;
+        }
+
+        byte sauvegardeCouleur = couleurPionAJouer;
+        byte sauvegardePlateau1;
+        byte sauvegardePlateauPionMem = plateau[casePionMemoire];
+        byte sauvegardeDerPionJoue = dernierPionJoue;
+        byte[] sauvegardeCasesAtteignablesJoueurCourant = Arrays.copyOf(casesAtteignablesJoueurCourant,
+                casesAtteignablesJoueurCourant.length);
+        byte sauvegardeCasePionMemoire = casePionMemoire;
+        byte sauvegardeCaseDerPionJoue = caseDernierPionJoue;
+
+
+        if(!controlBlocage()){
+            byte i;
+            for(i = 0 ; i<casesAtteignablesJoueurCourant.length && casesAtteignablesJoueurCourant[i] !=-1 && cumul != MOINS_INFINI * 500; i++) {
+                //simuler(coup_actuel);
+                tourDuJoueurBlanc = !tourDuJoueurBlanc;     //false si max
+                sauvegardePlateau1 = plateau[casesAtteignablesJoueurCourant[i]];
+
+
+                plateau[casePionMemoire] = -1;
+                plateau[casesAtteignablesJoueurCourant[i]] = pionMemoire;
+                caseDernierPionJoue = casesAtteignablesJoueurCourant[i];
+                dernierPionJoue = pionMemoire;
+                couleurPionAJouer = plateauCase[casesAtteignablesJoueurCourant[i]];
+
+                byte ajoutPionMemoire = (byte)((tourDuJoueurBlanc)?8:0);
+                pionMemoire = (byte)(ajoutPionMemoire + getCouleurPionAJouer());      //pas le 8
+
+
+                for (byte j=0; j< plateau.length; j++)
+                    if (plateau[j] == pionMemoire)
+                    {
+                        casePionMemoire = j;
+                        break;
+                    }
+                setCasesAtteignablesJoueurCourant(!tourDuJoueurBlanc, getCasePionMemoire());
+
+
+
+                //val = max((byte)(profondeur - 1));
+                int val = max((byte)(profondeur - 1));
+                if(tourDuJoueurBlanc){
+                    cumul += val;
+                    if(val == MOINS_INFINI * (PROFONDEUR_MINMAX - 1)){
+                        System.out.println("yoyo");
+                        cumul = MOINS_INFINI * 500;
+                    }
+                }
+                else{
+                    if(val>cumul){
+                        cumul = val;
+                    }
+                }
+
+
+
+                //annuler_coup(coup_actuel);
+                couleurPionAJouer = sauvegardeCouleur;
+                casePionMemoire = sauvegardeCasePionMemoire;
+                caseDernierPionJoue = sauvegardeCaseDerPionJoue;
+                plateau[casePionMemoire] = sauvegardePlateauPionMem;
+                pionMemoire = dernierPionJoue;
+                dernierPionJoue = sauvegardeDerPionJoue;
+                casesAtteignablesJoueurCourant = Arrays.copyOf(sauvegardeCasesAtteignablesJoueurCourant,
+                        sauvegardeCasesAtteignablesJoueurCourant.length);
+                plateau[casesAtteignablesJoueurCourant[i]] = sauvegardePlateau1;
+                tourDuJoueurBlanc = !tourDuJoueurBlanc;       //ou true
+
+            }
+            if(!tourDuJoueurBlanc && cumul != MOINS_INFINI * 500){   // ! car valeur retablie à fin du for
+                cumul /= i;
+            }
+        }
+        else{    //blocage
+
+            boolean condition;
+
+            tourDuJoueurBlanc = !tourDuJoueurBlanc;
+            couleurPionAJouer = getPlateauCase()[getCasePionMemoire()];
+            // On retrouve le pion qui doit jouer et on le met dans le pion mémoire
+            for (int i = 0; i < plateau.length; i++) {
+                condition = (tourDuJoueurBlanc)
+                        ? plateau[i] != -1 && plateau[i] % 8 == getCouleurPionAJouer() % 8 && plateau[i] > 7
+                        : plateau[i] != -1 && plateau[i] == getCouleurPionAJouer();
+
+                if (condition) {
+                    pionMemoire = plateau[i];     //ca a reverse
+                    casePionMemoire = (byte)i;
+                }
+            }
+            // On calcul les cases atteignables du pion mémoire
+            setCasesAtteignablesJoueurCourant(!tourDuJoueurBlanc, getCasePionMemoire());
+
+
+            cumul = max((byte)(profondeur - 1));
+
+
+
+            couleurPionAJouer = sauvegardeCouleur;
+            casePionMemoire = sauvegardeCasePionMemoire;
+            pionMemoire = dernierPionJoue;
+
+            casesAtteignablesJoueurCourant = Arrays.copyOf(sauvegardeCasesAtteignablesJoueurCourant,
+                    sauvegardeCasesAtteignablesJoueurCourant.length);
+            tourDuJoueurBlanc = !tourDuJoueurBlanc;       //ou true
+        }
+
+        //System.out.println(cumul);
+        return cumul;
+    }
+
+    int eval(byte profondeur, byte situation){
+        //int nbCoups = PROFONDEUR_MINMAX-profondeur;
+        int pts;
+
+        if(situation == VICTOIRE_IA){
+            //return 1000 - nbCoups;
+
+            pts = INFINI *profondeur;
+            //System.out.println("Vic !");
+        }
+        else if(situation == DEFAITE_IA){
+            //return -1000 + nbCoups;
+            //pts = MOINS_INFINI +6 - profondeur;
+            pts = MOINS_INFINI*profondeur;
+            //System.out.println("Defaite");
+        }
+        else{    //situation = CONTINU
+            pts = evalFinProfondeur();
+        }
+
+        //System.out.println(pts+"\n");
+        return pts;
+    }
+
+    private int evalFinProfondeur() {
+        int pts = 0;
+        //pts += evalFinProfondeurGagnerDeXFacon();    //à refaire
+
+
+
+        //a completer
+
+        return pts;
+    }
+
+    /*private int evalFinProfondeurGagnerDeXFacon() {
+        //>=56
+        int nbFaconsDeGagner = 0;
+        for(byte i = 0 ; i<casesAtteignablesJoueurCourant.length && casesAtteignablesJoueurCourant[i] !=-1; i++) {
+            if(casesAtteignablesJoueurCourant[i] >= 56){
+                nbFaconsDeGagner++;
+            }
+        }
+
+        switch (nbFaconsDeGagner){
+            case 0:
+                return 0;
+            case 1:
+                return 10;
+            case 2:
+                return 20;
+            default:
+                return 25;
+        }
+
+    }*/
+
+
+    /*byte evaluateMinMax() {
         int maxVal = MOINS_INFINI;
         int val;
         byte meilleur_coup = 0;
@@ -616,7 +878,7 @@ public class Model_Partie_IA {
                 return 25;
         }
 
-    }
+    }*/
 
 
     void deplacerPiece(byte caseArrivee) {
