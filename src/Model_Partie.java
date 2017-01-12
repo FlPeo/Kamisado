@@ -19,6 +19,7 @@ class Model_Partie
     private Model_Joueur joueurNoir;
 
     private boolean estGagnee;
+    private boolean estPartieChargee;
     private String history;
 
     /**
@@ -56,6 +57,7 @@ class Model_Partie
         joueurBlanc = j1;
         joueurNoir = j2;
         history = "";
+        estPartieChargee = false;
     }
 
     /**
@@ -269,5 +271,10 @@ class Model_Partie
     Model_Joueur getJoueurNoir() { return joueurNoir; }
     Model_Pion getDernierPionJoue() { return dernierPionJoue; }
     String getHistory() { return history; }
-
+    boolean isEstPartieChargee() {
+        return estPartieChargee;
+    }
+    void setEstPartieChargee(boolean estPartieChargee) {
+        this.estPartieChargee = estPartieChargee;
+    }
 }

@@ -109,7 +109,8 @@ class Model_Accueil
         idBlanc = Integer.parseInt(bdd.ask("SELECT id FROM JOUEUR WHERE pseudoJoueur LIKE '" + pseudoJoueurBlanc + "';").get(0).get(0));
         idNoir = Integer.parseInt(bdd.ask("SELECT id FROM JOUEUR WHERE pseudoJoueur LIKE '" + pseudoJoueurNoir + "';").get(0).get(0));
 
-        String etatPlateau = bdd.ask("SELECT etatPlateauSave FROM SAUVEGARDEPARTIE WHERE joueurBlancSave = " + idBlanc).get(0).get(0);
+        String etatPlateau = bdd.ask("SELECT etatPlateauSave FROM SAUVEGARDEPARTIE WHERE joueurBlancSave = "
+                + idBlanc  + " AND joueurNoirSave = " + idNoir + ";").get(0).get(0);
 
         String[] placesPions = etatPlateau.split(",");
 

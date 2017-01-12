@@ -66,6 +66,7 @@ class Control_Menu_Accueil implements ActionListener
             vue.creerWidgetPartie();
             vue.setPartieControl(Control_Partie);
             accueil.getPartie().casesAtteignablesProchainTour();
+            accueil.getPartie().setEstPartieChargee(false);
             vue.display();
         }
         else if (e.getSource().equals(vue.getLancerPartieContreIA()))

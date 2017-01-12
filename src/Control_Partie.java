@@ -98,6 +98,14 @@ class Control_Partie extends MouseAdapter
             String nomJoueurPerdant =  accueil.getPartie().getJoueurBlanc().getNom();
             Model_Joueur.ajouteVictoire(nomJoueur,nomJoueurPerdant);
         }
+        if(accueil.getPartie().isEstPartieChargee())
+        {
+            BDDManager bdd = new BDDManager();
+            bdd.start();
+            bdd.edit("DELETE FROM SAUVEGARDEPARTIE WHERE joueurBlancSave = " + accueil.getPartie().getJoueurBlanc().getId()
+                    + " AND joueurNoirSave = " + accueil.getPartie().getJoueurNoir().getId());
+            bdd.stop();
+        }
         vue.afficherMenu();
         Vue_FactorPopup.creerPopupJoueurGagnant(nomJoueur);
     }
