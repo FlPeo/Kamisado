@@ -41,6 +41,7 @@ class Control_Menu_Accueil implements ActionListener
             vue.creerWidgetPartie();
             vue.setPartieControl(Control_Partie);
             accueil.getPartie().casesAtteignablesProchainTour();
+            vue.addUndo();
             vue.display();
         }
         else if(e.getSource().equals(vue.getLancerPartieLocale()))
@@ -68,6 +69,7 @@ class Control_Menu_Accueil implements ActionListener
             vue.setPartieControl(Control_Partie);
             accueil.getPartie().casesAtteignablesProchainTour();
             accueil.getPartie().setEstPartieChargee(false);
+            vue.addUndo();
             vue.display();
         }
         else if (e.getSource().equals(vue.getLancerPartieContreIA()))
@@ -187,11 +189,11 @@ class Control_Menu_Accueil implements ActionListener
         }
         else if(e.getSource().equals(vue.getMusiqueOff()))
         {
-
+            Music.stopMusicTest();
         }
         else if(e.getSource().equals(vue.getMusiqueOn()))
         {
-
+            Music.playMusicTest();
         }
     }
 }

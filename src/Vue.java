@@ -48,6 +48,10 @@ class Vue extends JFrame
     private JLabel choixMusique;
     private JLabel choixLangue;
 
+    // Menu
+    JMenu parametres;
+    JMenuBar barMenu;
+
     private JComboBox listePseudo2;
     private ResourceBundle texteInternationalBoutons;
     private ResourceBundle texteInternationalLabels;
@@ -161,10 +165,10 @@ class Vue extends JFrame
      */
     private void initMenuPartie()
     {
-        JMenuBar barMenu = new JMenuBar();
+        barMenu = new JMenuBar();
 
         JMenu optionPartie = new JMenu("Fichier");
-        JMenu parametres = new JMenu("Options");
+        parametres = new JMenu("Options");
 
         retourMenuPrincipalMenu = new JMenuItem(texteInternationalBoutons.getString("retourMenu"));
         quitterMenu = new JMenuItem(texteInternationalBoutons.getString("quitter"));
@@ -174,12 +178,17 @@ class Vue extends JFrame
         optionPartie.addSeparator();
         optionPartie.add(quitterMenu);
 
-        parametres.add(undoMenu);
+
 
         barMenu.add(optionPartie);
-        barMenu.add(parametres);
 
         setJMenuBar(barMenu);
+    }
+
+    void addUndo()
+    {
+        parametres.add(undoMenu);
+        barMenu.add(parametres);
     }
 
     /**

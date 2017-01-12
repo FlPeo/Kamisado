@@ -18,34 +18,44 @@ class Control_Partie_Menu implements ActionListener
     {
         if (e.getSource().equals(vue.getQuitterMenu()))
         {
-            if (!(accueil.getPartie().getHistory().length() == 0))
+            if(!accueil.getia())
             {
-                boolean sauvegarde = vue.boolJOptionPane("Voulez-vous sauvegarder avant de quitter ?");
-                if (sauvegarde)
+                if (!(accueil.getPartie().getHistory().length() == 0))
                 {
-                    if (!accueil.getPartie().save())
-                        vue.messagePop("Vous ne pouvez pas enregistrer car vous avez déjà une partie interrompue.");
+                    boolean sauvegarde = vue.boolJOptionPane("Voulez-vous sauvegarder avant de quitter ?");
+                    if (sauvegarde)
+                    {
+                        if (!accueil.getPartie().save())
+                            vue.messagePop("Vous ne pouvez pas enregistrer car vous avez déjà une partie interrompue.");
+                        System.exit(0);
+                    }
                     System.exit(0);
                 }
+                else
+                    System.exit(0);
+            }
+            else{
                 System.exit(0);
             }
-            else
-                System.exit(0);
         }
+
         else if (e.getSource().equals(vue.getRetourMenuPrincipalMenu()))
         {
-            if (!(accueil.getPartie().getHistory().length() == 0))
-            {
-                boolean sauvegarde = vue.boolJOptionPane("Voulez-vous sauvegarder avant de quitter ?");
-                if (sauvegarde)
+            if(!accueil.getia()){
+                if (!(accueil.getPartie().getHistory().length() == 0))
                 {
-                    if(!accueil.getPartie().save())
-                        vue.jOptionMessage("Vous ne pouvez pas enregistrer car vous avez déjà une partie interrompue.");
+                    boolean sauvegarde = vue.boolJOptionPane("Voulez-vous sauvegarder avant de quitter ?");
+                    if (sauvegarde)
+                    {
+                        if(!accueil.getPartie().save())
+                            vue.jOptionMessage("Vous ne pouvez pas enregistrer car vous avez déjà une partie interrompue.");
+                    }
                 }
             }
             vue.setJMenuBar(null);
             vue.afficherMenu();
         }
+
         else if (e.getSource().equals(vue.getUndoMenu()))
         {
             boolean undo = vue.boolJOptionPane("Voulez-vous annuler le dernier coup ?");
