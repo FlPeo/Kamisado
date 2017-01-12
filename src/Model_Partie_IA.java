@@ -38,6 +38,10 @@ import java.util.Arrays;
  * 7 = orange
  */
 public class Model_Partie_IA {
+    int lvl1;
+    int lvl3;
+    int lvl5;
+    int lvl7;
     static final byte MARRON = 0;
     static final byte GREEN = 1;
     static final byte RED = 2;

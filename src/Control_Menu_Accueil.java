@@ -1,5 +1,7 @@
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Locale;
 import java.util.Vector;
 
 class Control_Menu_Accueil implements ActionListener
@@ -126,7 +128,28 @@ class Control_Menu_Accueil implements ActionListener
         else if(e.getSource().equals(vue.getOptions()))
         {
             vue.creerWidgetOptions();
-
+        }
+        else if(e.getSource().equals(vue.getAnglaisFlag()))
+        {
+            accueil.setLangue("en");
+            Locale locale = new Locale(accueil.getLangue());
+            Locale.setDefault(locale);
+            JOptionPane.setDefaultLocale(Locale.getDefault());
+            vue.dispose();
+            vue = new Vue(accueil);
+            vue.setButtonControl(this);
+            vue.setVisible(true);
+        }
+        else if(e.getSource().equals(vue.getFrancaisFlag()))
+        {
+            accueil.setLangue("fr");
+            Locale locale = new Locale(accueil.getLangue());
+            Locale.setDefault(locale);
+            JOptionPane.setDefaultLocale(Locale.getDefault());
+            vue.dispose();
+            vue = new Vue(accueil);
+            vue.setButtonControl(this);
+            vue.setVisible(true);
         }
     }
 }

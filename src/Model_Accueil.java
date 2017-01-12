@@ -9,6 +9,7 @@ class Model_Accueil
     private String pseudoJoueurNoir;
     private String pseudoChoisi;
     private String partieACharger;
+    private String langue;
     private boolean ia = false;
 
 
@@ -24,6 +25,7 @@ class Model_Accueil
         pseudoJoueurNoir = "";
         pseudoChoisi = "";
         partieACharger = "";
+        langue = "fr";
     }
 
 
@@ -149,17 +151,20 @@ class Model_Accueil
     String getPseudoJoueurNoir() {
         return pseudoJoueurNoir;
     }
-    public String getPseudoChoisi() { return pseudoChoisi; }
-
-    public void setPseudoChoisi(String pseudoChoisi) {
+    String getPseudoChoisi() { return pseudoChoisi; }
+    void setPseudoChoisi(String pseudoChoisi) {
         this.pseudoChoisi = pseudoChoisi;
     }
-
-    public String getPartieACharger() {
+    String getPartieACharger() {
         return partieACharger;
     }
-
-    public void setPartieACharger(String partieACharger) {
+    void setPartieACharger(String partieACharger) {
         this.partieACharger = partieACharger;
+    }
+    String getLangue() {
+        return langue;
+    }
+    void setLangue(String langue) {
+        this.langue = langue;
     }
 }

@@ -333,6 +333,8 @@ class Vue extends JFrame
         retourMenu.addActionListener(listener);
         lancerPartieLocale2.addActionListener(listener);
         nouveauPseudo.addActionListener(listener);
+        francaisFlag.addActionListener(listener);
+        anglaisFlag.addActionListener(listener);
     }
 
     void setButtonHistoriqueControl(ActionListener listener)
