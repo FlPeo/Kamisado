@@ -224,7 +224,7 @@ class Model_Partie
                 "SELECT joueurBlancSave, joueurNoirSave " +
                 "FROM SAUVEGARDEPARTIE " +
                 "WHERE joueurBlancSave = '" + jb +"' AND joueurNoirSave = '" + jn + "';");
-        if (joueurs != null)
+        if (!joueurs.isEmpty())
             return false;
 
         boolean tour = tourDuJoueurBlanc; // true si joueur blanc
