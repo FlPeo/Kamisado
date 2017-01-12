@@ -563,7 +563,7 @@ class Vue extends JFrame
             // Transformation idJoueur --> pseudo
             pseudos[0] = bdd.ask("SELECT pseudoJoueur FROM JOUEUR WHERE id = " + joueurs.get(i).get(0)).get(0).get(0);
             pseudos[1] = bdd.ask("SELECT pseudoJoueur FROM JOUEUR WHERE id = " + joueurs.get(i).get(1)).get(0).get(0);
-            nomPartiesDispos[i] = pseudos[0] + "  VS  " + pseudos[1];
+            nomPartiesDispos[i] = pseudos[0] + " VS " + pseudos[1];
         }
 
         // On crée la boite de dialogue
