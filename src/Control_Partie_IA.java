@@ -216,5 +216,7 @@ class Control_Partie_IA extends MouseAdapter
                 }
             }
         }
+
+        vue.validate();
     }
 }
