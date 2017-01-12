@@ -34,7 +34,8 @@ class Control_Menu_Accueil implements ActionListener
     @Override
     public void actionPerformed(ActionEvent e)
     {
-        if (e.getSource().equals(vue.getLancerPartieRapide())){
+        if (e.getSource().equals(vue.getLancerPartieRapide()))
+        {
             accueil.demarrerPartieRapide();
             vue.setVue_plateau(new Vue_Plateau(vue, accueil));
             vue.creerWidgetPartie();
@@ -125,7 +126,8 @@ class Control_Menu_Accueil implements ActionListener
             String[] listeJoueurs = accueil.listePseudos();
             for(int i = 0; i < listeJoueurs.length; i++)
             {
-                if (listeJoueurs[i].equals(pseudo)) {
+                if (listeJoueurs[i].equals(pseudo))
+                {
                     vue.jOptionMessage("Ce pseudo n'est pas disponible");
                     return;
                 }
@@ -140,7 +142,8 @@ class Control_Menu_Accueil implements ActionListener
             vue.afficherPartiesACharger();
 
             // Si aucune partie n'est séléctionnée
-            if(accueil.getPartieACharger() == null || accueil.getPartieACharger().isEmpty())
+            if(accueil.getPartieACharger() == null
+                    || accueil.getPartieACharger().isEmpty())
                 return;
 
             // Initialisation des joueurs
@@ -148,27 +151,13 @@ class Control_Menu_Accueil implements ActionListener
             String jNoir = accueil.getPartieACharger().split(" ")[2];
             accueil.setPseudoJoueurBlanc(jBlanc);
             accueil.setPseudoJoueurNoir(jNoir);
-            accueil.demarrerPartie();
+            accueil.demarrerPartieChargee();
 
             vue.setVue_plateau(new Vue_Plateau(vue, accueil));
             vue.creerWidgetPartie();
             vue.setPartieControl(Control_Partie);
             accueil.getPartie().casesAtteignablesProchainTour();
             vue.display();
-
-            // On supprime pour ne pas interférer avec la prochaine fois qu'un joueur voudra charger une partie. Ex : si
-            // on ne supprime pas et qu'un joueur clique sur Charger une partie et que finalement il fait Annuler, la
-            // partie chargée sera quand même lancée.
-            accueil.setPartieACharger("");
-
-            /*
-            accueil.demarrerPartie();
-            vue.setVue_plateau(new Vue_Plateau(vue, accueil));
-            vue.creerWidgetPartie();
-            vue.setPartieControl(Control_Partie);
-            accueil.getPartie().casesAtteignablesProchainTour();
-            vue.display();
-            */
         }
         else if(e.getSource().equals(vue.getOptions()))
         {

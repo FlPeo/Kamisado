@@ -109,13 +109,40 @@ class Model_Accueil
         idBlanc = Integer.parseInt(bdd.ask("SELECT id FROM JOUEUR WHERE pseudoJoueur LIKE '" + pseudoJoueurBlanc + "';").get(0).get(0));
         idNoir = Integer.parseInt(bdd.ask("SELECT id FROM JOUEUR WHERE pseudoJoueur LIKE '" + pseudoJoueurNoir + "';").get(0).get(0));
 
-        String etatPlateau = bdd.ask("SELECT etatPlateauSave FROM SAUVEGARDEPARTIE WHERE joueurBlancSave = "
-                + idBlanc  + " AND joueurNoirSave = " + idNoir + ";").get(0).get(0);
+        String etatPlateau = bdd.ask("SELECT etatPlateauSave FROM SAUVEGARDEPARTIE WHERE joueurBlancSave = " + idBlanc).get(0).get(0);
+        boolean turn = Boolean.getBoolean(bdd.ask("SELECT tourSave FROM SAUVEGARDEPARTIE WHERE joueurBlancSave = " + idBlanc).get(0).get(0));
+        String history = bdd.ask("" +
+                "SELECT coupsJouee" +
+                " FROM HISTORIQUEPARTIE" +
+                " JOIN SAUVEGARDEPARTIE ON HISTORIQUEPARTIE.id = SAUVEGARDEPARTIE.Historique_id" +
+                " WHERE joueurBlancSave = " + idBlanc).get(0).get(0);
 
         String[] placesPions = etatPlateau.split(",");
 
-        for(int i=0; i<Model_Plateau.LIGNE; i++) board[i].addPion(pionsBlancs[i]);
-        for(int i=0; i<pionsNoirs.length; i++) board[56+i].addPion(pionsNoirs[i]);
+        for(int i=0; i<placesPions.length; i++)
+        {
+            if (placesPions[i].charAt(0) != ' ' && placesPions[i].charAt(1) == 'b')
+            {
+                for (Model_Pion pionsBlanc : pionsBlancs)
+                {
+                    if (pionsBlanc.getCOULEUR() == Character.getNumericValue(placesPions[i].charAt(0))) {
+                        board[i].setPion(pionsBlanc);
+                        pionsBlanc.setCaseActuelle(board[i]);
+                    }
+                }
+            }
+            else if (placesPions[i].charAt(0) != ' ' && placesPions[i].charAt(1) == 'n')
+            {
+                for (Model_Pion pionsNoir : pionsNoirs)
+                {
+                    if (pionsNoir.getCOULEUR() == Character.getNumericValue(placesPions[i].charAt(0)))
+                    {
+                        board[i].setPion(pionsNoir);
+                        pionsNoir.setCaseActuelle(board[i]);
+                    }
+                }
+            }
+        }
 
         Model_Joueur joueurBlanc = new Model_Joueur(pseudoJoueurBlanc, true, idBlanc);
         Model_Joueur joueurNoir = new Model_Joueur(pseudoJoueurNoir, false, idNoir);
@@ -123,6 +150,16 @@ class Model_Accueil
 
         joueurBlanc.setPartie(partie);
         joueurNoir.setPartie(partie);
+        partie.setTourDuJoueurBlanc(turn);
+
+        String[] tabCoupDecoupe = history.split(",");
+        int rowArrivee = Character.getNumericValue(tabCoupDecoupe[tabCoupDecoupe.length-1].charAt(2));
+        int columnArrivee = Character.getNumericValue(tabCoupDecoupe[tabCoupDecoupe.length-1].charAt(3));
+
+        partie.setDernierPionJoue(board[rowArrivee*Model_Plateau.LIGNE+columnArrivee].getPion());
+        partie.setHistory(history);
+        partie.setTourUn(false);
+        partie.setEstPartieChargee(true);
     }
 
     /**

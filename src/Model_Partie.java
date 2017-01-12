@@ -271,10 +271,25 @@ class Model_Partie
     Model_Joueur getJoueurNoir() { return joueurNoir; }
     Model_Pion getDernierPionJoue() { return dernierPionJoue; }
     String getHistory() { return history; }
-    boolean isEstPartieChargee() {
-        return estPartieChargee;
+
+
+    public void setDernierPionJoue(Model_Pion dernierPionJoue) {
+        this.dernierPionJoue = dernierPionJoue;
     }
-    void setEstPartieChargee(boolean estPartieChargee) {
+
+    public void setHistory(String history) {
+        this.history = history;
+    }
+
+    public void setTourDuJoueurBlanc(boolean tourDuJoueurBlanc) {
+        this.tourDuJoueurBlanc = tourDuJoueurBlanc;
+    }
+
+    public void setEstPartieChargee(boolean estPartieChargee) {
         this.estPartieChargee = estPartieChargee;
+    }
+
+    public boolean isEstPartieChargee() {
+        return estPartieChargee;
     }
 }

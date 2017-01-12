@@ -133,8 +133,7 @@ class Model_Case
     void setPlateau(Model_Plateau modPlateau) { plateau = modPlateau; }
     int getRow() { return row; }
     int getColumn() { return column; }
-
-    public void setPion(Model_Pion pion) {
-        this.pion = pion;
-    }
+    public void setRow(int row) { this.row = row; }
+    void setPion(Model_Pion pion) { this.pion = pion; }
 }
+
