@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Locale;
@@ -171,10 +172,9 @@ class Control_Menu_Accueil implements ActionListener
             Locale locale = new Locale(accueil.getLangue());
             Locale.setDefault(locale);
             JOptionPane.setDefaultLocale(Locale.getDefault());
-            vue.dispose();
-            vue = new Vue(accueil);
+            vue.initAttribut();
+            vue.afficherMenu();
             vue.setButtonControl(this);
-            vue.setVisible(true);
         }
         else if(e.getSource().equals(vue.getFrancaisFlag()))
         {
@@ -182,10 +182,9 @@ class Control_Menu_Accueil implements ActionListener
             Locale locale = new Locale(accueil.getLangue());
             Locale.setDefault(locale);
             JOptionPane.setDefaultLocale(Locale.getDefault());
-            vue.dispose();
-            vue = new Vue(accueil);
+            vue.initAttribut();
+            vue.afficherMenu();
             vue.setButtonControl(this);
-            vue.setVisible(true);
         }
         else if(e.getSource().equals(vue.getMusiqueOff()))
         {
