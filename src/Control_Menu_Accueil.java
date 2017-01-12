@@ -116,6 +116,11 @@ class Control_Menu_Accueil implements ActionListener
             String pseudo = vue.messagePop("Entrez un nouveau pseudo :");
             if (pseudo == null)
                 return;
+            if(pseudo.split("").length >20)
+            {
+                vue.jOptionMessage("Votre pseudo est trop long ! Veuillez saisir un pseudo qui ne dépasse pas 20 caractères");
+                return;
+            }
             String[] listeJoueurs = accueil.listePseudos();
             for(int i = 0; i < listeJoueurs.length; i++)
             {
