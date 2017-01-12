@@ -19,8 +19,8 @@ class Vue extends JFrame
     private Vue_Bouton chargerPartie;
     private Vue_Bouton historique;
     private Vue_Bouton statistiquesDuJoueur;
-    private Vue_Bouton options;
-    private Vue_Bouton credits;
+    private JButton options;
+    private JButton credits;
     private Vue_Bouton quitter;
     private Vue_Bouton retourMenu;
     private Vue_Bouton lancerPartieLocale2;
@@ -39,6 +39,7 @@ class Vue extends JFrame
     private JLabel joueur2;
     private JComboBox listePseudo1;
     private JFrame vueHisto;
+    private JPanel boutonsMenu;
 
     // Options
     private JLabel titreOptions;
@@ -91,6 +92,7 @@ class Vue extends JFrame
         texteInternationalLabels = ResourceBundle.getBundle("Traductions.labels");
 
         titre = new JLabel(texteInternationalBoutons.getString("titre"));
+        titre.setHorizontalAlignment(JLabel.CENTER);
         lancerPartieRapide = new Vue_Bouton(texteInternationalBoutons.getString("partieRapide"));
         lancerPartieLocale = new Vue_Bouton(texteInternationalBoutons.getString("partieLocale"));
         lancerPartieContreIA = new Vue_Bouton(texteInternationalBoutons.getString("defierIA"));
@@ -99,8 +101,8 @@ class Vue extends JFrame
         chargerPartie = new Vue_Bouton(texteInternationalBoutons.getString("chargerPartie"));
         historique = new Vue_Bouton(texteInternationalBoutons.getString("historique"));
         statistiquesDuJoueur = new Vue_Bouton(texteInternationalBoutons.getString("statistiques"));
-        options=new Vue_Bouton(texteInternationalBoutons.getString("options"));
-        credits=new Vue_Bouton(texteInternationalBoutons.getString("credits"));
+        options=new BackgroundButton(50, 50, "Images/iconesBouton/option.jpg");
+        credits=new BackgroundButton(50, 50, "Images/iconesBouton/credit.jpg");
         quitter=new Vue_Bouton(texteInternationalBoutons.getString("quitter"));
         retourMenu=new Vue_Bouton(texteInternationalBoutons.getString("retourMenu"));
         lancerPartieLocale2=new Vue_Bouton(texteInternationalBoutons.getString("partieLocale"));
@@ -219,7 +221,7 @@ class Vue extends JFrame
      */
     private void creerWidgetAccueil()
     {
-        JPanel boutonsMenu = new JPanel(new GridLayout(11, 1, 0, 10));
+        boutonsMenu = new JPanel(new GridLayout(9, 1, 0, 15));
         boutonsMenu.setOpaque(false);
         boutonsMenu.add(lancerPartieRapide);
         boutonsMenu.add(lancerPartieLocale);
@@ -229,20 +231,43 @@ class Vue extends JFrame
         boutonsMenu.add(chargerPartie);
         boutonsMenu.add(historique);
         boutonsMenu.add(statistiquesDuJoueur);
-        boutonsMenu.add(options);
-        boutonsMenu.add(credits);
+        //boutonsMenu.add(options);
+        //boutonsMenu.add(credits);
         boutonsMenu.add(quitter);
+
+        JPanel iconesOptionEtCredit = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        iconesOptionEtCredit.setOpaque(false);
+        iconesOptionEtCredit.add(options);
+        iconesOptionEtCredit.add(credits);
+
+
+
+
+        JPanel center = new JPanel(new GridLayout(1, 3, 0, 0));
+        center.getMinimumSize().width = xSize;
+        center.setOpaque(false);
+        JPanel gauche = new JPanel();
+        gauche.setOpaque(false);
+        //gauche.getPreferredSize().width = (int)(xSize*0.33333);
+        center.add(gauche);
+
+
+        //boutonsMenu.getPreferredSize().width = (int)(xSize*0.33333);
+        center.add(boutonsMenu);
+        //iconesOptionEtCredit.getPreferredSize().width =  (int)(xSize*0.33333);
+        center.add(iconesOptionEtCredit);
+
 
         JPanel organisation = new JPanel(new BorderLayout());
         organisation.setOpaque(false);
         organisation.add(titre, BorderLayout.NORTH);
-        organisation.add(boutonsMenu, BorderLayout.SOUTH);
+        organisation.add(center, BorderLayout.SOUTH);
 
         // Mis ene place du fond d'écran
         background = new BackgroundPanel(xSize, ySize, "Images/Fonds/fond1.jpg");//new ImageIcon("Images/Fonds/fond1.jpg"));
         background.setSize(xSize, ySize);
         background.setLayout(new FlowLayout());
-        background.add(organisation, BorderLayout.CENTER);
+        background.add(organisation, BorderLayout.SOUTH);
 
         setContentPane(background);
     }
@@ -722,14 +747,18 @@ class Vue extends JFrame
     Vue_Bouton getLancerPartieContreIA() { return lancerPartieContreIA; }
     Vue_Plateau getVue_plateau() { return vue_plateau; }
     void setVue_plateau(Vue_Plateau vue_plateau) { this.vue_plateau = vue_plateau; }
-    void display(){ setVisible(true); }
+    void display(){
+        setVisible(true);
+        updateSizePanelBouton();
+        setVisible(true);
+    }
     Vue_Bouton getLancerPartieLocale() { return lancerPartieLocale; }
     Vue_Bouton getLancerPartieEnReseau() { return lancerPartieEnReseau; }
     Vue_Bouton getChargerPartie() { return chargerPartie; }
     Vue_Bouton getHistorique() { return historique; }
     Vue_Bouton getStatistiquesDuJoueur() { return statistiquesDuJoueur; }
-    Vue_Bouton getOptions() { return options;}
-    Vue_Bouton getCredits() { return credits; }
+    JButton getOptions() { return options;}
+    JButton getCredits() { return credits; }
     Vue_Bouton getQuitter() { return quitter; }
     JMenuItem getRetourMenuPrincipalMenu() {
         return retourMenuPrincipalMenu;
@@ -833,5 +862,9 @@ class Vue extends JFrame
 
     void setNouveauPseudoRejoindreReseau(Vue_Bouton nouveauPseudoRejoindreReseau) {
         this.nouveauPseudoRejoindreReseau = nouveauPseudoRejoindreReseau;
+    }
+
+    void updateSizePanelBouton(){
+        boutonsMenu.setPreferredSize(new Dimension(boutonsMenu.getWidth(), ySize-titre.getHeight()-150));
     }
 }
