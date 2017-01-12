@@ -48,6 +48,12 @@ class Control_Menu_Accueil implements ActionListener
         }
         else if(e.getSource().equals(vue.getLancerPartieLocale2()))
         {
+            if (vue.getListePseudo1().getSelectedItem() == null ||
+                    vue.getListePseudo2().getSelectedItem() == null)
+            {
+                vue.jOptionMessage("Veuillez ajouter ou sélectionner des pseudos.");
+                return;
+            }
             accueil.setPseudoJoueurBlanc((String)vue.getListePseudo1().getSelectedItem());
             accueil.setPseudoJoueurNoir((String)vue.getListePseudo2().getSelectedItem());
             if(accueil.getPseudoJoueurBlanc().equals(accueil.getPseudoJoueurNoir()))
