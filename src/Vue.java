@@ -42,6 +42,11 @@ class Vue extends JFrame
     private JButton anglaisFlag;
     private JLabel france;
     private JLabel angleterre;
+    private JRadioButton musiqueOn;
+    private JRadioButton musiqueOff;
+    private ButtonGroup musique;
+    private JLabel choixMusique;
+    private JLabel choixLangue;
 
     private JComboBox listePseudo2;
     private ResourceBundle texteInternationalBoutons;
@@ -105,6 +110,13 @@ class Vue extends JFrame
         francaisFlag.setBorder(null);
         anglaisFlag.setBorder(null);
         titreOptions = new JLabel(texteInternationalLabels.getString("titreOption"));
+        musiqueOff = new JRadioButton(texteInternationalBoutons.getString("musiqueOff"));
+        musiqueOn = new JRadioButton(texteInternationalBoutons.getString("musiqueOn"), true);
+        musique = new ButtonGroup();
+        musique.add(musiqueOn);
+        musique.add(musiqueOff);
+        choixMusique = new JLabel(texteInternationalLabels.getString("musique"));
+        choixLangue = new JLabel(texteInternationalLabels.getString("langue"));
 
 
         majListeJoueur();
@@ -136,6 +148,10 @@ class Vue extends JFrame
         titreOptions.setFont(policeTitreSecondaire);
         joueur1.setFont(policeLabel);
         joueur2.setFont(policeLabel);
+        choixLangue.setFont(policeLabel);
+        choixMusique.setFont(policeLabel);
+        musiqueOff.setFont(policeLabel);
+        musiqueOn.setFont(policeLabel);
     }
 
     /**
@@ -274,20 +290,29 @@ class Vue extends JFrame
         titres.add(titre);
         titres.add(titreOptions);
 
-        JPanel options = new JPanel(new GridLayout(2,2));
+        JPanel options = new JPanel(new GridLayout(3,3, 0, 20));
         options.setOpaque(false);
         francaisFlag.setOpaque(false);
         anglaisFlag.setOpaque(false);
+        musiqueOff.setOpaque(false);
+        musiqueOn.setOpaque(false);
+
+        options.add(choixLangue);
         options.add(francaisFlag);
         options.add(anglaisFlag);
+
+        options.add(choixMusique);
+        options.add(musiqueOn);
+        options.add(musiqueOff);
+
         options.add(Box.createVerticalGlue());
         options.add(Box.createVerticalGlue());
+        options.add(retourMenu);
 
         JPanel organisation = new JPanel(new BorderLayout());
         organisation.setOpaque(false);
         organisation.add(titres, BorderLayout.NORTH);
         organisation.add(options, BorderLayout.SOUTH);
-        organisation.add(retourMenu, BorderLayout.EAST);
 
         // Mise en place du fond d'écran
         background = new BackgroundPanel(xSize, ySize, "Images/Fonds/fond1.jpg");//new ImageIcon("Images/Fonds/fond1.jpg"));
@@ -340,6 +365,8 @@ class Vue extends JFrame
         nouveauPseudo.addActionListener(listener);
         francaisFlag.addActionListener(listener);
         anglaisFlag.addActionListener(listener);
+        musiqueOff.addActionListener(listener);
+        musiqueOn.addActionListener(listener);
     }
 
     void setButtonHistoriqueControl(ActionListener listener)
@@ -654,5 +681,17 @@ class Vue extends JFrame
     }
     Vue_Bouton getLancerPartieRapide() {
         return lancerPartieRapide;
+    }
+    JRadioButton getMusiqueOn() {
+        return musiqueOn;
+    }
+    void setMusiqueOn(JRadioButton musiqueOn) {
+        this.musiqueOn = musiqueOn;
+    }
+    JRadioButton getMusiqueOff() {
+        return musiqueOff;
+    }
+    void setMusiqueOff(JRadioButton musiqueOff) {
+        this.musiqueOff = musiqueOff;
     }
 }

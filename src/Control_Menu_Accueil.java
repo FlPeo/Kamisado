@@ -184,5 +184,13 @@ class Control_Menu_Accueil implements ActionListener
             vue.setButtonControl(this);
             vue.setVisible(true);
         }
+        else if(e.getSource().equals(vue.getMusiqueOff()))
+        {
+
+        }
+        else if(e.getSource().equals(vue.getMusiqueOn()))
+        {
+
+        }
     }
 }
