@@ -255,7 +255,13 @@ public class Model_Partie_IA {
         }
     }
 
-    public void setCasesAtteignablesJoueurCourant(boolean isTourBlanc, byte casePion) {
+    public void setCasesAtteignablesJoueurCourant(boolean isTourBlanc, byte casePion) {     //utilisee pour vraiment modifier les casesAtteignables courrantes
+        //On réinitialise le tableau de case atteignable
+        setCasesAtteignablesJoueurCourant(casesAtteignablesJoueurCourant, isTourBlanc, casePion);
+    }
+
+
+    public void setCasesAtteignablesJoueurCourant(byte[] casesAtteignablesJoueurCourant, boolean isTourBlanc, byte casePion) {    //pour tester les cases atteignables d'un pion sans influer sur les elements de la partie
         //On réinitialise le tableau de case atteignable
         for (int i = 0; i < casesAtteignablesJoueurCourant.length; i++)
             casesAtteignablesJoueurCourant[i] = -1;
@@ -302,6 +308,7 @@ public class Model_Partie_IA {
                 decal--;
         }
     }
+
 
 
 
@@ -585,9 +592,68 @@ public class Model_Partie_IA {
         int pts = 0;
         //pts += evalFinProfondeurGagnerDeXFacon();    //à refaire
 
+        pts += evalFinDeplacementEtGagnerDeXFacon();
 
 
         //a completer
+
+        return pts;
+    }
+
+    private int evalFinDeplacementEtGagnerDeXFacon() {
+        byte[] casesAtteignables = new byte[NBCASESATTEIGNABLESPOSSIBLESJOUEURCOURANT];
+        byte idCase = 0;
+
+        byte compteurAtteintFinPartie;
+        byte compteurDeplacements_IA = 0;
+        byte pts = 0;
+
+        for(byte pion : plateau){
+            idCase++;
+            compteurAtteintFinPartie = 0;
+            if(pion >=8){                   //IA
+                setCasesAtteignablesJoueurCourant(casesAtteignables, false, idCase);
+
+                for(byte j = 0 ; j<casesAtteignables.length && casesAtteignables[j] != -1; j++){
+                    compteurDeplacements_IA++;
+                    if(casesAtteignables[j] >=0 && casesAtteignables[j]<8){
+                        compteurAtteintFinPartie++;
+                    }
+                }
+
+                switch (compteurAtteintFinPartie){
+                    case 1:
+                        pts += 10;
+                        break;
+                    case 2:
+                        pts += 20;
+                    case 3:
+                        pts += 25;
+                }
+            }
+            else if(pion <8 && pion != -1){                   //joueur
+                setCasesAtteignablesJoueurCourant(casesAtteignables, true, idCase);
+
+                for(byte j = 0 ; j<casesAtteignables.length && casesAtteignables[j] != -1; j++){
+                    compteurDeplacements_IA++;
+                    if(casesAtteignables[j] >=56 && casesAtteignables[j]<64){
+                        compteurAtteintFinPartie++;
+                    }
+                }
+
+                switch (compteurAtteintFinPartie){
+                    case 1:
+                        pts -= 10;
+                        break;
+                    case 2:
+                        pts -= 20;
+                    case 3:
+                        pts -= 25;
+                }
+            }
+        }
+
+        pts += compteurDeplacements_IA;
 
         return pts;
     }
