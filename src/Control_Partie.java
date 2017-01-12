@@ -10,8 +10,8 @@ class Control_Partie extends MouseAdapter
     private Model_Accueil accueil;
 
     private ResourceBundle texteInternational;
-    private String joueurBlanc;
-    private String joueurNoir;
+    private String joueurBlanc; // todo pas géré
+    private String joueurNoir; // todo pas géré
 
     /**
      * Constructeur du controleur d'une partie
@@ -51,8 +51,7 @@ class Control_Partie extends MouseAdapter
                 vue.getVue_plateau().deplacementAnimation(
                         accueil.getPartie().getPionMemoire().getCaseActuelle(),
                         accueil.getPartie().getPlateau().getBoard()[row*Model_Plateau.LIGNE + column],
-                        accueil.getPartie().getPionMemoire()
-                );
+                        accueil.getPartie().getPionMemoire());
                 try
                 {
                     sleep(1);
@@ -61,6 +60,13 @@ class Control_Partie extends MouseAdapter
                 {
                     ex.printStackTrace();
                 }
+            }
+            Model_Case src = null;
+            Model_Case dest = null;
+            if (accueil.getPartie().getPionMemoire() != null) // todo a affiner
+            {
+                src = accueil.getPartie().getPionMemoire().getCaseActuelle();
+               dest = accueil.getPartie().getPlateau().getBoard()[row*Model_Plateau.LIGNE+column];
             }
             if( accueil.getPartie().isTourDuJoueurBlanc() )
                 accueil.getPartie().getJoueurBlanc().gestionTourJoueur(row, column);
@@ -71,7 +77,11 @@ class Control_Partie extends MouseAdapter
                 accueil.getPartie().controleBlocage();
 
             vue.repaint();
-
+            if (!accueil.getPartie().isTourUn())
+            {
+                accueil.getPartie().coupFait(src, dest);
+                accueil.getPartie().finTour();
+            }
             if(accueil.getPartie().estGagnee()) finPartie();
         }
     }
@@ -112,23 +122,20 @@ class Control_Partie extends MouseAdapter
         Vue_FactorPopup.creerPopupJoueurGagnant(nomJoueur);
     }
 
-    public void debutTour() {
-
-    }
-
-    public void enableView(boolean b) {
-
-    }
-
-    public void updatePartie(int srcX, int srcY, int destX, int destY)
+    void debutTour()
     {
+        enableView(true);
+        accueil.getPartie().casesAtteignablesProchainTour();
+        vue.repaint();
     }
-
-    public void setJoueurBlanc(String joueurBlanc) {
-        this.joueurBlanc = joueurBlanc;
+    void enableView(boolean state) { vue.setEnabled(state); }
+    void updatePartie(int srcX, int srcY, int destX, int destY)
+    {
+        accueil.getPartie().setTourUn(false);
+        Model_Case caseSrc = accueil.getPartie().getPlateau().getBoard()[srcX*Model_Plateau.LIGNE+srcY];
+        Model_Case caseDest = accueil.getPartie().getPlateau().getBoard()[destX*Model_Plateau.LIGNE+destY];
+        accueil.getPartie().getPlateau().deplacer(caseSrc, caseDest, caseSrc.getPion());
     }
-
-    public void setJoueurNoir(String joueurNoir) {
-        this.joueurNoir = joueurNoir;
-    }
+    void setJoueurBlanc(String joueurBlanc)  { this.joueurBlanc = joueurBlanc; }
+    void setJoueurNoir(String joueurNoir) { this.joueurNoir = joueurNoir; }
 }

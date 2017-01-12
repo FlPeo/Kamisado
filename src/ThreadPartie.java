@@ -11,7 +11,7 @@ class ThreadPartie extends Thread
 {
     private String monPseudo, pseudoAdversaire;
     private boolean jeSuisBlanc;
-    private Model_Partie partie;
+    private Model_Accueil accueil;
     private boolean isServer;
     private Socket comm;
     private Control_Partie controller;
@@ -28,7 +28,7 @@ class ThreadPartie extends Thread
      * ThreadPartie
      * initie la partie pour le client
      *
-     * @param partie (model)
+     * @param accueil (model)
      * @param controller (controller de la partie)
      * @param port (port de communication)
      * @param isServer (suis-je serveur)
@@ -36,18 +36,18 @@ class ThreadPartie extends Thread
      * @param pseudo (pseudonyme du joueur)
      * @param cbm (controlleur du menu d'accueil)
      */
-    ThreadPartie(Model_Partie partie, Control_Partie controller, int port, boolean isServer,
+    ThreadPartie(Model_Accueil accueil, Control_Partie controller, int port, boolean isServer,
                  String ipServer, String pseudo, Control_Menu_Accueil cbm)
     {
-        this.partie = partie;
+        this.accueil = accueil;
         this.controller = controller;
         this.port = port;
         this.isServer = isServer;
         this.ipServer = ipServer;
         this.monPseudo = pseudo;
         this.cbm = cbm;
+        this.jeSuisBlanc = accueil.getPartie().jeSuisBlanc();
     }
-
 
     /**
      * run
@@ -77,6 +77,7 @@ class ThreadPartie extends Thread
                 e.printStackTrace();
             }
 
+        Model_Partie partie = accueil.getPartie();
         try
         {
             while (!stop)
@@ -94,8 +95,6 @@ class ThreadPartie extends Thread
                     oos.writeInt(colSrc);
                     oos.writeInt(rowDest);
                     oos.writeInt(colDest);
-                    oos.writeDouble(0.0);
-                    oos.writeDouble(0.0);
                     oos.writeBoolean(partie.isPartieFinie());
                     oos.flush();
                 }
@@ -113,7 +112,7 @@ class ThreadPartie extends Thread
                     else
                         controller.updatePartie(srcX, srcY, destX, destY);
                     partie.setTourDuJoueurBlanc(!partie.isTourDuJoueurBlanc());
-                    partie.setCaseDest(partie.getPlateau().getBoard()[destX*Model_Plateau.LIGNE+destY]); // A vérifier
+                    accueil.getPartie().setDernierPionJoue(partie.getPlateau().getBoard()[destX*Model_Plateau.LIGNE+destY].getPion());
                 }
             }
         }
@@ -126,8 +125,8 @@ class ThreadPartie extends Thread
      * initServer
      * initie les sockets pour le serveur
      *
-     * @throws IOException
-     * @throws ClassNotFoundException
+     * @throws IOException ()
+     * @throws ClassNotFoundException ()
      */
     private void initServer() throws IOException,ClassNotFoundException
     {
@@ -141,9 +140,9 @@ class ThreadPartie extends Thread
         oos.flush();
         pseudoAdversaire = (String)ois.readObject();
         if (jeSuisBlanc)
-            partie.initPartie(pseudoAdversaire, monPseudo, true);
+            accueil.demarrerPartieReseau(pseudoAdversaire, monPseudo, true);
         else
-            partie.initPartie(monPseudo, pseudoAdversaire, true);
+            accueil.demarrerPartieReseau(monPseudo, pseudoAdversaire, true);
         setId();
         cbm.initPartie();
     }
@@ -152,8 +151,8 @@ class ThreadPartie extends Thread
      * initClient
      * initialise les sockets pour le client
      *
-     * @throws IOException
-     * @throws ClassNotFoundException
+     * @throws IOException ()
+     * @throws ClassNotFoundException ()
      */
     private void initClient() throws IOException,ClassNotFoundException
     {
@@ -167,9 +166,9 @@ class ThreadPartie extends Thread
         oos.flush();
         setId();
         if (jeSuisBlanc)
-            partie.initPartie(pseudoAdversaire, monPseudo, true);
+            accueil.demarrerPartieReseau(pseudoAdversaire, monPseudo, true);
         else
-            partie.initPartie(monPseudo, pseudoAdversaire, true);
+            accueil.demarrerPartieReseau(monPseudo, pseudoAdversaire, true);
         cbm.initPartie();
     }
 

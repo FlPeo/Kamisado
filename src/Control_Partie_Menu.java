@@ -22,7 +22,7 @@ class Control_Partie_Menu implements ActionListener
             {
                 if (!(accueil.getPartie().getHistory().length() == 0))
                 {
-                    boolean sauvegarde = vue.boolJOptionPane("Voulez-vous sauvegarder avant de quitter ?");
+                       boolean sauvegarde = vue.boolJOptionPane("Voulez-vous sauvegarder avant de quitter ?");
                     if (sauvegarde)
                     {
                         if (!accueil.getPartie().save())

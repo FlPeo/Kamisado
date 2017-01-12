@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Random;
 
 class Model_Partie
 {
@@ -36,11 +37,23 @@ class Model_Partie
                                    Model_Pion pionMemoire, boolean isTourUn)
     {
 
+
         Model_Plateau plateau = new Model_Plateau(board);        //passer en parametre si besoin de le mocker en testant la partie
         for(int i=0; i<board.length; i++) board[i].setPlateau(plateau);
 
 
         return new Model_Partie(accueil, plateau, j1, j2, pionsBlancs, pionsNoirs, pionMemoire, isTourUn);
+    }
+    /**
+     * Partie
+     * Constructeur de Partie vide en attente de toutes les informations de l'adversaire
+     * UNIQUEMENT POUR LES PARTIES EN RESEAU
+     *
+     */
+    Model_Partie()
+    {
+        idCurrentPlayer = 1;
+        endOfTurn = false;
     }
 
     /**
@@ -64,19 +77,11 @@ class Model_Partie
         history = "";
         estPartieChargee = false;
     }
-    /**
-     * finTour
-     * reveil le thread à la fin d'un tour
-     */
-    synchronized void finTour()
-    {
-        endOfTurn = true;
-        notifyAll();
-    }
+
     /**
      * Définit les cases atteignables du pion qui va bouger en fonction du pion qui a bougé
      */
-    void casesAtteignablesProchainTour()
+    synchronized void casesAtteignablesProchainTour()
     {
         Model_Pion[] pionsDuTour = tourDuJoueurBlanc?pionsBlancs:pionsNoirs;
 
@@ -90,24 +95,23 @@ class Model_Partie
         else
         {
             int couleurDuPionQuiDoitBouger = dernierPionJoue.getCaseActuelle().getCOULEUR();
-            for(int i=0; i<pionsDuTour.length; i++)
-            {
-                if(pionsDuTour[i].getCOULEUR() == couleurDuPionQuiDoitBouger)
+            for (Model_Pion aPionsDuTour : pionsDuTour)
+                if (aPionsDuTour.getCOULEUR() == couleurDuPionQuiDoitBouger)
                 {
-                    pionMemoire = pionsDuTour[i];
+                    pionMemoire = aPionsDuTour;
                     break;
                 }
-            }
             pionMemoire.casesAtteignables();
         }
     }
+
 
     /**
      * undo()
      *
      * @return (if undo is ok)
      */
-    boolean undo()
+    synchronized boolean undo()
     {
         if(history.length() == 0)
             return false;
@@ -159,7 +163,7 @@ class Model_Partie
      * Vérifie si nous sommes ou non dans une situation gagnante, donc de fin de partie
      * @param row (ligne sur laquelle a été déplacé le dernier pion joué)
      */
-    void verifieVictoire(int row)
+    synchronized void verifieVictoire(int row)
     {
         if((tourDuJoueurBlanc && row == 7)
                 || (!tourDuJoueurBlanc && row == 0))
@@ -172,7 +176,7 @@ class Model_Partie
     /**
      * Controle si un pion ne peut plus se déplacer et dans ce cas indique une situation gagnante
      */
-    void controleBlocage()
+    synchronized void controleBlocage()
     {
         if(pionMemoire.getCasesAtteignables().isEmpty())
         {
@@ -208,7 +212,7 @@ class Model_Partie
      * Permet de déplacer un pion sur la case voulue
      * @param caseDest (case où le pion doit arriver)
      */
-    void deplacerPion(Model_Case caseDest)
+    synchronized void deplacerPion(Model_Case caseDest)
     {
         history += pionMemoire.getCaseActuelle().getRow() + "" +
                 + pionMemoire.getCaseActuelle().getColumn() + "" +
@@ -217,15 +221,15 @@ class Model_Partie
         plateau.deplacer(pionMemoire.getCaseActuelle(), caseDest, pionMemoire);
         System.out.println(history);
         dernierPionJoue = pionMemoire;
-        tourDuJoueurBlanc = !tourDuJoueurBlanc;
+        setTourDuJoueurBlanc(!tourDuJoueurBlanc);
         casesAtteignablesProchainTour();
     }
 
     /**
      *
-     * @return
+     * @return ()
      */
-    boolean save()
+    synchronized boolean save()
     {
         BDDManager bdd = new BDDManager();
         bdd.start();
@@ -271,77 +275,99 @@ class Model_Partie
         return true;
     }
 
+    /**
+     * jeSuisBlanc
+     * Décide aleatoirement si le joueur qui créer la partie est blanc
+     *
+     * @return (retourne une valeur au hazard blanc ou noir)
+     */
+    synchronized boolean jeSuisBlanc()
+    {
+        Random rand = new Random();
+        return rand.nextBoolean();
+    }
+
+    // ajout SD : après un coup joué, qq soit le mode -> modifier le controller
+    // pour appeler cette méthode
+
+    /**
+     * CoupFait
+     * permet d'enregistrer les mouvements qui ont été fait.
+     *
+     * @param caseSrc (case de départ du mouvement)
+     * @param caseDest (case d'arrivé du mouvement)
+     */
+    synchronized void coupFait(Model_Case caseSrc, Model_Case caseDest)
+    {
+        this.caseSrc = caseSrc;
+        this.caseDest = caseDest;
+
+    }
+
+    /**
+     * finTour
+     * reveil le thread à la fin d'un tour
+     */
+    synchronized void finTour()
+    {
+        endOfTurn = true;
+        notifyAll();
+    }
+
+
+    /**
+     * waitFinTour
+     * Fin
+     */
+    synchronized void waitFinTour()
+    {
+        while (!endOfTurn)
+        {
+            try
+            {
+                wait();
+            }
+            catch (InterruptedException e)
+            {
+                e.printStackTrace();
+            }
+        }
+        endOfTurn = false;
+    }
+
+
     // GETTERS & SETTERS
-    boolean isJoueurBlancGagnant() { return joueurBlancGagnant; }
-    Model_Plateau getPlateau() { return plateau; }
-    boolean isTourUn() { return isTourUn; }
-    boolean estGagnee() { return estGagnee; }
-    boolean isTourDuJoueurBlanc() { return tourDuJoueurBlanc; }
-    Model_Pion getPionMemoire() { return pionMemoire; }
-    void setPionMemoire(Model_Pion pionMemoire) { this.pionMemoire = pionMemoire; }
-    void setTourUn(boolean tourUn) { isTourUn = tourUn; }
-    Model_Joueur getJoueurBlanc() { return joueurBlanc; }
-    Model_Joueur getJoueurNoir() { return joueurNoir; }
-    Model_Pion getDernierPionJoue() { return dernierPionJoue; }
-    String getHistory() { return history; }
-
-
-    public void setDernierPionJoue(Model_Pion dernierPionJoue) {
+    synchronized boolean isJoueurBlancGagnant() { return joueurBlancGagnant; }
+    synchronized Model_Plateau getPlateau() { return plateau; }
+    synchronized boolean isTourUn() { return isTourUn; }
+    synchronized boolean estGagnee() { return estGagnee; }
+    synchronized boolean isTourDuJoueurBlanc() { return tourDuJoueurBlanc; }
+    synchronized Model_Pion getPionMemoire() { return pionMemoire; }
+    synchronized void setPionMemoire(Model_Pion pionMemoire) { this.pionMemoire = pionMemoire; }
+    synchronized void setTourUn(boolean tourUn) { isTourUn = tourUn; }
+    synchronized Model_Joueur getJoueurBlanc() { return joueurBlanc; }
+    synchronized Model_Joueur getJoueurNoir() { return joueurNoir; }
+    synchronized Model_Pion getDernierPionJoue() { return dernierPionJoue; }
+    synchronized String getHistory() { return history; }
+    synchronized void setDernierPionJoue(Model_Pion dernierPionJoue) {
         this.dernierPionJoue = dernierPionJoue;
     }
-
-    public void setHistory(String history) {
+    synchronized void setHistory(String history) {
         this.history = history;
     }
-
-    public void setTourDuJoueurBlanc(boolean tourDuJoueurBlanc) {
+    synchronized void setTourDuJoueurBlanc(boolean tourDuJoueurBlanc) {
         this.tourDuJoueurBlanc = tourDuJoueurBlanc;
+        if (tourDuJoueurBlanc) idCurrentPlayer = 1;
+        else idCurrentPlayer = 2;
     }
-
-    public void setEstPartieChargee(boolean estPartieChargee) {
-        this.estPartieChargee = estPartieChargee;
-    }
-
-    public boolean isEstPartieChargee() {
-        return estPartieChargee;
-    }
-
-    public void waitFinTour() {
-
-    }
-
-    public int getIdCurrentPlayer() {
-        return idCurrentPlayer;
-    }
-
-    public void initPartie(String pseudoAdversaire, String monPseudo, boolean b)
-    {
-
-    }
-
-    public boolean jeSuisBlanc()
-    {
-
-        return false;
-    }
-
-    public Model_Case getCaseSrc() {
-        return caseSrc;
-    }
-
-    public Model_Case getCaseDest() {
-        return caseDest;
-    }
-
-    public boolean isPartieFinie() {
-        return partieFinie;
-    }
-
-    public void setCaseSrc(Model_Case caseSrc) {
-        this.caseSrc = caseSrc;
-    }
-
-    public void setCaseDest(Model_Case caseDest) {
-        this.caseDest = caseDest;
-    }
+    synchronized void setEstPartieChargee(boolean estPartieChargee) { this.estPartieChargee = estPartieChargee; }
+    synchronized boolean isEstPartieChargee() { return estPartieChargee; }
+    synchronized int getIdCurrentPlayer() { return idCurrentPlayer;  }
+    synchronized Model_Case getCaseSrc() { return caseSrc; }
+    synchronized Model_Case getCaseDest() { return caseDest; }
+    synchronized boolean isPartieFinie() { return partieFinie; }
+    synchronized void setCaseDest(Model_Case caseDest) { this.caseDest = caseDest; }
+    synchronized Model_Accueil getAccueil() { return accueil; }
+    synchronized void setAccueil(Model_Accueil accueil) { this.accueil = accueil; }
+    synchronized void setIdCurrentPlayer(int idCurrentPlayer) { this.idCurrentPlayer = idCurrentPlayer; }
 }

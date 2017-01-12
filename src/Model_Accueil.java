@@ -11,7 +11,7 @@ class Model_Accueil
     private String partieACharger;
     private String langue;
     private boolean ia = false;
-    private Object adresseIpReseau;
+    private String adresseIpReseau;
 
 
     /**
@@ -52,6 +52,36 @@ class Model_Accueil
 
         joueurBlanc.setPartie(partie);
         joueurNoir.setPartie(partie);
+        bdd.stop();
+    }
+    /**
+     * Instanciation d'une partie
+     */
+    void demarrerPartieReseau(String pseudoAdversaire, String monPseudo, boolean b)
+    {
+        Model_Case[] board = Model_Case.initCasesPlateau();
+        Model_Pion[] pionsBlancs = Model_Pion.creationPionsBlancs(board);
+        Model_Pion[] pionsNoirs = Model_Pion.creationPionsNoirs(board);
+
+        for(int i=0; i<Model_Plateau.LIGNE; i++) board[i].addPion(pionsBlancs[i]);
+        for(int i=0; i<pionsNoirs.length; i++) board[56+i].addPion(pionsNoirs[i]);
+        int idBlanc, idNoir;
+        BDDManager bdd = new BDDManager();
+        bdd.start();
+        idBlanc = Integer.parseInt(bdd.ask("SELECT id FROM JOUEUR WHERE pseudoJoueur LIKE '" + monPseudo + "';").get(0).get(0));
+        idNoir = Integer.parseInt(bdd.ask("SELECT id FROM JOUEUR WHERE pseudoJoueur LIKE '" + pseudoAdversaire + "';").get(0).get(0));
+        Model_Joueur joueurBlanc = new Model_Joueur(monPseudo, true, idBlanc);
+        Model_Joueur joueurNoir = new Model_Joueur(pseudoAdversaire, false, idNoir);
+        this.partie = Model_Partie.factPartie(this, joueurBlanc, joueurNoir, board, pionsBlancs, pionsNoirs, null, true);
+        // ajout SD
+        if (partie.isTourDuJoueurBlanc())
+            partie.setIdCurrentPlayer(1);
+        else
+            partie.setIdCurrentPlayer(2);
+        joueurBlanc.setPartie(partie);
+        joueurNoir.setPartie(partie);
+
+        bdd.stop();
     }
 
     void demarrerPartieRapide()
@@ -171,6 +201,15 @@ class Model_Accueil
         ia = true;
         partieIa = new Model_Partie_IA();
     }
+    /**
+     * lancementPartieReseau
+     *
+     *
+     */
+    void initPartieReseau()
+    {
+        this.partie = new Model_Partie();
+    }
 
     void ajouterNouveauJoueur(String pseudo)
     {
@@ -235,13 +274,6 @@ class Model_Accueil
     void setLangue(String langue) {
         this.langue = langue;
     }
-
-
-    public void setAdresseIpReseau(String adresseIpReseau) {
-        this.adresseIpReseau = adresseIpReseau;
-    }
-
-    public Object getAdresseIpReseau() {
-        return adresseIpReseau;
-    }
+    void setAdresseIpReseau(String adresseIpReseau) { this.adresseIpReseau = adresseIpReseau; }
+    String getAdresseIpReseau() { return adresseIpReseau; }
 }

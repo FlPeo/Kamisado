@@ -201,11 +201,16 @@ class Control_Menu_Accueil implements ActionListener
         }
         else if(e.getSource().equals(vue.getRejoindrePartieReseau()))
         {
+            String pseudoJoueur = vue.getListePseudo1().getSelectedItem().toString();
             accueil.setAdresseIpReseau(vue.messagePop("Entrez l'adresse IP de l'adversaire :"));
             if(accueil.getAdresseIpReseau() == null)
                 return;
             vue.jOptionMessage("Veuillez patienter...");
             vue.setEnabled(false);
+            accueil.initPartieReseau();
+            ThreadPartie threadClient = new ThreadPartie(accueil, Control_Partie, 1234, false,
+                    accueil.getAdresseIpReseau(), pseudoJoueur, this);
+            threadClient.start();
         }
         else if(e.getSource().equals(vue.getCreerPartieReseauBoutonMenu()))
         {
@@ -245,10 +250,8 @@ class Control_Menu_Accueil implements ActionListener
                 return;
             }
             String[] listeJoueurs = accueil.listePseudos();
-            for(int i = 0; i < listeJoueurs.length; i++)
-            {
-                if (listeJoueurs[i].equals(pseudo))
-                {
+            for (String listeJoueur : listeJoueurs) {
+                if (listeJoueur.equals(pseudo)) {
                     vue.jOptionMessage("Ce pseudo n'est pas disponible");
                     return;
                 }
@@ -256,6 +259,16 @@ class Control_Menu_Accueil implements ActionListener
             accueil.ajouterNouveauJoueur(pseudo);
             vue.majListeJoueur();
             vue.creerWidgetRejoindrePartieReseau();
+        }
+        else if(e.getSource().equals(vue.getLancerPartieEnReseau()))
+        {
+            String pseudoJoueur = vue.getListePseudo1().getSelectedItem().toString(); // todo à vérifier
+            vue.setEnabled(false);
+            accueil.initPartieReseau();
+
+            ThreadPartie tp = new ThreadPartie(
+                    accueil, Control_Partie, 1234, true, "127.0.0.1", pseudoJoueur, this);
+            tp.start();
         }
     }
 

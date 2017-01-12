@@ -1,10 +1,9 @@
 class Model_Joueur
 {
     private final static BDDManager bdd = new BDDManager();
-
     private int id;
     private String nom;
-    private Model_Partie model_partie2V2;
+    private Model_Partie model_partie;
     private boolean estJoueurBlanc;
 
 
@@ -17,37 +16,33 @@ class Model_Joueur
 
     void gestionTourJoueur(int row, int column)
     {
-        Model_Case casesPlateau[] = model_partie2V2.getPlateau().getBoard();
+        Model_Case casesPlateau[] = model_partie.getPlateau().getBoard();
         int ligne = Model_Plateau.LIGNE;
         //utiliser autre chose (sqrt(casesPlateau.length) par ex) si besoin d'un mock plus reduit
 
-        if (model_partie2V2.isTourUn())
+        if (model_partie.isTourUn()) // si tour un
         {
-            if(casesPlateau[column+row*ligne].getPion() != null
+            if(casesPlateau[column+row*ligne].getPion() != null // si je clique un pion et qu'il est blanc
                     && estJoueurBlanc == casesPlateau[column+row*ligne].getPion().isEstBlanc() )
             {
-                model_partie2V2.setPionMemoire(casesPlateau[column+row*ligne].getPion());
+                model_partie.setPionMemoire(casesPlateau[column+row*ligne].getPion()); // je mets le pion en mémoire
             }
-            else if(casesPlateau[column+row*ligne].getPion() == null
-                    && model_partie2V2.getPionMemoire() != null
-                    && model_partie2V2.getPionMemoire().getCasesAtteignables().contains(casesPlateau[column+row*ligne]))
+            else if(casesPlateau[column+row*ligne].getPion() == null // si je clique sur une case sans pion
+                    // et qu'il y a un pion en mémoire et que cette case est atteignable par le pion en mémoire
+                    && model_partie.getPionMemoire() != null
+                    && model_partie.getPionMemoire().getCasesAtteignables().contains(casesPlateau[column+row*ligne]))
             {
-                model_partie2V2.setTourUn(false);
-                model_partie2V2.deplacerPion(casesPlateau[column+row*ligne]);
+                model_partie.setTourUn(false); // le tour 1 est fini
+                model_partie.deplacerPion(casesPlateau[column+row*ligne]); // je déplace mon pion
             }
         }
-        else if(casesPlateau[column+row*ligne].getPion() == null
-                && model_partie2V2.getPionMemoire().getCasesAtteignables().contains(casesPlateau[column+row*ligne]))
+        else if(casesPlateau[column+row*ligne].getPion() == null // si c'est pas le tour 1
+                // et que je clique sur une case sans pion accessible par le ion mémoire
+                && model_partie.getPionMemoire().getCasesAtteignables().contains(casesPlateau[column+row*ligne]))
         {
-                    /*System.out.println(dernierPionJoue);
-                    System.out.println(pionMemoire);*/
-            model_partie2V2.verifieVictoire(row);
-            model_partie2V2.deplacerPion(casesPlateau[column+row*ligne]);
+            model_partie.verifieVictoire(row); // je vérifie si je gagne
+            model_partie.deplacerPion(casesPlateau[column+row*ligne]); // je déplace mon pion
         }
-    }
-
-    public String getNom() {
-        return nom;
     }
 
     public boolean isJoueurBlanc() {
@@ -72,11 +67,8 @@ class Model_Joueur
         bdd.stop();
     }
 
-    public void setPartie(Model_Partie model_partie2V2) {
-        this.model_partie2V2 = model_partie2V2;
-    }
-
-    public int getId() {
-        return id;
-    }
+    // getters & setters
+    public void setPartie(Model_Partie model_partie2V2) { this.model_partie = model_partie2V2; }
+    String getNom() { return nom; }
+    int getId() { return id; }
 }
