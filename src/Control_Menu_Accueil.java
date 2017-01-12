@@ -84,8 +84,10 @@ class Control_Menu_Accueil implements ActionListener
             vue.creerWidgetAfficherHistorique();
             vue.display();
         }
-        else if (e.getSource().equals(vue.getStatistiquesDuJoueur())){
-            vue.statistiquesJoueur();
+        else if (e.getSource().equals(vue.getStatistiquesDuJoueur()))
+        {
+            if (vue.statistiquesJoueur() == 0)
+                return;
             if (accueil.getPseudoChoisi() != null)
                 vue.fenetreStatsJoueur(accueil.getPseudoChoisi());
             else
@@ -126,7 +128,7 @@ class Control_Menu_Accueil implements ActionListener
             vue.afficherPartiesACharger();
 
             // Si aucune partie n'est séléctionnée
-            if(accueil.getPartieACharger() == null)
+            if(accueil.getPartieACharger() == null || accueil.getPartieACharger().isEmpty())
                 return;
 
             // Initialisation des joueurs

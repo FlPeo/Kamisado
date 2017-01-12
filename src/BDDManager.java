@@ -180,10 +180,10 @@ class BDDManager
                 "INSERT INTO JOUEUR(pseudoJoueur, nbPartiesGagneesJoueur, nbPartiesPerduesJoueur) VALUES" +
                         "(\"toto\", 0, 0);");*/
         //System.out.println(bdd.ask("SELECT * FROM JOUEUR;"));
-        //bdd.edit("DELETE FROM SAUVEGARDEPARTIE;");
+        bdd.edit("DELETE FROM SAUVEGARDEPARTIE;");
         //bdd.edit("DELETE FROM HISTORIQUE;");
-        //bdd.edit("DELETE FROM JOUEUR;");
-        //bdd.edit("DELETE FROM HISTORIQUEPARTIE;");
+        bdd.edit("DELETE FROM HISTORIQUEPARTIE;");
+        bdd.edit("DELETE FROM JOUEUR;");
         //bdd.edit("drop table JOUEUR;");
         /*bdd.edit("INSERT INTO JOUEUR (pseudoJoueur, nbPartiesJoueur, nbPartiesGagneesJoueur," +
                 " nbPartiesPerduesJoueur, nbPartiesAbandonneeJoueur, partieEnCoursJoueur, trophee1, trophee2, trophee3)" +

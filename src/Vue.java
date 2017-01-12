@@ -471,7 +471,6 @@ class Vue extends JFrame
         setContentPane(panelGeneral);
     }
 
-
     ArrayList<String> recupererHistoCoupsPartie()
     {
         BDDManager bdd = new BDDManager();
@@ -499,17 +498,20 @@ class Vue extends JFrame
     }
 
     /**
-     * Provenance : Jeux d'Echec
      * Propose une liste déroulante des joueurs de la base de donnée
      */
-    void statistiquesJoueur()
+    int statistiquesJoueur()
     {
         int i;
         BDDManager bdd = new BDDManager();
         bdd.start();
 
         ArrayList<ArrayList<String>> listeJoueur = bdd.ask("SELECT * FROM JOUEUR;");
-
+        if(listeJoueur.isEmpty())
+        {
+            jOptionMessage("Aucun joueur dans la base de données. Créez des joueurs dans \"Partie Locale\".");
+            return 0;
+        }
         String[] pseudoJoueurs = new String[listeJoueur.size()];
         for(i=0;i<listeJoueur.size(); i++)
             pseudoJoueurs[i] = listeJoueur.get(i).get(1);
@@ -519,6 +521,7 @@ class Vue extends JFrame
                 pseudoJoueurs[0]));
 
         bdd.stop();
+        return 1;
     }
 
     /**
@@ -531,10 +534,10 @@ class Vue extends JFrame
         BDDManager bdd = new BDDManager();
         bdd.start();
 
-        ArrayList<String> caracteristique = bdd.ask("SELECT * FROM JOUEUR WHERE pseudoJoueur = '" + pseudo + "';").get(0);
+        ArrayList<ArrayList<String>> caracteristique = bdd.ask("SELECT * FROM JOUEUR WHERE pseudoJoueur = '" + pseudo + "';");
 
-        int partiesJouees = Integer.parseInt(caracteristique.get(2)) +
-                Integer.parseInt(caracteristique.get(3));
+        int partiesJouees = Integer.parseInt(caracteristique.get(0).get(2)) +
+                Integer.parseInt(caracteristique.get(0).get(3));
 
         String stats = "\n\nPseudo : " + caracteristique.get(1) + "\n" +
                 "Nombre de parties jouées : " + partiesJouees + "\n" +
