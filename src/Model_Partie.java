@@ -25,6 +25,7 @@ class Model_Partie
     private Model_Case caseSrc;
     private Model_Case caseDest;
     private boolean partieFinie;
+    private boolean endOfTurn;
 
     /**
      * Instancie les objets qui doivent l'être avant de
@@ -63,7 +64,15 @@ class Model_Partie
         history = "";
         estPartieChargee = false;
     }
-
+    /**
+     * finTour
+     * reveil le thread à la fin d'un tour
+     */
+    synchronized void finTour()
+    {
+        endOfTurn = true;
+        notifyAll();
+    }
     /**
      * Définit les cases atteignables du pion qui va bouger en fonction du pion qui a bougé
      */

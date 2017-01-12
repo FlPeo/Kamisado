@@ -10,8 +10,6 @@ import java.net.Socket;
 class ThreadPartie extends Thread
 {
     private String monPseudo, pseudoAdversaire;
-    private int monSkin, skinAdversaire;
-    private int modePartie;
     private boolean jeSuisBlanc;
     private Model_Partie partie;
     private boolean isServer;
@@ -50,32 +48,6 @@ class ThreadPartie extends Thread
         this.cbm = cbm;
     }
 
-    /**
-     * ThreadPartie
-     * initie la partie pour le serveur
-     *
-     * @param partie (model)
-     * @param controller (controller de la partie)
-     * @param port (port de communication)
-     * @param isServer (suis-je serveur)
-     * @param ipServer (ip de communication)
-     * @param pseudo (pseudonyme du joueur)
-     * @param modePartie (mode de la partie)
-     * @param cbm (controlleur du menu d'accueil)
-     */
-    ThreadPartie(Model_Partie partie, Control_Partie controller, int port, boolean isServer,
-                 String ipServer, String pseudo, int modePartie, Control_Menu_Accueil cbm)
-    {
-        this.partie = partie;
-        this.controller = controller;
-        this.port = port;
-        this.isServer = isServer;
-        this.ipServer = ipServer;
-        this.monPseudo = pseudo;
-        this.modePartie = modePartie;
-        this.jeSuisBlanc = partie.jeSuisBlanc();
-        this.cbm = cbm;
-    }
 
     /**
      * run
@@ -135,10 +107,6 @@ class ThreadPartie extends Thread
                     int srcY = ois.readInt();
                     int destX = ois.readInt();
                     int destY = ois.readInt();
-
-                    int promo = ois.readInt();
-                    long chronoBlanc = ois.readLong();
-                    long chronoNoir = ois.readLong();
                     boolean partieFinie = ois.readBoolean();
                     if (partieFinie)
                         stop = true;
@@ -169,12 +137,9 @@ class ThreadPartie extends Thread
         oos.flush();
         ois = new ObjectInputStream(comm.getInputStream());
         oos.writeObject(monPseudo);
-        oos.writeInt(monSkin);
-        oos.writeInt(modePartie);
         oos.writeBoolean(!jeSuisBlanc);
         oos.flush();
         pseudoAdversaire = (String)ois.readObject();
-        skinAdversaire = ois.readInt();
         if (jeSuisBlanc)
             partie.initPartie(pseudoAdversaire, monPseudo, true);
         else
@@ -197,11 +162,8 @@ class ThreadPartie extends Thread
         oos = new ObjectOutputStream(comm.getOutputStream());
         oos.flush();
         pseudoAdversaire = (String)ois.readObject();
-        skinAdversaire = ois.readInt();
-        modePartie = ois.readInt();
         jeSuisBlanc = ois.readBoolean();
         oos.writeObject(monPseudo);
-        oos.writeInt(monSkin);
         oos.flush();
         setId();
         if (jeSuisBlanc)
