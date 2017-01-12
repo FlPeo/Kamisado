@@ -108,7 +108,13 @@ class ThreadPartie extends Thread
                     int destY = ois.readInt();
                     boolean partieFinie = ois.readBoolean();
                     if (partieFinie)
+                    {
                         stop = true;
+                        controller.updatePartie(srcX, srcY, destX, destY);
+                        partie.setTourDuJoueurBlanc(!partie.isTourDuJoueurBlanc());
+                        partie.setJoueurBLancGagnant(!jeSuisBlanc);
+                        controller.finPartie();
+                    }
                     else
                         controller.updatePartie(srcX, srcY, destX, destY);
                     partie.setTourDuJoueurBlanc(!partie.isTourDuJoueurBlanc());
@@ -175,7 +181,6 @@ class ThreadPartie extends Thread
     /**
      * setID
      * définit l'ID en fonction de si le joueur est blanc ou noir
-     *
      */
     private void setId()
     {

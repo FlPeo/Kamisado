@@ -82,15 +82,18 @@ class Control_Partie extends MouseAdapter
                 accueil.getPartie().coupFait(src, dest);
                 accueil.getPartie().finTour();
             }
-            if(accueil.getPartie().estGagnee()) finPartie();
+            if(accueil.getPartie().estGagnee())
+                finPartie();
         }
     }
 
     /**
      * Actions à entreprendre si une situation gagnante est détectée
      */
-    private void finPartie()
+    void finPartie()
     {
+        accueil.getPartie().setPartieFinie(true);
+        vue.setJMenuBar(null);
         String nomJoueur;
         vue.setPartieControl(null);
 
@@ -110,6 +113,7 @@ class Control_Partie extends MouseAdapter
             String nomJoueurPerdant =  accueil.getPartie().getJoueurBlanc().getNom();
             Model_Joueur.ajouteVictoire(nomJoueur,nomJoueurPerdant);
         }
+        //cas de sauvegarde rechargée
         if(accueil.getPartie().isEstPartieChargee())
         {
             BDDManager bdd = new BDDManager();
@@ -131,7 +135,7 @@ class Control_Partie extends MouseAdapter
     void enableView(boolean state) { vue.setEnabled(state); }
     void updatePartie(int srcX, int srcY, int destX, int destY)
     {
-        accueil.getPartie().setTourUn(false);
+        accueil.getPartie().setTourUn(false); // todo pas opti mais pas trouvé mieux...
         Model_Case caseSrc = accueil.getPartie().getPlateau().getBoard()[srcX*Model_Plateau.LIGNE+srcY];
         Model_Case caseDest = accueil.getPartie().getPlateau().getBoard()[destX*Model_Plateau.LIGNE+destY];
         accueil.getPartie().getPlateau().deplacer(caseSrc, caseDest, caseSrc.getPion());

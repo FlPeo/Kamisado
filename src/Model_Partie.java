@@ -27,6 +27,7 @@ class Model_Partie
     private Model_Case caseDest;
     private boolean partieFinie;
     private boolean endOfTurn;
+    private boolean joueurBLancGagnant;
 
     /**
      * Instancie les objets qui doivent l'être avant de
@@ -196,13 +197,14 @@ class Model_Partie
                 {
                     arrayPions.add(pionMemoire);
                     dernierPionJoue = pionMemoire;
-                    tourDuJoueurBlanc = !tourDuJoueurBlanc;
+                    setTourDuJoueurBlanc(!tourDuJoueurBlanc);
                     casesAtteignablesProchainTour();
                 }
             }
             if(impossibleDeJouer)
             {
                 estGagnee = true;
+                partieFinie = true;
                 joueurBlancGagnant = joueurBlancGagnantSiJeuBloque;
             }
         }
@@ -370,4 +372,12 @@ class Model_Partie
     synchronized Model_Accueil getAccueil() { return accueil; }
     synchronized void setAccueil(Model_Accueil accueil) { this.accueil = accueil; }
     synchronized void setIdCurrentPlayer(int idCurrentPlayer) { this.idCurrentPlayer = idCurrentPlayer; }
+
+    public void setPartieFinie(boolean partieFinie) {
+        this.partieFinie = partieFinie;
+    }
+
+    public void setJoueurBLancGagnant(boolean joueurBLancGagnant) {
+        this.joueurBLancGagnant = joueurBLancGagnant;
+    }
 }
