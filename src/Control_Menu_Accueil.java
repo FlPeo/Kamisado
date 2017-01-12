@@ -196,5 +196,67 @@ class Control_Menu_Accueil implements ActionListener
             Music.stopMusicTest();
             Music.playMusicTest();
         }
+        else if(e.getSource().equals(vue.getRejoindrePartieReseauBoutonMenu()))
+        {
+            vue.creerWidgetRejoindrePartieReseau();
+        }
+        else if(e.getSource().equals(vue.getRejoindrePartieReseau()))
+        {
+            accueil.setAdresseIpReseau(vue.messagePop("Entrez l'adresse IP de l'adversaire :"));
+            if(accueil.getAdresseIpReseau() == null)
+                return;
+            vue.jOptionMessage("Veuillez patienter...");
+            vue.setEnabled(false);
+        }
+        else if(e.getSource().equals(vue.getCreerPartieReseauBoutonMenu()))
+        {
+            vue.creerWidgetCreerPartieReseau();
+        }
+        else if(e.getSource().equals(vue.getNouveauPseudoCreerReseau()))
+        {
+            String pseudo = vue.messagePop("Entrez un nouveau pseudo :");
+            if (pseudo == null)
+                return;
+            if(pseudo.split("").length >20)
+            {
+                vue.jOptionMessage("Votre pseudo est trop long ! Veuillez saisir un pseudo qui ne dépasse pas 20 caractères");
+                return;
+            }
+            String[] listeJoueurs = accueil.listePseudos();
+            for(int i = 0; i < listeJoueurs.length; i++)
+            {
+                if (listeJoueurs[i].equals(pseudo))
+                {
+                    vue.jOptionMessage("Ce pseudo n'est pas disponible");
+                    return;
+                }
+            }
+            accueil.ajouterNouveauJoueur(pseudo);
+            vue.majListeJoueur();
+            vue.creerWidgetCreerPartieReseau();
+        }
+        else if(e.getSource().equals(vue.getNouveauPseudoRejoindreReseau()))
+        {
+            String pseudo = vue.messagePop("Entrez un nouveau pseudo :");
+            if (pseudo == null)
+                return;
+            if(pseudo.split("").length >20)
+            {
+                vue.jOptionMessage("Votre pseudo est trop long ! Veuillez saisir un pseudo qui ne dépasse pas 20 caractères");
+                return;
+            }
+            String[] listeJoueurs = accueil.listePseudos();
+            for(int i = 0; i < listeJoueurs.length; i++)
+            {
+                if (listeJoueurs[i].equals(pseudo))
+                {
+                    vue.jOptionMessage("Ce pseudo n'est pas disponible");
+                    return;
+                }
+            }
+            accueil.ajouterNouveauJoueur(pseudo);
+            vue.majListeJoueur();
+            vue.creerWidgetRejoindrePartieReseau();
+        }
     }
 }

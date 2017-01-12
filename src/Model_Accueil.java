@@ -11,6 +11,7 @@ class Model_Accueil
     private String partieACharger;
     private String langue;
     private boolean ia = false;
+    private Object adresseIpReseau;
 
 
     /**
@@ -233,5 +234,14 @@ class Model_Accueil
     }
     void setLangue(String langue) {
         this.langue = langue;
+    }
+
+
+    public void setAdresseIpReseau(String adresseIpReseau) {
+        this.adresseIpReseau = adresseIpReseau;
+    }
+
+    public Object getAdresseIpReseau() {
+        return adresseIpReseau;
     }
 }

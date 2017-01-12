@@ -25,6 +25,10 @@ class Vue extends JFrame
     private Vue_Bouton retourMenu;
     private Vue_Bouton lancerPartieLocale2;
     private Vue_Bouton nouveauPseudo;
+    private Vue_Bouton nouveauPseudoCreerReseau;
+    private Vue_Bouton nouveauPseudoRejoindreReseau;
+    private Vue_Bouton rejoindrePartieReseauBoutonMenu;
+    private Vue_Bouton creerPartieReseauBoutonMenu;
     private JMenuItem undoMenu, retourMenuPrincipalMenu, quitterMenu;
     private Vue_Bouton precedent;
     private Vue_Bouton retour;
@@ -55,6 +59,7 @@ class Vue extends JFrame
     private JComboBox listePseudo2;
     private ResourceBundle texteInternationalBoutons;
     private ResourceBundle texteInternationalLabels;
+    private Vue_Bouton rejoindrePartieReseau;
 
     /**
      * Constructeur de la vu
@@ -103,6 +108,11 @@ class Vue extends JFrame
         precedent=new Vue_Bouton(texteInternationalBoutons.getString("precedent"));
         suivant=new Vue_Bouton(texteInternationalBoutons.getString("suivant"));
         retour=new Vue_Bouton(texteInternationalBoutons.getString("retour"));
+        rejoindrePartieReseau = new Vue_Bouton(texteInternationalBoutons.getString("rejoindrePartie"));
+        rejoindrePartieReseauBoutonMenu = new Vue_Bouton(texteInternationalBoutons.getString("rejoindreUnePartieEnReseau"));
+        creerPartieReseauBoutonMenu = new Vue_Bouton(texteInternationalBoutons.getString("creerUnePartieEnReseau"));
+        nouveauPseudoCreerReseau = new Vue_Bouton(texteInternationalBoutons.getString("ajouterPseudo"));
+        nouveauPseudoRejoindreReseau = new Vue_Bouton(texteInternationalBoutons.getString("ajouterPseudo"));
 
         // Options
         france = new JLabel(new ImageIcon("Images/drapeaux/franceFlag.jpg"));
@@ -209,12 +219,13 @@ class Vue extends JFrame
      */
     private void creerWidgetAccueil()
     {
-        JPanel boutonsMenu = new JPanel(new GridLayout(10, 1, 0, 10));
+        JPanel boutonsMenu = new JPanel(new GridLayout(11, 1, 0, 10));
         boutonsMenu.setOpaque(false);
         boutonsMenu.add(lancerPartieRapide);
         boutonsMenu.add(lancerPartieLocale);
         boutonsMenu.add(lancerPartieContreIA);
-        boutonsMenu.add(lancerPartieEnReseau);
+        boutonsMenu.add(creerPartieReseauBoutonMenu);
+        boutonsMenu.add(rejoindrePartieReseauBoutonMenu);
         boutonsMenu.add(chargerPartie);
         boutonsMenu.add(historique);
         boutonsMenu.add(statistiquesDuJoueur);
@@ -332,6 +343,93 @@ class Vue extends JFrame
     }
 
     /**
+     * creerWidgetRejoindrePartieReseau
+     * Place les éléments de la vue pour le formulaire permettant de rejoindre une partie en réseau
+     *
+     */
+    void creerWidgetRejoindrePartieReseau()
+    {
+        JPanel titreJeu = new JPanel();
+        titreJeu.setOpaque(false);
+        titreJeu.add(titre);
+
+        JPanel formulaire = new JPanel(new GridLayout(13, 1, 100, 0));
+        formulaire.setOpaque(false);
+        formulaire.add(joueur1);
+        formulaire.add(listePseudo1);
+
+        JPanel nouveauJ = new JPanel(new GridLayout(6, 1, 0, 30));
+        nouveauJ.setOpaque(false);
+        nouveauJ.add(nouveauPseudoRejoindreReseau);
+        nouveauJ.add(rejoindrePartieReseau);
+        nouveauJ.add(Box.createVerticalGlue());
+        nouveauJ.add(Box.createVerticalGlue());
+        nouveauJ.add(retourMenu);
+
+        JPanel nouveauJP = new JPanel();
+        nouveauJP.add(Box.createHorizontalStrut(100));
+        nouveauJP.setOpaque(false);
+        nouveauJP.add(nouveauJ);
+
+        JPanel organisation = new JPanel(new BorderLayout());
+        organisation.setOpaque(false);
+        organisation.add(titreJeu, BorderLayout.NORTH);
+        organisation.add(formulaire, BorderLayout.CENTER);
+        organisation.add(nouveauJP, BorderLayout.EAST);
+
+
+        // Mise en place du fond d'écran
+        background = new BackgroundPanel(xSize, ySize, "Images/Fonds/fond1.jpg");//new ImageIcon("Images/Fonds/fond1.jpg"));
+        background.setLayout(new FlowLayout());
+        background.add(organisation, BorderLayout.CENTER);
+
+        setContentPane(background);
+    }
+
+    /**
+     * creerWidgetCreerPartieReseau
+     * Place les éléments de la vue pour le formulaire de création d'une partie en réseau
+     */
+    void creerWidgetCreerPartieReseau()
+    {
+        JPanel titreJeu = new JPanel();
+        titreJeu.setOpaque(false);
+        titreJeu.add(titre);
+
+        JPanel formulaire = new JPanel(new GridLayout(13, 1, 100, 0));
+        formulaire.setOpaque(false);
+        formulaire.add(joueur1);
+        formulaire.add(listePseudo1);
+
+        JPanel nouveauJ = new JPanel(new GridLayout(6, 1, 0, 30));
+        nouveauJ.setOpaque(false);
+        nouveauJ.add(nouveauPseudoCreerReseau);
+        nouveauJ.add(lancerPartieEnReseau);
+        nouveauJ.add(Box.createVerticalGlue());
+        nouveauJ.add(Box.createVerticalGlue());
+        nouveauJ.add(retourMenu);
+
+        JPanel nouveauJP = new JPanel();
+        nouveauJP.add(Box.createHorizontalStrut(100));
+        nouveauJP.setOpaque(false);
+        nouveauJP.add(nouveauJ);
+
+        JPanel organisation = new JPanel(new BorderLayout());
+        organisation.setOpaque(false);
+        organisation.add(titreJeu, BorderLayout.NORTH);
+        organisation.add(formulaire, BorderLayout.CENTER);
+        organisation.add(nouveauJP, BorderLayout.EAST);
+
+
+        // Mise en place du fond d'écran
+        background = new BackgroundPanel(xSize, ySize, "Images/Fonds/fond1.jpg");//new ImageIcon("Images/Fonds/fond1.jpg"));
+        background.setLayout(new FlowLayout());
+        background.add(organisation, BorderLayout.CENTER);
+
+        setContentPane(background);
+    }
+
+    /**
      * afficherMenu
      * Permet de relancer la musique du menu et d'afficher les boutons du menu
      *
@@ -376,6 +474,9 @@ class Vue extends JFrame
         anglaisFlag.addActionListener(listener);
         musiqueOff.addActionListener(listener);
         musiqueOn.addActionListener(listener);
+        creerPartieReseauBoutonMenu.addActionListener(listener);
+        rejoindrePartieReseauBoutonMenu.addActionListener(listener);
+        rejoindrePartieReseau.addActionListener(listener);
     }
 
     void setButtonHistoriqueControl(ActionListener listener)
@@ -617,7 +718,6 @@ class Vue extends JFrame
 
         bdd.stop();
     }
-
     // GETTERS & SETTERS
     Vue_Bouton getLancerPartieContreIA() { return lancerPartieContreIA; }
     Vue_Plateau getVue_plateau() { return vue_plateau; }
@@ -702,5 +802,36 @@ class Vue extends JFrame
     }
     void setMusiqueOff(JRadioButton musiqueOff) {
         this.musiqueOff = musiqueOff;
+    }
+    Vue_Bouton getRejoindrePartieReseauBoutonMenu() {
+        return rejoindrePartieReseauBoutonMenu;
+    }
+    void setRejoindrePartieReseauBoutonMenu(Vue_Bouton rejoindrePartieReseauBoutonMenu) {
+        this.rejoindrePartieReseauBoutonMenu = rejoindrePartieReseauBoutonMenu;
+    }
+    Vue_Bouton getCreerPartieReseauBoutonMenu() {
+        return creerPartieReseauBoutonMenu;
+    }
+    void setCreerPartieReseauBoutonMenu(Vue_Bouton creerPartieReseauBoutonMenu) {
+        this.creerPartieReseauBoutonMenu = creerPartieReseauBoutonMenu;
+    }
+    Vue_Bouton getRejoindrePartieReseau() {
+        return rejoindrePartieReseau;
+    }
+    void setRejoindrePartieReseau(Vue_Bouton rejoindrePartieReseau) {
+        this.rejoindrePartieReseau = rejoindrePartieReseau;
+    }
+    Vue_Bouton getNouveauPseudoCreerReseau() {
+        return nouveauPseudoCreerReseau;
+    }
+    void setNouveauPseudoCreerReseau(Vue_Bouton nouveauPseudoCreerReseau) {
+        this.nouveauPseudoCreerReseau = nouveauPseudoCreerReseau;
+    }
+    Vue_Bouton getNouveauPseudoRejoindreReseau() {
+        return nouveauPseudoRejoindreReseau;
+    }
+
+    void setNouveauPseudoRejoindreReseau(Vue_Bouton nouveauPseudoRejoindreReseau) {
+        this.nouveauPseudoRejoindreReseau = nouveauPseudoRejoindreReseau;
     }
 }
