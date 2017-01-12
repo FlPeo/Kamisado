@@ -336,34 +336,11 @@ public class Model_Partie_IA {
 
 
     byte evaluate() {
-        //tout ce qui est commente : ancienne version de evaluate en random
-        // On choisit aléatoirement la case ou va se déplacer le pion (pseudo IA)
-        /*Random rand = new Random();
-        int nbCasesPossibles = 0;
-        for (int i = 0; i < NBCASESATTEIGNABLESPOSSIBLESJOUEURCOURANT; i++)
-            if (casesAtteignablesJoueurCourant[i] == -1)
-                break;
-            else
-                nbCasesPossibles++;
-        int caseAlea = rand.nextInt(nbCasesPossibles);
-        // On récupère la couleur de la case où va etre déplacer le pion pour le tour d'après
-        couleurPionAJouer = plateauCase[casesAtteignablesJoueurCourant[caseAlea]];
-        // On indique que le pion est maintenant sur la case cliqué
-        plateau[casesAtteignablesJoueurCourant[caseAlea]] = pionMemoire;
-        // On supprime le pion de son ancien emplacement
-        plateau[casePionMemoire] = -1;
-        // On enregistre le pion qui vient d'être bougé
-        dernierPionJoue = pionMemoire;
-        tourDuJoueurBlanc = true;
-        return (byte) caseAlea;*/
-
         //return evaluateMinMax();
-
         return evaluateMax();
     }
 
     private byte evaluateMax() {
-        System.out.println("Minmax");
         int maxVal = MOINS_INFINI*600;
         int val;
         byte meilleur_coup = 0;
@@ -403,7 +380,6 @@ public class Model_Partie_IA {
 
 
             val = max(PROFONDEUR_MINMAX);
-            System.out.println("val "+ i+ " = "+val);
             if(val > maxVal) {
                 maxVal = val;
                 meilleur_coup = i;
@@ -497,7 +473,6 @@ public class Model_Partie_IA {
                 if(tourDuJoueurBlanc){
                     cumul += val;
                     if(val == MOINS_INFINI * (PROFONDEUR_MINMAX - 1)){
-                        System.out.println("yoyo");
                         cumul = MOINS_INFINI * 500;
                     }
                 }
@@ -560,41 +535,29 @@ public class Model_Partie_IA {
             tourDuJoueurBlanc = !tourDuJoueurBlanc;       //ou true
         }
 
-        //System.out.println(cumul);
         return cumul;
     }
 
     int eval(byte profondeur, byte situation){
-        //int nbCoups = PROFONDEUR_MINMAX-profondeur;
         int pts;
 
         if(situation == VICTOIRE_IA){
-            //return 1000 - nbCoups;
-
             pts = INFINI *profondeur;
-            //System.out.println("Vic !");
         }
         else if(situation == DEFAITE_IA){
-            //return -1000 + nbCoups;
-            //pts = MOINS_INFINI +6 - profondeur;
             pts = MOINS_INFINI*profondeur;
-            //System.out.println("Defaite");
         }
         else{    //situation = CONTINU
             pts = evalFinProfondeur();
         }
 
-        //System.out.println(pts+"\n");
         return pts;
     }
 
     private int evalFinProfondeur() {
         int pts = 0;
-        //pts += evalFinProfondeurGagnerDeXFacon();    //à refaire
 
         pts += evalFinDeplacementEtGagnerDeXFacon();
-
-
         //a completer
 
         return pts;
