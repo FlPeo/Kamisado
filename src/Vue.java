@@ -35,6 +35,7 @@ class Vue extends JFrame
     private JLabel joueur2;
     private JComboBox listePseudo1;
     private JFrame vueHisto;
+
     // Options
     private JLabel titreOptions;
     private JButton francaisFlag;
@@ -99,6 +100,10 @@ class Vue extends JFrame
         angleterre = new JLabel(new ImageIcon("Images/drapeaux/anglaisFlag.jpg"));
         francaisFlag = new JButton(france.getIcon());
         anglaisFlag = new JButton(angleterre.getIcon());
+        francaisFlag.setBackground(Color.black);
+        anglaisFlag.setBackground(Color.black);
+        francaisFlag.setBorder(null);
+        anglaisFlag.setBorder(null);
         titreOptions = new JLabel(texteInternationalLabels.getString("titreOption"));
 
 
