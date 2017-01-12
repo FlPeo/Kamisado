@@ -10,6 +10,8 @@ class Control_Partie extends MouseAdapter
     private Model_Accueil accueil;
 
     private ResourceBundle texteInternational;
+    private String joueurBlanc;
+    private String joueurNoir;
 
     /**
      * Constructeur du controleur d'une partie
@@ -108,5 +110,25 @@ class Control_Partie extends MouseAdapter
         }
         vue.afficherMenu();
         Vue_FactorPopup.creerPopupJoueurGagnant(nomJoueur);
+    }
+
+    public void debutTour() {
+
+    }
+
+    public void enableView(boolean b) {
+
+    }
+
+    public void updatePartie(int srcX, int srcY, int destX, int destY)
+    {
+    }
+
+    public void setJoueurBlanc(String joueurBlanc) {
+        this.joueurBlanc = joueurBlanc;
+    }
+
+    public void setJoueurNoir(String joueurNoir) {
+        this.joueurNoir = joueurNoir;
     }
 }

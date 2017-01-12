@@ -21,6 +21,10 @@ class Model_Partie
     private boolean estGagnee;
     private boolean estPartieChargee;
     private String history;
+    private int idCurrentPlayer;
+    private Model_Case caseSrc;
+    private Model_Case caseDest;
+    private boolean partieFinie;
 
     /**
      * Instancie les objets qui doivent l'être avant de
@@ -291,5 +295,44 @@ class Model_Partie
 
     public boolean isEstPartieChargee() {
         return estPartieChargee;
+    }
+
+    public void waitFinTour() {
+
+    }
+
+    public int getIdCurrentPlayer() {
+        return idCurrentPlayer;
+    }
+
+    public void initPartie(String pseudoAdversaire, String monPseudo, boolean b)
+    {
+
+    }
+
+    public boolean jeSuisBlanc()
+    {
+
+        return false;
+    }
+
+    public Model_Case getCaseSrc() {
+        return caseSrc;
+    }
+
+    public Model_Case getCaseDest() {
+        return caseDest;
+    }
+
+    public boolean isPartieFinie() {
+        return partieFinie;
+    }
+
+    public void setCaseSrc(Model_Case caseSrc) {
+        this.caseSrc = caseSrc;
+    }
+
+    public void setCaseDest(Model_Case caseDest) {
+        this.caseDest = caseDest;
     }
 }

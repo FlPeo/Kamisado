@@ -197,4 +197,22 @@ class Control_Menu_Accueil implements ActionListener
             Music.playMusicTest();
         }
     }
+
+    /**
+     * initPartie
+     * ensemble d'éléments nécessaire à la création d'une partie
+     *
+     */
+    void initPartie()
+    {
+        Control_Partie.setJoueurBlanc(accueil.getPartie().getJoueurBlanc().getNom());
+        Control_Partie.setJoueurNoir(accueil.getPartie().getJoueurNoir().getNom());
+        vue.setVue_plateau(new Vue_Plateau(vue, accueil));
+        vue.creerWidgetPartie();
+        accueil.getPartie().casesAtteignablesProchainTour(); // a vérifier
+        vue.setPartieControl(Control_Partie);
+        vue.initMenuPartie();
+        vue.setControlMenu(new Control_Partie_Menu(vue, accueil));
+        vue.setVisible(true);
+    }
 }

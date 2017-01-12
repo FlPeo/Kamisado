@@ -163,7 +163,7 @@ class Vue extends JFrame
      * Instancie les attributs de la bar de menu
      *
      */
-    private void initMenuPartie()
+    void initMenuPartie()
     {
         barMenu = new JMenuBar();
 
