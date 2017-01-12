@@ -193,6 +193,7 @@ class Control_Menu_Accueil implements ActionListener
         }
         else if(e.getSource().equals(vue.getMusiqueOn()))
         {
+            Music.stopMusicTest();
             Music.playMusicTest();
         }
     }

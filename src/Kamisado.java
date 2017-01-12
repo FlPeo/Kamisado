@@ -13,6 +13,7 @@ class Kamisado
             public void run()
             {
                 Control_Group controler = new Control_Group();
+                Music.playMusicTest();
             }
         });
     }

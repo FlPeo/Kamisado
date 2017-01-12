@@ -570,15 +570,15 @@ class Vue extends JFrame
         BDDManager bdd = new BDDManager();
         bdd.start();
 
-        ArrayList<ArrayList<String>> caracteristique = bdd.ask("SELECT * FROM JOUEUR WHERE pseudoJoueur = '" + pseudo + "';");
-
+        ArrayList<ArrayList<String>> caracteristique = bdd.ask(
+                "SELECT * FROM JOUEUR WHERE pseudoJoueur = '" + pseudo + "';");
         int partiesJouees = Integer.parseInt(caracteristique.get(0).get(2)) +
                 Integer.parseInt(caracteristique.get(0).get(3));
 
-        String stats = "\n\nPseudo : " + caracteristique.get(1) + "\n" +
+        String stats = "\n\nPseudo : " + caracteristique.get(0).get(1) + "\n" +
                 "Nombre de parties jouées : " + partiesJouees + "\n" +
-                "Nombre de parties gagnées : " + caracteristique.get(2) + "\n" +
-                "Nombre de parties perdues : " + caracteristique.get(3) + "\n";
+                "Nombre de parties gagnées : " + caracteristique.get(0).get(2) + "\n" +
+                "Nombre de parties perdues : " + caracteristique.get(0).get(3) + "\n";
 
         JOptionPane.showMessageDialog(this, "Statistiques :" + stats, "Statistiques d'un joueur", JOptionPane.INFORMATION_MESSAGE);
 
