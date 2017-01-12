@@ -85,7 +85,7 @@ class Vue extends JFrame
     /**
      * Initialisation de tous les attribus de la classe
      */
-    private void initAttribut()
+    public void initAttribut()
     {
         texteInternationalBoutons = ResourceBundle.getBundle("Traductions.boutons");
         texteInternationalLabels = ResourceBundle.getBundle("Traductions.labels");

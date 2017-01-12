@@ -36,7 +36,7 @@ public abstract class Music {
         }*/
 
     private static MediaPlayer mp;
-    private static final String musicTest = "Music/songTest.mp3";
+    private static final String musicTest = "Music/zen.mp3";
 
     /**
      * playMedievalTheme
