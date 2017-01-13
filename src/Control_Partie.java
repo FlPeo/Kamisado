@@ -13,6 +13,9 @@ class Control_Partie extends MouseAdapter
     private String joueurBlanc; // todo pas géré
     private String joueurNoir; // todo pas géré
 
+    Model_Case src = null;
+    Model_Case dest = null;
+
     /**
      * Constructeur du controleur d'une partie
      * @param accueil (model de l'accueil)
@@ -34,6 +37,7 @@ class Control_Partie extends MouseAdapter
     @Override
     public void mouseClicked(MouseEvent e)
     {
+        boolean finTourReseau = false;
         int column = (e.getX()-360)/80;
         int row = Math.abs(((e.getY()-20)/80)-7);
 
@@ -48,6 +52,9 @@ class Control_Partie extends MouseAdapter
                 && accueil.getPartie().getPionMemoire().getCasesAtteignables().contains(
                         accueil.getPartie().getPlateau().getBoard()[row*Model_Plateau.LIGNE + column]) )
             {
+                finTourReseau = true;
+                src = accueil.getPartie().getPionMemoire().getCaseActuelle();
+                dest = accueil.getPartie().getPlateau().getBoard()[row*Model_Plateau.LIGNE+column];
                 vue.getVue_plateau().deplacementAnimation(
                         accueil.getPartie().getPionMemoire().getCaseActuelle(),
                         accueil.getPartie().getPlateau().getBoard()[row*Model_Plateau.LIGNE + column],
@@ -61,13 +68,6 @@ class Control_Partie extends MouseAdapter
                     ex.printStackTrace();
                 }
             }
-            Model_Case src = null;
-            Model_Case dest = null;
-            if (accueil.getPartie().getPionMemoire() != null) // todo a affiner
-            {
-                src = accueil.getPartie().getPionMemoire().getCaseActuelle();
-               dest = accueil.getPartie().getPlateau().getBoard()[row*Model_Plateau.LIGNE+column];
-            }
             if( accueil.getPartie().isTourDuJoueurBlanc() )
                 accueil.getPartie().getJoueurBlanc().gestionTourJoueur(row, column);
             else
@@ -77,7 +77,8 @@ class Control_Partie extends MouseAdapter
                 accueil.getPartie().controleBlocage();
 
             vue.repaint();
-            if (!accueil.getPartie().isTourUn())
+
+            if (!accueil.getPartie().isTourUn() && finTourReseau == true)
             {
                 accueil.getPartie().coupFait(src, dest);
                 accueil.getPartie().finTour();
@@ -85,8 +86,19 @@ class Control_Partie extends MouseAdapter
             if(accueil.getPartie().estGagnee())
                 finPartie();
         }
+        finTourReseau = false;
     }
 
+    void finPartieReseauPerdant(int id)
+    {
+        String nomJoueur = id==1?
+                accueil.getPartie().getJoueurNoir().getNom():
+                accueil.getPartie().getJoueurBlanc().getNom();
+        vue.setJMenuBar(null);
+        vue.setPartieControl(null);
+        vue.afficherMenu();
+        Vue_FactorPopup.creerPopupJoueurGagnant(nomJoueur);
+    }
     /**
      * Actions à entreprendre si une situation gagnante est détectée
      */

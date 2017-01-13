@@ -113,7 +113,7 @@ class ThreadPartie extends Thread
                         controller.updatePartie(srcX, srcY, destX, destY);
                         partie.setTourDuJoueurBlanc(!partie.isTourDuJoueurBlanc());
                         partie.setJoueurBLancGagnant(!jeSuisBlanc);
-                        controller.finPartie();
+                        controller.finPartieReseauPerdant(id);
                     }
                     else
                         controller.updatePartie(srcX, srcY, destX, destY);
