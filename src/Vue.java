@@ -502,6 +502,8 @@ class Vue extends JFrame
         creerPartieReseauBoutonMenu.addActionListener(listener);
         rejoindrePartieReseauBoutonMenu.addActionListener(listener);
         rejoindrePartieReseau.addActionListener(listener);
+        nouveauPseudoCreerReseau.addActionListener(listener);
+        nouveauPseudoRejoindreReseau.addActionListener(listener);
     }
 
     void setButtonHistoriqueControl(ActionListener listener)
