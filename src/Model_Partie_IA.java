@@ -94,15 +94,20 @@ public class Model_Partie_IA {
     // 8 = nb pions
     private byte[][] casesAtteignablesTourUn = new byte[8][14];
 
-
-
-    private static final int MOINS_INFINI = -1000000;
-    private static final int INFINI = 1000000;
-    private static final byte PROFONDEUR_MINMAX = 7;    //pair : IA qui finit de jouer : pas bon pour evalFinProfondeur
-
     private static final byte VICTOIRE_IA = 0;
     private static final byte DEFAITE_IA = 1;
-    private static final byte CONTINU = 2;
+    private static final byte NI_VICTOIRE_NI_DEFAITE = 2;
+    private static final byte PROFONDEUR_MINMAX = 7;    //pair : IA qui finit de jouer : pas bon pour evalFinProfondeur
+
+
+
+
+    private static final int MOINS_INFINI = -1_000_000;
+    private static final int INFINI = 1_000_000;
+
+    private static final int PTS_DEFAITE_IA = -10_000;
+    private static final int PTS_VICTOIRE_IA = 10_000;
+
 
 
     Model_Partie_IA() {
@@ -341,7 +346,7 @@ public class Model_Partie_IA {
     }
 
     private byte evaluateMax() {
-        int maxVal = MOINS_INFINI*600;
+        int maxVal = MOINS_INFINI;
         int val;
         byte meilleur_coup = 0;
 
@@ -362,7 +367,6 @@ public class Model_Partie_IA {
             sauvegardePlateau1 = plateau[casesAtteignablesJoueurCourant[i]];
 
             plateau[casePionMemoire] = -1;
-            System.out.println("case at = "+casesAtteignablesJoueurCourant[i]);
             plateau[casesAtteignablesJoueurCourant[i]] = pionMemoire;
             caseDernierPionJoue = casesAtteignablesJoueurCourant[i];
             dernierPionJoue = pionMemoire;
@@ -417,7 +421,7 @@ public class Model_Partie_IA {
             return eval(profondeur, VICTOIRE_IA);
         }
         else if(profondeur == 0){
-            return eval(profondeur, CONTINU);
+            return eval(profondeur, NI_VICTOIRE_NI_DEFAITE);
         }
 
 
@@ -442,7 +446,7 @@ public class Model_Partie_IA {
 
         if(!controlBlocage()){
             byte i;
-            for(i = 0 ; i<casesAtteignablesJoueurCourant.length && casesAtteignablesJoueurCourant[i] !=-1 && cumul != MOINS_INFINI * 500; i++) {
+            for(i = 0 ; i<casesAtteignablesJoueurCourant.length && casesAtteignablesJoueurCourant[i] !=-1 /*&& cumul != MOINS_INFINI * 500*/; i++) {
                 //simuler(coup_actuel);
                 tourDuJoueurBlanc = !tourDuJoueurBlanc;     //false si max
                 sauvegardePlateau1 = plateau[casesAtteignablesJoueurCourant[i]];
@@ -472,9 +476,9 @@ public class Model_Partie_IA {
                 int val = max((byte)(profondeur - 1));
                 if(tourDuJoueurBlanc){
                     cumul += val;
-                    if(val == MOINS_INFINI * (PROFONDEUR_MINMAX - 1)){
+                    /*if(val == MOINS_INFINI * (PROFONDEUR_MINMAX - 1)){
                         cumul = MOINS_INFINI * 500;
-                    }
+                    }*/
                 }
                 else{
                     if(val>cumul){
@@ -497,7 +501,7 @@ public class Model_Partie_IA {
                 tourDuJoueurBlanc = !tourDuJoueurBlanc;       //ou true
 
             }
-            if(!tourDuJoueurBlanc && cumul != MOINS_INFINI * 500){   // ! car valeur retablie à fin du for
+            if(!tourDuJoueurBlanc /*&& cumul != MOINS_INFINI * 500*/){   // ! car valeur retablie à fin du for
                 cumul /= i;
             }
         }
@@ -542,12 +546,14 @@ public class Model_Partie_IA {
         int pts;
 
         if(situation == VICTOIRE_IA){
-            pts = INFINI *profondeur;
+            //pts = INFINI *profondeur;
+            pts = PTS_VICTOIRE_IA;
         }
         else if(situation == DEFAITE_IA){
-            pts = MOINS_INFINI*profondeur;
+            //pts = MOINS_INFINI*profondeur;
+            pts = PTS_DEFAITE_IA;
         }
-        else{    //situation = CONTINU
+        else{    //situation = NI_VICTOIRE_NI_DEFAITE
             pts = evalFinProfondeur();
         }
 
@@ -718,7 +724,7 @@ public class Model_Partie_IA {
             return eval(profondeur, VICTOIRE_IA);
         }
         else if(profondeur == 0){
-            return eval(profondeur, CONTINU);
+            return eval(profondeur, NI_VICTOIRE_NI_DEFAITE);
         }
 
         int minVal = INFINI;
@@ -790,7 +796,7 @@ public class Model_Partie_IA {
             return eval(profondeur, DEFAITE_IA);
         }
         else if(profondeur == 0){
-            return eval(profondeur, CONTINU);
+            return eval(profondeur, NI_VICTOIRE_NI_DEFAITE);
         }
 
         int maxVal = MOINS_INFINI;
@@ -869,7 +875,7 @@ public class Model_Partie_IA {
             //return -1000 + nbCoups;
             pts = -1000 * profondeur;
         }
-        else{    //situation = CONTINU
+        else{    //situation = NI_VICTOIRE_NI_DEFAITE
             pts = evalFinProfondeur();
         }
 
