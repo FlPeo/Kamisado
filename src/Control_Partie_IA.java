@@ -25,10 +25,14 @@ class Control_Partie_IA extends MouseAdapter
     public void mouseClicked(MouseEvent e)
     {
         byte i;
-        int column = (e.getX() - 360) / 80;
-        int row = Math.abs(((e.getY() - 20) / 80) - 7);
+        int column = (int)Math.floor((e.getX() - 360) / 80.0);
+        int row = -(int)Math.floor(((e.getY() - 20) / 80.0) - 7);
         byte[] plateau = accueil.getPartieIa().getPlateau();
         byte index = (byte)(8 * row + column);
+
+        System.out.println(e.getX() + " "+e.getY());
+        System.out.println(column + " "+row);
+        System.out.println(index);
 
         if (e.getSource().equals(vue.getVue_plateau())
                 && column >= 0
@@ -117,7 +121,7 @@ class Control_Partie_IA extends MouseAdapter
                     {
                         // On vérifie que la case cliquée est dans les cases atteignables du pion en mémoire
                         boolean isCaseAtteignable = false;
-                        for (i = 0; i < Model_Partie_IA.getNBCASESATTEIGNABLESPOSSIBLESJOUEURCOURANT(); i++)
+                        for (i = 0; i < accueil.getPartieIa().getCasesAtteignablesJoueurCourant().length; i++)
                             if (accueil.getPartieIa().getCasesAtteignablesJoueurCourant()[i] == index)
                             {
                                 isCaseAtteignable = true;
