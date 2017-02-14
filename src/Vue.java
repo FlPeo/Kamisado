@@ -476,6 +476,12 @@ class Vue extends JFrame
             vue_plateau.addMouseListener(e);
     }
 
+    void removePartieControl(MouseListener e)
+    {
+        if (vue_plateau != null)
+            vue_plateau.removeMouseListener(e);
+    }
+
     /**
      * Ecoute les évènements sur les boutons du menu
      * @param listener (ecouteur de type ActionListener)

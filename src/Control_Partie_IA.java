@@ -139,6 +139,8 @@ class Control_Partie_IA extends MouseAdapter
                             vue.repaint();
                             // On vérifie si il y a victoire ou pas
                             if (index > 55 && index <= 63) {
+                                accueil.getPartieIa().setEstGagnee(true);
+                                vue.removePartieControl(this);
                                 Vue_FactorPopup.creerPopupJoueurGagnant(texteInternational.getString("joueurBlancGagnant"));
                                 return;
                             }
@@ -188,8 +190,12 @@ class Control_Partie_IA extends MouseAdapter
 
                         // On vérifie si il y a victoire ou pas
                         if (accueil.getPartieIa().getCasesAtteignablesJoueurCourant()[caseAlea] < 8
-                                && accueil.getPartieIa().getCasesAtteignablesJoueurCourant()[caseAlea] >= 0)
+                                && accueil.getPartieIa().getCasesAtteignablesJoueurCourant()[caseAlea] >= 0){
+
+                            accueil.getPartieIa().setEstGagnee(true);
+                            vue.removePartieControl(this);
                             Vue_FactorPopup.creerPopupJoueurGagnant(texteInternational.getString("IAgagnant"));
+                        }
 
                         // On prépare le tour suivant
                         // On retrouve le pion qui doit jouer et on le met dans le pion mémoire
@@ -220,7 +226,6 @@ class Control_Partie_IA extends MouseAdapter
                 }
             }
         }
-
         vue.validate();
     }
 }

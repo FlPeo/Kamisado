@@ -720,4 +720,12 @@ class Model_Partie_IA {
     static byte getNBCASESATTEIGNABLESPOSSIBLESJOUEURCOURANT() {
         return NBCASESATTEIGNABLESPOSSIBLESJOUEURCOURANT;
     }
+
+    public boolean isEstGagnee() {
+        return estGagnee;
+    }
+
+    public void setEstGagnee(boolean estGagnee) {
+        this.estGagnee = estGagnee;
+    }
 }
