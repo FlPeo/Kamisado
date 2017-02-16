@@ -87,6 +87,7 @@ class Model_Partie_IA {
     //pion qui a été joué au dernier tour
     private byte dernierPionJoue = -1;
     private byte caseDernierPionJoue = -1;
+    private byte caseDestDernierPionJoue = -1;
 
     // 14 = nombre de cases atteignables max
     // on notera -1 pour les cases non utilisées
@@ -413,6 +414,8 @@ class Model_Partie_IA {
         couleurPionAJouer = plateauCase[casesAtteignablesJoueurCourant[meilleur_coup]];
         plateau[casesAtteignablesJoueurCourant[meilleur_coup]] = pionMemoire;
         plateau[casePionMemoire] = -1;
+        caseDestDernierPionJoue = casesAtteignablesJoueurCourant[meilleur_coup];
+        caseDernierPionJoue = casePionMemoire;   //ddddddddddd
         dernierPionJoue = pionMemoire;
         tourDuJoueurBlanc = true;
 
@@ -727,5 +730,13 @@ class Model_Partie_IA {
 
     public void setEstGagnee(boolean estGagnee) {
         this.estGagnee = estGagnee;
+    }
+
+    public byte getCaseDernierPionJoue() {
+        return caseDernierPionJoue;
+    }
+
+    public byte getCaseDestDernierPionJoue() {
+        return caseDestDernierPionJoue;
     }
 }

@@ -23,6 +23,7 @@ class   Vue_Plateau extends JPanel
 
 
     private final int SIZECASE = 80;
+    private final int EPAISSEUR_CASE_JOUEE_PAR_IA = 5;
 
     /**
      * COnstructeur d'une vue de plateau
@@ -121,6 +122,23 @@ class   Vue_Plateau extends JPanel
                     y = i/8;
                     g.drawImage(typePion[couleurPion], x * SIZECASE +380 - SIZECASE/4, -y * SIZECASE +620 - SIZECASE/2, null);
                 }
+            }
+
+            if(accueil.getPartieIa().getCaseDernierPionJoue() !=-1) {
+                Stroke oldStroke = ((Graphics2D)g).getStroke();
+                ((Graphics2D)g).setStroke(new BasicStroke(EPAISSEUR_CASE_JOUEE_PAR_IA));
+
+
+                g.setColor(new Color(125, 0, 0));
+                x = accueil.getPartieIa().getCaseDernierPionJoue() % 8;
+                y = accueil.getPartieIa().getCaseDernierPionJoue() / 8;
+                int xP = accueil.getPartieIa().getCaseDestDernierPionJoue() % 8;
+                int yP = accueil.getPartieIa().getCaseDestDernierPionJoue() / 8;
+                g.drawRect(x * SIZECASE + 380 - SIZECASE / 4 +2, (8 - y) * SIZECASE - 20 - SIZECASE / 2 +2,
+                        SIZECASE-EPAISSEUR_CASE_JOUEE_PAR_IA, SIZECASE-EPAISSEUR_CASE_JOUEE_PAR_IA);
+                g.drawOval(xP * SIZECASE + 380 - SIZECASE / 4 +2, (8 - yP) * SIZECASE - 20 - SIZECASE / 2 +2,
+                        SIZECASE-EPAISSEUR_CASE_JOUEE_PAR_IA, SIZECASE-EPAISSEUR_CASE_JOUEE_PAR_IA);
+                ((Graphics2D)g).setStroke(oldStroke);
             }
 
             if(!accueil.getPartieIa().isEstGagnee()) {
