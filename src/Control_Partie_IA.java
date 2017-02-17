@@ -30,9 +30,6 @@ class Control_Partie_IA extends MouseAdapter
         byte[] plateau = accueil.getPartieIa().getPlateau();
         byte index = (byte)(8 * row + column);
 
-        System.out.println(e.getX() + " "+e.getY());
-        System.out.println(column + " "+row);
-        System.out.println(index);
 
         if (e.getSource().equals(vue.getVue_plateau())
                 && column >= 0
