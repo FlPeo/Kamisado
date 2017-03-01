@@ -73,6 +73,7 @@ class Control_Partie extends MouseAdapter
             else
                 accueil.getPartie().getJoueurNoir().gestionTourJoueur(row, column);
 
+            accueil.getPartie().saveDerPionJoueAnim();
             if(!accueil.getPartie().estGagnee() && !accueil.getPartie().isTourUn())
                 accueil.getPartie().controleBlocage();
 

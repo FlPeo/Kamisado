@@ -12,6 +12,7 @@ class Model_Partie
     private Model_Plateau plateau;
     private Model_Pion pionMemoire;
     private Model_Pion dernierPionJoue;
+    private Model_Pion dernierPionJoueAnim;
 
     private Model_Pion[] pionsBlancs;
     private Model_Pion[] pionsNoirs;
@@ -173,6 +174,11 @@ class Model_Partie
             joueurBlancGagnant = tourDuJoueurBlanc;
         }
     }
+
+    public void saveDerPionJoueAnim(){
+        dernierPionJoueAnim = dernierPionJoue;
+    }
+
 
     /**
      * Controle si un pion ne peut plus se déplacer et dans ce cas indique une situation gagnante
@@ -379,5 +385,9 @@ class Model_Partie
 
     public void setJoueurBLancGagnant(boolean joueurBLancGagnant) {
         this.joueurBLancGagnant = joueurBLancGagnant;
+    }
+
+    public Model_Pion getDernierPionJoueAnim() {
+        return dernierPionJoueAnim;
     }
 }

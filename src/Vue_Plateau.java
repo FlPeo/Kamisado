@@ -201,7 +201,7 @@ class   Vue_Plateau extends JPanel
                 si c'est le pion animation on part de sa source et on va jusqu'à la case actuelle
                  */
                 Model_Pion pionAdessiner = accueil.getPartie().getPlateau().getBoard()[i].getPion();
-                Model_Pion dernierPionJoue = accueil.getPartie().getDernierPionJoue();
+                Model_Pion dernierPionJoue = accueil.getPartie().getDernierPionJoueAnim();
                 if (dernierPionJoue != null
                     && dernierPionJoue.equals(pionAdessiner)
                     && deplacementEnCours)
