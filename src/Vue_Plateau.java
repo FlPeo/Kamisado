@@ -222,18 +222,23 @@ class   Vue_Plateau extends JPanel
         }
         if(accueil.getPartie().getCaseSrc() != null)
         {
-            Stroke oldStroke = ((Graphics2D)g).getStroke();
             ((Graphics2D)g).setStroke(new BasicStroke(EPAISSEUR_CASE_JOUEE_PAR_IA));
             g.setColor(new Color(125, 0, 0));
             int yD = accueil.getPartie().getCaseSrc().getRow();
             int xD = accueil.getPartie().getCaseSrc().getColumn();
-            int yP = accueil.getPartie().getCaseDest().getRow();
-            int xP = accueil.getPartie().getCaseDest().getColumn();
-            g.drawRect(xD * SIZECASE + 380 - SIZECASE / 4 +2, (8 - yD) * SIZECASE - 20 - SIZECASE / 2 +2,
-                    SIZECASE-EPAISSEUR_CASE_JOUEE_PAR_IA, SIZECASE-EPAISSEUR_CASE_JOUEE_PAR_IA);
-            g.drawOval(xP * SIZECASE + 380 - SIZECASE / 4 , (8 - yP) * SIZECASE - 20 - SIZECASE / 2 ,
-                    SIZECASE-EPAISSEUR_CASE_JOUEE_PAR_IA+5, SIZECASE-EPAISSEUR_CASE_JOUEE_PAR_IA+5);
-            ((Graphics2D)g).setStroke(oldStroke);
+
+            float alpha = 0.20f;
+            int type = AlphaComposite.SRC_OVER;
+            AlphaComposite composite =
+                    AlphaComposite.getInstance(type, alpha);
+            ((Graphics2D) g).setComposite(composite);
+            BufferedImage[] typePion = accueil.getPartie().getDernierPionJoue().isEstBlanc()?imagesPionsJoueurBlanc:imagesPionsJoueurNoir;
+            g.drawImage(typePion[accueil.getPartie().getDernierPionJoue().getCOULEUR()],
+                    xD  * SIZECASE + 380 - SIZECASE/4,
+                    -yD * SIZECASE + 620 - SIZECASE/2,
+                    null);
+            composite = AlphaComposite.getInstance(type, 1f);
+            ((Graphics2D) g).setComposite(composite);
         }
 
         if(accueil.getPartie().getPionMemoire() != null)
