@@ -91,7 +91,7 @@ class Model_Partie_IA {
 
     // 14 = nombre de cases atteignables max
     // on notera -1 pour les cases non utilisées
-    private byte[] casesAtteignablesJoueurCourant = {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
+    public byte[] casesAtteignablesJoueurCourant = {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
     // 8 = nb pions
     private byte[][] casesAtteignablesTourUn = new byte[8][14];
 
@@ -103,8 +103,8 @@ class Model_Partie_IA {
 
 
 
-    private static final int MOINS_INFINI = -1_000_000;
-    private static final int INFINI = 1_000_000;
+    public static final int MOINS_INFINI = -1_000_000;
+    public static final int INFINI = 1_000_000;
 
 
 
@@ -116,7 +116,14 @@ class Model_Partie_IA {
     private static final int PEUT_ATTEINDRE_TROIS_CASES_AU_BOUT_DU_PLATEAU = 25;
 
 
-
+    //attributs simulerCoup
+    private byte sauvegardeCouleur;
+    private byte sauvegardePlateau1;
+    private byte sauvegardePlateauPionMem;
+    private byte sauvegardeDerPionJoue;
+    private byte sauvegardeCaseDerPionJoue;
+    private byte[] sauvegardeCasesAtteignablesJoueurCourant;
+    private byte sauvegardeCasePionMemoire;
 
     Model_Partie_IA() {
         plateau = new byte[LIGNE * LIGNE];
@@ -322,105 +329,71 @@ class Model_Partie_IA {
         }
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    byte evaluate() {
-        return evaluateMax();
+    public void simulerCoup(){
+        sauvegardeCouleur = couleurPionAJouer;
+        sauvegardePlateauPionMem = plateau[casePionMemoire];
+        sauvegardeDerPionJoue = dernierPionJoue;
+        sauvegardeCaseDerPionJoue = caseDernierPionJoue;
+        sauvegardeCasesAtteignablesJoueurCourant = Arrays.copyOf(casesAtteignablesJoueurCourant,
+                casesAtteignablesJoueurCourant.length);
+        sauvegardeCasePionMemoire = casePionMemoire;
     }
 
-    private byte evaluateMax() {
-        int maxVal = MOINS_INFINI;
-        int val;
-        byte meilleur_coup = 0;
-
-        byte sauvegardeCouleur = couleurPionAJouer;
-        byte sauvegardePlateau1;
-        byte sauvegardePlateauPionMem = plateau[casePionMemoire];
-        byte sauvegardeDerPionJoue = dernierPionJoue;
-        byte sauvegardeCaseDerPionJoue = caseDernierPionJoue;
-        byte[] sauvegardeCasesAtteignablesJoueurCourant = Arrays.copyOf(casesAtteignablesJoueurCourant,
-                casesAtteignablesJoueurCourant.length);
-        byte sauvegardeCasePionMemoire = casePionMemoire;
-
-
-
-        byte i;
-        for(i = 0 ; i<casesAtteignablesJoueurCourant.length && casesAtteignablesJoueurCourant[i] !=-1; i++){
-            //simuler(coup actuel)
-            sauvegardePlateau1 = plateau[casesAtteignablesJoueurCourant[i]];
-
-            plateau[casePionMemoire] = -1;
-            plateau[casesAtteignablesJoueurCourant[i]] = pionMemoire;
-            caseDernierPionJoue = casesAtteignablesJoueurCourant[i];
-            dernierPionJoue = pionMemoire;
-            couleurPionAJouer = plateauCase[casesAtteignablesJoueurCourant[i]];
-            pionMemoire = getCouleurPionAJouer();
-
-            for (byte j=0; j< plateau.length; j++)
-                if (plateau[j] == pionMemoire)
-                {
-                    casePionMemoire = j;
-                    break;
-                }
-            setCasesAtteignablesJoueurCourant(!tourDuJoueurBlanc, getCasePionMemoire());
-
-
-
-            val = max(PROFONDEUR_MINMAX, MOINS_INFINI, INFINI);
-            if(val > maxVal) {
-                maxVal = val;
-                meilleur_coup = i;
-            }
-
-
-            //annuler_coup(coup_actuel)
-            couleurPionAJouer = sauvegardeCouleur;
-            caseDernierPionJoue = sauvegardeCaseDerPionJoue;
-            casePionMemoire = sauvegardeCasePionMemoire;
-            plateau[casePionMemoire] = sauvegardePlateauPionMem;
-            pionMemoire = dernierPionJoue;
-            dernierPionJoue = sauvegardeDerPionJoue;
-            casesAtteignablesJoueurCourant = Arrays.copyOf(sauvegardeCasesAtteignablesJoueurCourant,
-                    sauvegardeCasesAtteignablesJoueurCourant.length);
-            plateau[casesAtteignablesJoueurCourant[i]] = sauvegardePlateau1;
-        }
-
-
-        //Jouer(meilleur coup)
+    public void retabliCoup(byte meilleur_coup){
         couleurPionAJouer = plateauCase[casesAtteignablesJoueurCourant[meilleur_coup]];
         plateau[casesAtteignablesJoueurCourant[meilleur_coup]] = pionMemoire;
         plateau[casePionMemoire] = -1;
         caseDestDernierPionJoue = casesAtteignablesJoueurCourant[meilleur_coup];
-        caseDernierPionJoue = casePionMemoire;   //ddddddddddd
+        caseDernierPionJoue = casePionMemoire;
         dernierPionJoue = pionMemoire;
         tourDuJoueurBlanc = true;
-
-        return meilleur_coup;
     }
+
+    public int testerCoup(int i){
+
+        int val;
+        //simuler(coup actuel)
+        sauvegardePlateau1 = plateau[casesAtteignablesJoueurCourant[i]];
+
+        plateau[casePionMemoire] = -1;
+        plateau[casesAtteignablesJoueurCourant[i]] = pionMemoire;
+        caseDernierPionJoue = casesAtteignablesJoueurCourant[i];
+        dernierPionJoue = pionMemoire;
+        couleurPionAJouer = plateauCase[casesAtteignablesJoueurCourant[i]];
+        pionMemoire = getCouleurPionAJouer();
+
+        for (byte j=0; j< plateau.length; j++)
+            if (plateau[j] == pionMemoire)
+            {
+                casePionMemoire = j;
+                break;
+            }
+        setCasesAtteignablesJoueurCourant(!tourDuJoueurBlanc, getCasePionMemoire());
+
+
+
+        val = max(PROFONDEUR_MINMAX, MOINS_INFINI, INFINI);
+        /*if(val > maxVal) {
+            maxVal = val;
+            meilleur_coup = i;
+        }*/
+
+
+        //annuler_coup(coup_actuel)
+        couleurPionAJouer = sauvegardeCouleur;
+        caseDernierPionJoue = sauvegardeCaseDerPionJoue;
+        casePionMemoire = sauvegardeCasePionMemoire;
+        plateau[casePionMemoire] = sauvegardePlateauPionMem;
+        pionMemoire = dernierPionJoue;
+        dernierPionJoue = sauvegardeDerPionJoue;
+        casesAtteignablesJoueurCourant = Arrays.copyOf(sauvegardeCasesAtteignablesJoueurCourant,
+                sauvegardeCasesAtteignablesJoueurCourant.length);
+        plateau[casesAtteignablesJoueurCourant[i]] = sauvegardePlateau1;
+
+        return val;
+    }
+
+
 
 
 

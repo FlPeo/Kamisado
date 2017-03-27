@@ -19,6 +19,8 @@ class   Vue_Plateau extends JPanel
     private boolean deplacementEnCours=false;
     private Model_Case depart;
 
+    private JProgressBar jProgressBar;
+
     private Timer timerAnim;
 
 
@@ -32,6 +34,9 @@ class   Vue_Plateau extends JPanel
      */
     Vue_Plateau(Vue vue, Model_Accueil accueil)
     {
+        BoxLayout boxLayout = new BoxLayout(this, BoxLayout.X_AXIS);
+        this.setLayout(boxLayout);
+
         depart = null; // attente animation
         this.vue = vue;
         this.accueil = accueil;
@@ -51,7 +56,7 @@ class   Vue_Plateau extends JPanel
         }
         catch(IOException e2)
         {
-            System.out.println(e2.getMessage());
+            //Cas d'erreur à gérer !!
         }
     }
 
@@ -123,8 +128,8 @@ class   Vue_Plateau extends JPanel
                     g.drawImage(typePion[couleurPion], x * SIZECASE +380 - SIZECASE/4, -y * SIZECASE +620 - SIZECASE/2, null);
                 }
             }
-
-            if(accueil.getPartieIa().getCaseDernierPionJoue() !=-1) {
+            byte dernierCaseJouer = accueil.getPartieIa().getCaseDernierPionJoue();
+            if( dernierCaseJouer!=-1) {
                 Stroke oldStroke = ((Graphics2D)g).getStroke();
                 ((Graphics2D)g).setStroke(new BasicStroke(EPAISSEUR_CASE_JOUEE_PAR_IA));
 
@@ -217,30 +222,8 @@ class   Vue_Plateau extends JPanel
                             x  * SIZECASE + 380 - SIZECASE/4,
                             -y * SIZECASE + 620 - SIZECASE/2,
                             null);
-
             }
         }
-        if(accueil.getPartie().getCaseSrc() != null)
-        {
-            ((Graphics2D)g).setStroke(new BasicStroke(EPAISSEUR_CASE_JOUEE_PAR_IA));
-            g.setColor(new Color(125, 0, 0));
-            int yD = accueil.getPartie().getCaseSrc().getRow();
-            int xD = accueil.getPartie().getCaseSrc().getColumn();
-
-            float alpha = 0.20f;
-            int type = AlphaComposite.SRC_OVER;
-            AlphaComposite composite =
-                    AlphaComposite.getInstance(type, alpha);
-            ((Graphics2D) g).setComposite(composite);
-            BufferedImage[] typePion = accueil.getPartie().getDernierPionJoue().isEstBlanc()?imagesPionsJoueurBlanc:imagesPionsJoueurNoir;
-            g.drawImage(typePion[accueil.getPartie().getDernierPionJoue().getCOULEUR()],
-                    xD  * SIZECASE + 380 - SIZECASE/4,
-                    -yD * SIZECASE + 620 - SIZECASE/2,
-                    null);
-            composite = AlphaComposite.getInstance(type, 1f);
-            ((Graphics2D) g).setComposite(composite);
-        }
-
         if(accueil.getPartie().getPionMemoire() != null)
         {
             ArrayList<Model_Case> cases= accueil.getPartie().getPionMemoire().getCasesAtteignables();
@@ -305,5 +288,22 @@ class   Vue_Plateau extends JPanel
     {
         timerAnim.stop();
         deplacementEnCours=false;
+    }
+
+    public void createProgressBar(){
+        jProgressBar= new JProgressBar(0, 100);
+        jProgressBar.setValue(0);
+        jProgressBar.setStringPainted(true);
+        this.add(jProgressBar);
+        this.validate();
+    }
+    public void updateProgressBar(int pourcentage){
+        jProgressBar.setValue(pourcentage);
+        this.validate();
+    }
+
+    public void deleteProgressBar(){
+        this.remove(jProgressBar);
+        this.validate();
     }
 }
