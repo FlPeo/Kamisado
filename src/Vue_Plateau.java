@@ -139,11 +139,24 @@ class   Vue_Plateau extends JPanel
                 y = accueil.getPartieIa().getCaseDernierPionJoue() / 8;
                 int xP = accueil.getPartieIa().getCaseDestDernierPionJoue() % 8;
                 int yP = accueil.getPartieIa().getCaseDestDernierPionJoue() / 8;
-                g.drawRect(x * SIZECASE + 380 - SIZECASE / 4 +2, (8 - y) * SIZECASE - 20 - SIZECASE / 2 +2,
-                        SIZECASE-EPAISSEUR_CASE_JOUEE_PAR_IA, SIZECASE-EPAISSEUR_CASE_JOUEE_PAR_IA);
-                g.drawOval(xP * SIZECASE + 380 - SIZECASE / 4 +2, (8 - yP) * SIZECASE - 20 - SIZECASE / 2 +2,
-                        SIZECASE-EPAISSEUR_CASE_JOUEE_PAR_IA, SIZECASE-EPAISSEUR_CASE_JOUEE_PAR_IA);
-                ((Graphics2D)g).setStroke(oldStroke);
+
+                float alpha = 0.20f;
+                int type = AlphaComposite.SRC_OVER;
+                AlphaComposite composite =
+                        AlphaComposite.getInstance(type, alpha);
+                ((Graphics2D) g).setComposite(composite);
+                BufferedImage[] typePion;
+                if(accueil.getPartieIa().getDernierPionJoue() < 8)
+                    typePion = imagesPionsJoueurBlanc;
+                else
+                    typePion = imagesPionsJoueurNoir;
+
+                g.drawImage(typePion[accueil.getPartieIa().getDernierPionJoue()%8],
+                        x  * SIZECASE + 380 - SIZECASE/4,
+                        -y * SIZECASE + 620 - SIZECASE/2,
+                        null);
+                composite = AlphaComposite.getInstance(type, 1f);
+                ((Graphics2D) g).setComposite(composite);
             }
 
             if(!accueil.getPartieIa().isEstGagnee()) {
