@@ -40,7 +40,7 @@ jobs:
           release: 23
       - name: Create exe
         run: |
-          ./gradlew jlink
+          ./gradlew runtime
       - name: Zip
         run: |
           zip -r  nativeBuild.zip build/image 
